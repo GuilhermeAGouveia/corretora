@@ -2,9 +2,11 @@ import { Router } from 'express';
 
 const router = Router()
 
-router.use('/user', (req, res, next) => {console.log('passei'); next()})
+const rootPath = '/user';
 
-router.get('/user/', (req, res) => {
+router.use(rootPath, (req, res, next) => {console.log('passei'); next()})
+
+router.get(`${rootPath}/`, (req, res) => {
     res.send('user!')
 })
 
