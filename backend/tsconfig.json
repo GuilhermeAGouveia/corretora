@@ -7,5 +7,6 @@
         "strict": true,
         "allowJs": false,
         "declaration": true,
+        "outDir": "build/"
     }
 }
