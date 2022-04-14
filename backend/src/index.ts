@@ -13,7 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use([userRouter, imvRouter]);
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    res.send('Hello, Heroku!');
 });
 
 
