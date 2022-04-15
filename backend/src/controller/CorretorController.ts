@@ -30,9 +30,11 @@ export default {
         }
       }
     });
+
+    res.json(corretor);
   },
   getAll: async (req: Request, res: Response) => {
-    const imoveis = await prisma.corretor.findMany({
+    const corretor = await prisma.corretor.findMany({
         include: {
             pessoa: {
               include: {
@@ -42,7 +44,7 @@ export default {
         }
     });
     
-    res.json(imoveis);
+    res.json(corretor);
   },
   
   insert: async (req: Request, res: Response) => {
