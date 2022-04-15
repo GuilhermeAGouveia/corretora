@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model Pessoa {
+  id        String     @id @default(cuid())
+  firstName String
+  lastName  String
+  email     String
+  phone     String
+  address   String
+  city      String
+  state     String
+  cep       String
+  telefones Telefone[]
+  createdAt DateTime   @default(now())
+  Locador   Locador?
+  Locatario Locatario?
+  Corretor  Corretor?
+}
+
+model Telefone {
+  numero    String
+  tipo      String
+  pessoa    Pessoa   @relation(fields: [pessoaId], references: [id])
+  pessoaId  String
+  createdAt DateTime @default(now())
+
+  @@id([numero, pessoaId])
+}
+
+model Locador {
+  cod_lcd    String  @id
+  is_Partner Boolean
+  pessoa     Pessoa  @relation(fields: [cod_lcd], references: [id])
+}
+
+model Locatario {
+  cod_lct   String   @id
+  birthdate DateTime
+  pessoa    Pessoa   @relation(fields: [cod_lct], references: [id])
+}
+
+model Corretor {
+  cod_cor String @id
+  score   Int    @default(0)
+  pessoa  Pessoa @relation(fields: [cod_cor], references: [id])
+}
