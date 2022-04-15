@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import { Corretor, Locador, Locatario, PessoaWithTelefone } from "./interfaces";
 
+// Define dados adicionais para cada tipo de pessoa (corretor, locador, locatario)
 interface AdditionalData {
   Locador?: {
     create: {
@@ -25,11 +26,19 @@ class PessoaInheritanceInsert {
   constructor() {
     this.prisma = new PrismaClient();
   }
+
+  /**
+   * 
+   * @param param0 
+   * @returns Pessoa
+   * @description Método principal que faz a inserção de uma pessoa, com os dados adicionais que definem o tipo de pessoa
+   */
   async insertPessoa({
     telefones,
     additionalData,
     ...pessoa
   }: PessoaWithTelefone & { additionalData?: AdditionalData }) {
+    
     const phones = telefones
       ? {
           createMany: {
