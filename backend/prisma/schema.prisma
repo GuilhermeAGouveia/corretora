@@ -20,7 +20,7 @@ model Pessoa {
   city      String
   state     String
   cep       String
-  telefones Telefone[]
+  phones    Telefone[]
   createdAt DateTime   @default(now())
   Locador   Locador?
   Locatario Locatario?
@@ -29,7 +29,6 @@ model Pessoa {
 
 model Telefone {
   numero    String
-  tipo      String
   pessoa    Pessoa   @relation(fields: [pessoaId], references: [id])
   pessoaId  String
   createdAt DateTime @default(now())
@@ -38,9 +37,10 @@ model Telefone {
 }
 
 model Locador {
-  cod_lcd    String  @id
-  is_Partner Boolean
-  pessoa     Pessoa  @relation(fields: [cod_lcd], references: [id])
+  cod_lcd    String   @id
+  is_partner Boolean
+  pessoa     Pessoa   @relation(fields: [cod_lcd], references: [id])
+  Imovel     Imovel[]
 }
 
 model Locatario {
@@ -53,4 +53,23 @@ model Corretor {
   cod_cor String @id
   score   Int    @default(0)
   pessoa  Pessoa @relation(fields: [cod_cor], references: [id])
+}
+
+model Imovel {
+  cod_imv   String     @id @default(cuid())
+  cod_lcd   String
+  type      ImovelType @default(CASA)
+  address   String
+  cep       String
+  district  String
+  city      String
+  state     String
+  describe  String
+  createdAt DateTime   @default(now())
+  locador   Locador    @relation(fields: [cod_lcd], references: [cod_lcd])
+}
+
+enum ImovelType {
+  CASA
+  APTO
 }
