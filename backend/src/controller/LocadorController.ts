@@ -11,10 +11,10 @@ const pessoaInsert = new PessoaInsert()
 export default {
   count: async (req: Request, res: Response) => {
     const count = await prisma.locador.count();
-    res.json(count);
+    return res.json(count);
   },
   default: async (req: Request, res: Response) => {
-    res.send("Raiz para locador");
+    return res.send("Raiz para locador");
   },
   getByCod: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
@@ -30,6 +30,7 @@ export default {
         }
       }
     });
+    return res.json(locador);
   },
   getAll: async (req: Request, res: Response) => {
     const imoveis = await prisma.locador.findMany({
@@ -41,7 +42,7 @@ export default {
         }
     }});
     
-    res.json(imoveis);
+    return res.json(imoveis);
   },
   
   insert: async (req: Request, res: Response) => {
@@ -49,6 +50,6 @@ export default {
 
     const locadorInsert = await pessoaInsert.insertLocador(locador)
 
-    res.json(locadorInsert.id);
+    return res.json(locadorInsert.id);
   },
 } as Controller;

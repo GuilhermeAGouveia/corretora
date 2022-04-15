@@ -8,13 +8,14 @@ const rootPath = '/pessoa';
 
 //locador
 router.get(`${rootPath}/locador/`, LocadorController.default)
+router.get(`${rootPath}/locador/:cod`, LocadorController.getByCod)
 router.get(`${rootPath}/locador/all`, LocadorController.getAll)
 router.get(`${rootPath}/locador/count`, LocadorController.count)
 router.post(`${rootPath}/locador/`, LocadorController.insert)
 
 //corretor
-
 router.get(`${rootPath}/corretor/`, CorretorController.default)
+router.get(`${rootPath}/corretor/:cod`, LocadorController.getByCod)
 router.get(`${rootPath}/corretor/all`, CorretorController.getAll)
 router.get(`${rootPath}/corretor/count`, CorretorController.count)
 router.post(`${rootPath}/corretor`, CorretorController.insert)

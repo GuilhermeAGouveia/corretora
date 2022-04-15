@@ -11,6 +11,7 @@ export default {
     default: async (req: Request, res: Response) => {
         res.send("Raiz para imóveis")
     },
+    
     getByCod: async (req: Request, res: Response) => {
         const cod: string = req.params.cod;
         const locador = await prisma.imovel.findUnique({
