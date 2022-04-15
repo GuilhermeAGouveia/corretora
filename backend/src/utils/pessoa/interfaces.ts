@@ -13,3 +13,6 @@ export interface Corretor extends PessoaWithTelefone  {
     score: number;
 }
 
+export interface Locatario extends PessoaWithTelefone  {
+    birthdate: Date;
+}

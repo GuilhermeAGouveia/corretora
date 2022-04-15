@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import CorretorController from '../controller/CorretorController';
 import LocadorController from '../controller/LocadorController';
+import LocatarioController from '../controller/LocatarioController';
+import { convertStringToDateMiddleware } from '../middleware';
+
 
 const router = Router()
 
@@ -27,6 +30,15 @@ router.get(`${rootPath}/corretor/:cod`, CorretorController.getByCod)
 router.post(`${rootPath}/corretor`, CorretorController.insert)
 
 //locatario
+router.get(`${rootPath}/locatario/`, LocatarioController.default)
+router.get(`${rootPath}/locatario/all`, LocatarioController.getAll)
+router.get(`${rootPath}/locatario/count`, LocatarioController.count)
+
+//necessários que a rota esteja abaixo de todas as outras rotas GET de Locatario
+router.get(`${rootPath}/locatario/:cod`, LocatarioController.getByCod)
+
+router.post(`${rootPath}/locatario`, convertStringToDateMiddleware, LocatarioController.insert)
+
 
 
 export default router

@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { Corretor, Locador, PessoaWithTelefone } from "./interfaces";
+import { Corretor, Locador, Locatario, PessoaWithTelefone } from "./interfaces";
 
 //Essa classe existe para tratar a herança na inserção, coisa que o prisma infelizmente não suporta ainda
 
@@ -60,6 +60,22 @@ class PessoaInheritanceInsert {
       })
 
       return {...corretor, ...pessoa}
+      
+    }
+
+    async insertLocatario({ birthdate, ...pessoaWithTelefone } : Locatario) {
+
+      const pessoa = await this.insertPessoa(pessoaWithTelefone)
+
+      const locatario = await this.prisma.locatario.create({
+          data:{
+              birthdate,
+              cod_lct: pessoa.id,
+          },
+          
+      })
+
+      return {...locatario, ...pessoa}
       
     }
 }
