@@ -6,7 +6,7 @@ import Controller from "./IController";
 
 const prisma = new PrismaClient();
 
-const pessoaInsert = new PessoaInsert()
+const pessoaInsert = new PessoaInsert();
 
 export default {
   count: async (req: Request, res: Response) => {
@@ -20,37 +20,37 @@ export default {
     const cod: string = req.params.cod;
     const corretor = await prisma.corretor.findUnique({
       where: {
-        cod_cor: cod
+        cod_cor: cod,
       },
       include: {
         pessoa: {
           include: {
-            phones: true
-          }
-        }
-      }
+            phones: true,
+          },
+        },
+      },
     });
 
     res.json(corretor);
   },
   getAll: async (req: Request, res: Response) => {
     const corretor = await prisma.corretor.findMany({
-        include: {
-            pessoa: {
-              include: {
-                phones: true
-              }
-            }
-        }
+      include: {
+        pessoa: {
+          include: {
+            phones: true,
+          },
+        },
+      },
     });
-    
+
     res.json(corretor);
   },
-  
+
   insert: async (req: Request, res: Response) => {
     const corretor = req.body as Corretor;
 
-    const corretorInsert = await pessoaInsert.insertCorretor(corretor)
+    const corretorInsert = await pessoaInsert.insertCorretor(corretor);
 
     res.json(corretorInsert.id);
   },

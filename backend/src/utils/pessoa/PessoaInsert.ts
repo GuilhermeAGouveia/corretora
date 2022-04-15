@@ -1,83 +1,106 @@
 import { PrismaClient } from "@prisma/client";
 import { Corretor, Locador, Locatario, PessoaWithTelefone } from "./interfaces";
 
+interface AdditionalData {
+  Locador?: {
+    create: {
+      is_partner: boolean;
+    };
+  };
+  Locatario?: {
+    create: {
+      birthdate: Date;
+    };
+  };
+  Corretor?: {
+    create: {
+      score: number;
+    };
+  };
+}
 //Essa classe existe para tratar a herança na inserção, coisa que o prisma infelizmente não suporta ainda
-
 class PessoaInheritanceInsert {
-    private prisma;
+  private prisma;
 
-    constructor() {
-        this.prisma = new PrismaClient();
-    }
-    async insertPessoa({ telefones, ...pessoa }: PessoaWithTelefone) {
-
-        const phones = telefones
-          ? {
-              createMany: {
-                data: telefones.map((telefone) => ({
-                  numero: telefone,
-                })),
-                skipDuplicates: true
-              },
-              
-            }
-          : undefined;
-    
-        const pessoaInsert = await this.prisma.pessoa.create({
-          data: {
-            ...pessoa,
-            phones,
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
+  async insertPessoa({
+    telefones,
+    additionalData,
+    ...pessoa
+  }: PessoaWithTelefone & { additionalData?: AdditionalData }) {
+    const phones = telefones
+      ? {
+          createMany: {
+            data: telefones.map((telefone) => ({
+              numero: telefone,
+            })),
+            skipDuplicates: true,
           },
-        });
+        }
+      : undefined;
 
-        return pessoaInsert
-    }
-    async insertLocador({ is_partner, ...pessoaWithTelefone } : Locador){
+    const pessoaInsert = await this.prisma.pessoa.create({
+      data: {
+        ...pessoa,
+        phones,
+        ...additionalData,
+      },
+    });
 
-       const pessoa = await this.insertPessoa(pessoaWithTelefone)
+    return pessoaInsert;
+  }
+  async insertLocador({ is_partner, ...pessoaWithTelefone }: Locador) {
+    const additionalData: AdditionalData = {
+      Locador: {
+        create: {
+          is_partner,
+        },
+      },
+    };
 
-       const locador = await this.prisma.locador.create({
-           data:{
-               is_partner,
-               cod_lcd: pessoa.id,
-           },
-           
-       })
+    const pessoa = await this.insertPessoa({
+      ...pessoaWithTelefone,
+      additionalData,
+    });
 
-       return {...locador, ...pessoa}
-    }
+    return pessoa;
+  }
 
-    async insertCorretor({ score, ...pessoaWithTelefone } : Corretor) {
+  async insertCorretor({ score, ...pessoaWithTelefone }: Corretor) {
+    const additionalData: AdditionalData = {
+      Corretor: {
+        create: {
+          score,
+        },
+      },
+    };
 
-      const pessoa = await this.insertPessoa(pessoaWithTelefone)
+    const pessoa = await this.insertPessoa({
+      ...pessoaWithTelefone,
+      additionalData,
+    });
 
-      const corretor = await this.prisma.corretor.create({
-          data:{
-              score,
-              cod_cor: pessoa.id,
-          },
-          
-      })
+    return pessoa;
+  }
 
-      return {...corretor, ...pessoa}
-      
-    }
+  async insertLocatario({ birthdate, ...pessoaWithTelefone }: Locatario) {
+    const additionalData: AdditionalData = {
+      Locatario: {
+        create: {
+          birthdate,
+        },
+      },
+    };
 
-    async insertLocatario({ birthdate, ...pessoaWithTelefone } : Locatario) {
+    const pessoa = await this.insertPessoa({
+      ...pessoaWithTelefone,
+      additionalData,
+    });
 
-      const pessoa = await this.insertPessoa(pessoaWithTelefone)
-
-      const locatario = await this.prisma.locatario.create({
-          data:{
-              birthdate,
-              cod_lct: pessoa.id,
-          },
-          
-      })
-
-      return {...locatario, ...pessoa}
-      
-    }
+    return pessoa;
+  }
 }
 
-export default PessoaInheritanceInsert
+export default PessoaInheritanceInsert;

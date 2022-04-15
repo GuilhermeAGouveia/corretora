@@ -6,7 +6,7 @@ import Controller from "./IController";
 
 const prisma = new PrismaClient();
 
-const pessoaInsert = new PessoaInsert()
+const pessoaInsert = new PessoaInsert();
 
 export default {
   count: async (req: Request, res: Response) => {
@@ -20,35 +20,36 @@ export default {
     const cod: string = req.params.cod;
     const locador = await prisma.locador.findUnique({
       where: {
-        cod_lcd: cod
+        cod_lcd: cod,
       },
       include: {
         pessoa: {
           include: {
-            phones: true
-          }
-        }
-      }
+            phones: true,
+          },
+        },
+      },
     });
     res.json(locador);
   },
   getAll: async (req: Request, res: Response) => {
     const locador = await prisma.locador.findMany({
-        include: {
-            pessoa: {
-                include: {
-                  phones: true
-            }
-        }
-    }});
-    
+      include: {
+        pessoa: {
+          include: {
+            phones: true,
+          },
+        },
+      },
+    });
+
     res.json(locador);
   },
-  
+
   insert: async (req: Request, res: Response) => {
     const locador = req.body as Locador;
 
-    const locadorInsert = await pessoaInsert.insertLocador(locador)
+    const locadorInsert = await pessoaInsert.insertLocador(locador);
 
     res.json(locadorInsert.id);
   },
