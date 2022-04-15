@@ -7,7 +7,7 @@ const rootPath = '/imovel';
 
 
 router.get(`${rootPath}/`, ImovelController.default)
-router.get(`${rootPath}/count`, ImovelController.countImovel)
+router.get(`${rootPath}/count`, ImovelController.count)
 router.get(`${rootPath}/all`, ImovelController.getAll)
 
 export default router
