@@ -15,10 +15,9 @@ model Pessoa {
   firstName String
   lastName  String
   email     String
-  phone     String
   address   String
-  city      String
-  state     String
+  city      String?
+  state     String?
   cep       String
   phones    Telefone[]
   createdAt DateTime   @default(now())
