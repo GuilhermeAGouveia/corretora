@@ -27,9 +27,9 @@ model Pessoa {
 }
 
 model Telefone {
-  numero    String
-  pessoa    Pessoa   @relation(fields: [pessoaId], references: [id])
-  pessoaId  String
+  numero   String
+  pessoa   Pessoa @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
+  pessoaId String
 
   @@id([numero, pessoaId], name: "idTelefone")
 }
@@ -37,7 +37,7 @@ model Telefone {
 model Locador {
   cod_lcd    String             @id
   is_partner Boolean
-  pessoa     Pessoa             @relation(fields: [cod_lcd], references: [id])
+  pessoa     Pessoa             @relation(fields: [cod_lcd], references: [id], onDelete: Cascade)
   Imovel     Imovel[]
   contratos  Corretor_Locador[]
 }
@@ -45,14 +45,14 @@ model Locador {
 model Locatario {
   cod_lct    String      @id
   birthdate  DateTime
-  pessoa     Pessoa      @relation(fields: [cod_lct], references: [id])
+  pessoa     Pessoa      @relation(fields: [cod_lct], references: [id], onDelete: Cascade)
   associados Associado[]
 }
 
 model Corretor {
   cod_cor   String             @id
   score     Int                @default(0)
-  pessoa    Pessoa             @relation(fields: [cod_cor], references: [id])
+  pessoa    Pessoa             @relation(fields: [cod_cor], references: [id], onDelete: Cascade)
   contratos Corretor_Locador[]
 }
 
@@ -67,7 +67,7 @@ model Imovel {
   state     String
   describe  String
   createdAt DateTime   @default(now())
-  locador   Locador    @relation(fields: [cod_lcd], references: [cod_lcd])
+  locador   Locador    @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
 }
 
 enum ImovelType {
@@ -80,8 +80,8 @@ model Corretor_Locador {
   cod_lcd    String
   commission Float    @default(0)
   createdAt  DateTime @default(now())
-  locador    Locador  @relation(fields: [cod_lcd], references: [cod_lcd])
-  corretor   Corretor @relation(fields: [cod_cor], references: [cod_cor])
+  locador    Locador  @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
+  corretor   Corretor @relation(fields: [cod_cor], references: [cod_cor], onDelete: Restrict)
 
   @@id([cod_cor, cod_lcd], name: "idCorretorLocador")
 }
@@ -90,12 +90,11 @@ model Associado {
   name      String
   cod_lct   String
   birthdate DateTime?
-  tipo     AssociadoType @default(OUTRO)
-  locatario Locatario @relation(fields: [cod_lct], references: [cod_lct])
+  tipo      AssociadoType @default(OUTRO)
+  locatario Locatario     @relation(fields: [cod_lct], references: [cod_lct], onDelete: Cascade)
 
   @@id([name, cod_lct], name: "idAssociado")
 }
-
 
 enum AssociadoType {
   CONJUGE

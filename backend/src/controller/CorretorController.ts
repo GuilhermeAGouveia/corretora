@@ -62,13 +62,16 @@ export default {
     try {
       const cod = req.params.cod;
 
-      const corretor = await prisma.pessoa.delete({
+      const corretor = await prisma.pessoa.deleteMany({
         where: {
           id: cod,
+          Corretor: {
+            cod_cor: cod,
+          },
         },
       });
 
-      return res.json(corretor);
+      return res.json(!!corretor.count);
     } catch (error: any) {
       return res.status(400).json(error);
     }

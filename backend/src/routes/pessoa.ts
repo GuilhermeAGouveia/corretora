@@ -26,7 +26,7 @@ router.get(`${rootPath}/corretor/get/:cod`, CorretorController.getByCod);
 
 router.post(`${rootPath}/corretor`, CorretorController.insert);
 
-router.delete(`${rootPath}/:cod`, CorretorController.delete);
+router.delete(`${rootPath}/corretor/:cod`, CorretorController.delete);
 
 //locatario
 router.get(`${rootPath}/locatario/`, LocatarioController.default);
@@ -40,6 +40,6 @@ router.post(
   LocatarioController.insert
 );
 
-router.delete(`${rootPath}/:cod`, LocatarioController.delete);
+router.delete(`${rootPath}/locatario/:cod`, LocatarioController.delete);
 
 export default router;

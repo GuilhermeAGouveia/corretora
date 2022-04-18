@@ -60,16 +60,18 @@ export default {
     try {
       const cod = req.params.cod;
 
-      const corretor = await prisma.pessoa.delete({
+      const locador = await prisma.pessoa.deleteMany({
         where: {
           id: cod,
+          Locador: {
+            cod_lcd: cod,
+          },
         },
       });
 
-      return res.json(corretor);
+      return res.json(!!locador.count);
     } catch (error: any) {
       return res.status(400).json(error);
     }
   },
-  
 } as Controller;
