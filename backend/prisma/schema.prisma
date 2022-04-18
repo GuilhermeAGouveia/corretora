@@ -32,7 +32,7 @@ model Telefone {
   pessoaId  String
   createdAt DateTime @default(now())
 
-  @@id([numero, pessoaId])
+  @@id([numero, pessoaId], name: "idTelefone")
 }
 
 model Locador {
@@ -40,18 +40,21 @@ model Locador {
   is_partner Boolean
   pessoa     Pessoa   @relation(fields: [cod_lcd], references: [id])
   Imovel     Imovel[]
+  contratos Corretor_Locador[]
 }
 
 model Locatario {
   cod_lct   String   @id
   birthdate DateTime
   pessoa    Pessoa   @relation(fields: [cod_lct], references: [id])
+  associados Associado[]
 }
 
 model Corretor {
   cod_cor String @id
   score   Int    @default(0)
   pessoa  Pessoa @relation(fields: [cod_cor], references: [id])
+  contratos Corretor_Locador[]
 }
 
 model Imovel {
@@ -71,4 +74,24 @@ model Imovel {
 enum ImovelType {
   CASA
   APTO
+}
+
+model Corretor_Locador {
+  cod_cor String 
+  cod_lcd String
+  commissao   Float    @default(0)
+  createdAt DateTime @default(now())
+  locador Locador @relation(fields: [cod_lcd], references: [cod_lcd])
+  corretor Corretor @relation(fields: [cod_cor], references: [cod_cor])
+
+  @@id([cod_cor, cod_lcd], name: "idCorretorLocador")
+}
+
+model Associado {
+  nome String
+  cod_lct String
+  birthdate DateTime
+  locatario Locatario @relation(fields: [cod_lct], references: [cod_lct])
+
+  @@id([nome, cod_lct], name: "idAssociado")
 }

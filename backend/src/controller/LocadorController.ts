@@ -45,7 +45,6 @@ export default {
 
     res.json(locador);
   },
-
   insert: async (req: Request, res: Response) => {
     const locador = req.body as Locador;
 
