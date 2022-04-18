@@ -16,8 +16,8 @@ model Pessoa {
   lastName  String
   email     String
   address   String
-  city      String?
-  state     String?
+  city      String
+  state     String
   cep       String
   phones    Telefone[]
   createdAt DateTime   @default(now())
@@ -30,30 +30,29 @@ model Telefone {
   numero    String
   pessoa    Pessoa   @relation(fields: [pessoaId], references: [id])
   pessoaId  String
-  createdAt DateTime @default(now())
 
   @@id([numero, pessoaId], name: "idTelefone")
 }
 
 model Locador {
-  cod_lcd    String   @id
+  cod_lcd    String             @id
   is_partner Boolean
-  pessoa     Pessoa   @relation(fields: [cod_lcd], references: [id])
+  pessoa     Pessoa             @relation(fields: [cod_lcd], references: [id])
   Imovel     Imovel[]
-  contratos Corretor_Locador[]
+  contratos  Corretor_Locador[]
 }
 
 model Locatario {
-  cod_lct   String   @id
-  birthdate DateTime
-  pessoa    Pessoa   @relation(fields: [cod_lct], references: [id])
+  cod_lct    String      @id
+  birthdate  DateTime
+  pessoa     Pessoa      @relation(fields: [cod_lct], references: [id])
   associados Associado[]
 }
 
 model Corretor {
-  cod_cor String @id
-  score   Int    @default(0)
-  pessoa  Pessoa @relation(fields: [cod_cor], references: [id])
+  cod_cor   String             @id
+  score     Int                @default(0)
+  pessoa    Pessoa             @relation(fields: [cod_cor], references: [id])
   contratos Corretor_Locador[]
 }
 
@@ -77,21 +76,32 @@ enum ImovelType {
 }
 
 model Corretor_Locador {
-  cod_cor String 
-  cod_lcd String
-  commissao   Float    @default(0)
-  createdAt DateTime @default(now())
-  locador Locador @relation(fields: [cod_lcd], references: [cod_lcd])
-  corretor Corretor @relation(fields: [cod_cor], references: [cod_cor])
+  cod_cor    String
+  cod_lcd    String
+  commission Float    @default(0)
+  createdAt  DateTime @default(now())
+  locador    Locador  @relation(fields: [cod_lcd], references: [cod_lcd])
+  corretor   Corretor @relation(fields: [cod_cor], references: [cod_cor])
 
   @@id([cod_cor, cod_lcd], name: "idCorretorLocador")
 }
 
 model Associado {
-  nome String
-  cod_lct String
-  birthdate DateTime
+  name      String
+  cod_lct   String
+  birthdate DateTime?
+  tipo     AssociadoType @default(OUTRO)
   locatario Locatario @relation(fields: [cod_lct], references: [cod_lct])
 
-  @@id([nome, cod_lct], name: "idAssociado")
+  @@id([name, cod_lct], name: "idAssociado")
+}
+
+
+enum AssociadoType {
+  CONJUGE
+  FILHO
+  IRMAO
+  PAI
+  MAE
+  OUTRO
 }

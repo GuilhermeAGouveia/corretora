@@ -1,4 +1,4 @@
-import { Pessoa } from "@prisma/client";
+import { AssociadoType, Pessoa } from "@prisma/client";
 
 export interface PessoaWithTelefone extends Pessoa {
   telefones?: string[];
@@ -14,4 +14,11 @@ export interface Corretor extends PessoaWithTelefone {
 
 export interface Locatario extends PessoaWithTelefone {
   birthdate: Date;
+  associados: Associado[];
+}
+
+export interface Associado {
+  name: string;
+  tipo: AssociadoType;
+  birthdate?: Date;
 }

@@ -37,7 +37,18 @@ export default {
       include: {
         pessoa: {
           include: {
-            phones: true,
+            phones: {
+              select: {
+                numero: true,
+              },
+            },
+          },
+        },
+        associados: {
+          select: {
+            name: true,
+            tipo: true,
+            birthdate: true,
           },
         },
       },

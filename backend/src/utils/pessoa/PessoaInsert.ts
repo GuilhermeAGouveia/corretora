@@ -11,6 +11,7 @@ interface AdditionalData {
   Locatario?: {
     create: {
       birthdate: Date;
+      associados?: any;
     };
   };
   Corretor?: {
@@ -28,8 +29,8 @@ class PessoaInheritanceInsert {
   }
 
   /**
-   * 
-   * @param param0 
+   *
+   * @param param0
    * @returns Pessoa
    * @description Método principal que faz a inserção de uma pessoa, com os dados adicionais que definem o tipo de pessoa
    */
@@ -38,7 +39,6 @@ class PessoaInheritanceInsert {
     additionalData,
     ...pessoa
   }: PessoaWithTelefone & { additionalData?: AdditionalData }) {
-    
     const phones = telefones
       ? {
           createMany: {
@@ -94,11 +94,24 @@ class PessoaInheritanceInsert {
     return pessoa;
   }
 
-  async insertLocatario({ birthdate, ...pessoaWithTelefone }: Locatario) {
+  async insertLocatario({
+    birthdate,
+    associados,
+    ...pessoaWithTelefone
+  }: Locatario) {
+    const associadosTratament = associados
+      ? {
+          createMany: {
+            data: associados,
+          },
+        }
+      : undefined;
+
     const additionalData: AdditionalData = {
       Locatario: {
         create: {
           birthdate,
+          associados: associadosTratament,
         },
       },
     };
