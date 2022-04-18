@@ -38,4 +38,13 @@ export default {
     });
     res.json(imovelInsert.cod_imv);
   },
+  delete: async (req: Request, res: Response) => {
+    const cod: string = req.params.cod;
+    const imovel = await prisma.imovel.delete({
+      where: {
+        cod_imv: cod,
+      },
+    });
+    res.json(imovel);
+  }
 } as Controller;

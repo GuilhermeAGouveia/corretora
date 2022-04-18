@@ -46,4 +46,15 @@ export default {
 
     res.json(associadoInsert.name);
   },
+  delete: async (req: Request, res: Response) => {
+    const idAssociado = req.query as any as IdAssociado;
+
+    const associado = await prisma.associado.delete({
+      where: {
+        idAssociado,
+      },
+    });
+
+    res.json(associado);
+  }
 } as Controller;

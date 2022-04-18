@@ -25,7 +25,11 @@ export default {
       include: {
         pessoa: {
           include: {
-            phones: true,
+            phones: {
+              select: {
+                numero: true,
+              },
+            },
           },
         },
       },
@@ -53,5 +57,20 @@ export default {
     const corretorInsert = await pessoaInsert.insertCorretor(corretor);
 
     res.json(corretorInsert.id);
+  },
+  delete: async (req: Request, res: Response) => {
+    try {
+      const cod = req.params.cod;
+
+      const corretor = await prisma.pessoa.delete({
+        where: {
+          id: cod,
+        },
+      });
+
+      return res.json(corretor);
+    } catch (error: any) {
+      return res.status(400).json(error);
+    }
   },
 } as Controller;

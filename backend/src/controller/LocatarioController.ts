@@ -64,4 +64,19 @@ export default {
 
     res.json(locatarioInsert.id);
   },
+  delete: async (req: Request, res: Response) => {
+    try {
+      const cod = req.params.cod;
+
+      const corretor = await prisma.pessoa.delete({
+        where: {
+          id: cod,
+        },
+      });
+
+      return res.json(corretor);
+    } catch (error: any) {
+      return res.status(400).json(error);
+    }
+  },
 } as Controller;

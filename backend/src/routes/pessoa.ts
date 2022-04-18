@@ -12,28 +12,26 @@ const rootPath = "/pessoa";
 router.get(`${rootPath}/locador/`, LocadorController.default);
 router.get(`${rootPath}/locador/all`, LocadorController.getAll);
 router.get(`${rootPath}/locador/count`, LocadorController.count);
-
-//necessários que a rota esteja abaixo de todas as outras rotas GET de corretor
 router.get(`${rootPath}/locador/get/:cod`, LocadorController.getByCod);
 
 router.post(`${rootPath}/locador/`, LocadorController.insert);
+
+router.delete(`${rootPath}/locador/:cod`, LocadorController.delete);
 
 //corretor
 router.get(`${rootPath}/corretor/`, CorretorController.default);
 router.get(`${rootPath}/corretor/all`, CorretorController.getAll);
 router.get(`${rootPath}/corretor/count`, CorretorController.count);
-
-//necessários que a rota esteja abaixo de todas as outras rotas GET de corretor
 router.get(`${rootPath}/corretor/get/:cod`, CorretorController.getByCod);
 
 router.post(`${rootPath}/corretor`, CorretorController.insert);
+
+router.delete(`${rootPath}/:cod`, CorretorController.delete);
 
 //locatario
 router.get(`${rootPath}/locatario/`, LocatarioController.default);
 router.get(`${rootPath}/locatario/all`, LocatarioController.getAll);
 router.get(`${rootPath}/locatario/count`, LocatarioController.count);
-
-//necessários que a rota esteja abaixo de todas as outras rotas GET de Locatario
 router.get(`${rootPath}/locatario/get/:cod`, LocatarioController.getByCod);
 
 router.post(
@@ -41,5 +39,7 @@ router.post(
   convertStringToDateMiddleware,
   LocatarioController.insert
 );
+
+router.delete(`${rootPath}/:cod`, LocatarioController.delete);
 
 export default router;

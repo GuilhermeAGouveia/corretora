@@ -6,4 +6,5 @@ export default interface Controller {
   getAll: (req: Request, res: Response) => void;
   getByCod: (req: Request, res: Response) => void;
   insert: (req: Request, res: Response) => void;
+  delete: (req: Request, res: Response) => void;
 }
