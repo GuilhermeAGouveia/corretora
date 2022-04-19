@@ -1,9 +1,11 @@
 import express from "express";
 import { AddressInfo } from "net";
 import associadoRouter from "./routes/associado";
+import corretorLocadorRouter from "./routes/corretorLocador";
 import imvRouter from "./routes/imovel";
 import pessoaRouter from "./routes/pessoa";
 import telefoneRouter from "./routes/telefone";
+
 const cors = require("cors");
 
 const app = express();
@@ -12,7 +14,7 @@ app.use(cors());
 app.use(express.json());
 
 // Roteamento
-app.use([pessoaRouter, imvRouter, associadoRouter, telefoneRouter]);
+app.use([pessoaRouter, imvRouter, associadoRouter, telefoneRouter, corretorLocadorRouter]);
 
 app.get("/", (req, res) => {
   res.send("Hello, Heroku!");

@@ -1,7 +1,7 @@
-import { Router } from "express";
 import ImovelController from "../controller/ImovelController";
+import UniqueKeyRoutesFactory from "./UniqueKeyRoutesFactory";
 
-const router = Router();
+/* const router = Router();
 
 const rootPath = "/imovel";
 
@@ -12,6 +12,8 @@ router.get(`${rootPath}/all`, ImovelController.getAll);
 
 router.post(`${rootPath}/`, ImovelController.insert);
 
-router.delete(`${rootPath}/:cod`, ImovelController.delete);
+router.delete(`${rootPath}/:cod`, ImovelController.delete); */
 
-export default router;
+const routesFactory = new UniqueKeyRoutesFactory("/imovel", ImovelController);
+
+export default routesFactory.createRoutes();

@@ -1,8 +1,7 @@
-import { Router } from "express";
 import AssociadoController from "../controller/AssociadoController";
-import { convertStringToDateMiddleware } from "../middleware";
+import MultiKeyRoutesFactory from "./MultiKeyRoutesFactory";
 
-const router = Router();
+/* const router = Router();
 
 const rootPath = "/associado";
 
@@ -13,6 +12,8 @@ router.get(`${rootPath}/all`, AssociadoController.getAll);
 
 router.post(`${rootPath}/`, convertStringToDateMiddleware ,AssociadoController.insert);
 
-router.delete(`${rootPath}/`, AssociadoController.delete);
+router.delete(`${rootPath}/`, AssociadoController.delete); */
 
-export default router;
+const routesFactory = new MultiKeyRoutesFactory("/associado", AssociadoController);
+
+export default routesFactory.createRoutes();
