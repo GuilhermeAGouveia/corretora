@@ -15,7 +15,7 @@ body:
     validations:
       required: true
   - type: textarea
-    id: Cretérios de aceitação
+    id: acceptance
     attributes:
       label: Critérios de Aceitação
       description: Forneça seus critérios de aceitação
