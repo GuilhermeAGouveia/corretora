@@ -1,9 +1,9 @@
-name: Bug Report
-description: File a bug report
-title: "[Bug]: "
+name: User Story
+description: Crie sua história de usuário
+title: "[User-Story]: "
 labels: ["bug", "triage"]
 assignees:
-  - octocat
+  - GuilhermeAGouveia
 body:
   - type: markdown
     attributes:
