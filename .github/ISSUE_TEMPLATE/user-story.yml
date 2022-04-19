@@ -1,0 +1,31 @@
+name: User Story
+description: Crie sua história de usuário
+title: "[COR-N]:"
+labels: ["user-story"]
+assignees:
+  - GuilhermeAGouveia
+body:
+  - type: textarea
+    id: describe
+    attributes:
+      label: Descrição
+      description: Dê a descrição de sua histório utilizando o formato Como ..., eu quero ... para ...
+      placeholder: Tell us what you see!
+      value: |
+        Como [YOUR_ROLE],
+        eu quero [SOMETHING]
+        para [FINALITY]"
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Critérios de Aceitação
+      description: Forneça seus critérios de aceitação
+      value: |
+        - [] 
+        - []
+        - []
+    validations:
+      required: true
+
