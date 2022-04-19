@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE `Regras_Imovel` ADD COLUMN `priority` ENUM('IMPORTANT', 'DESIRABLE', 'NORMAL') NOT NULL DEFAULT 'NORMAL';

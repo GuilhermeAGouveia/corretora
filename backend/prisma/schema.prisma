@@ -57,17 +57,42 @@ model Corretor {
 }
 
 model Imovel {
-  cod_imv   String     @id @default(cuid())
-  cod_lcd   String
-  type      ImovelType @default(CASA)
-  address   String
-  cep       String
-  district  String
-  city      String
-  state     String
-  describe  String
-  createdAt DateTime   @default(now())
-  locador   Locador    @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
+  cod_imv String     @id @default(cuid())
+  cod_lcd String // dono (Locador)        
+  type    ImovelType @default(CASA)
+
+  // Endereço
+
+  address  String
+  cep      String
+  district String
+  city     String
+  state    String
+  nApto    Int?
+
+  // Descrição do imóvel
+
+  hasGarage   Boolean        @default(false)
+  hasGarden   Boolean        @default(false)
+  hasSuite    Boolean        @default(false)
+  nRooms      Int            @default(0)
+  nBathrooms  Int            @default(0)
+  area        Float          @default(0)
+  isFurnished LevelFurnished @default(NONE)
+  supDescribe String? // Descrição complementar
+
+  price       Float?
+  mensalidade Float?
+  createdAt   DateTime @default(now())
+
+  locador       Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
+  Regras_Imovel Regras_Imovel[]
+}
+
+enum LevelFurnished {
+  FULL
+  SEMI
+  NONE
 }
 
 enum ImovelType {
@@ -75,6 +100,22 @@ enum ImovelType {
   APTO
 }
 
+model Regras_Imovel {
+  cod_imv String
+  regra   String
+  imovel  Imovel @relation(fields: [cod_imv], references: [cod_imv], onDelete: Cascade)
+  priority Rule_Priority @default(NORMAL)
+
+  @@id([cod_imv, regra], name: "idRegra")
+}
+
+enum Rule_Priority {
+  IMPORTANT
+  DESIRABLE // Desejável
+  NORMAL
+}
+
+// Contrato entre corretor e locador
 model Corretor_Locador {
   cod_cor    String
   cod_lcd    String
