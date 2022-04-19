@@ -1,6 +1,6 @@
 name: User Story
 description: Crie sua história de usuário
-title: "[COR-N]: "
+title: [COR-N]:
 labels: "user-story"
 assignees:
   - GuilhermeAGouveia
