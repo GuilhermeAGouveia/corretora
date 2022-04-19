@@ -1,7 +1,7 @@
 name: User Story
 description: Crie sua história de usuário
 title: "[User-Story]: "
-labels: ["bug", "triage"]
+labels: ["user-story"]
 assignees:
   - GuilhermeAGouveia
 body:
