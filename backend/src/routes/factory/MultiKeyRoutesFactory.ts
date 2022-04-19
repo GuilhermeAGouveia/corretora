@@ -1,4 +1,4 @@
-import Controller from "../controller/IController";
+import Controller from "../../controller/IController";
 import RoutesFactory from "./RoutesFactory";
 
 class MultiKeyRoutesFactory extends RoutesFactory {

@@ -14,7 +14,7 @@ export default {
 
   getByCod: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
-    const locador = await prisma.imovel.findUnique({
+    const imovel = await prisma.imovel.findUnique({
       where: {
         cod_imv: cod,
       },
@@ -22,6 +22,8 @@ export default {
         locador: true,
       },
     });
+
+    return res.json(imovel);
   },
 
   getAll: async (req: Request, res: Response) => {

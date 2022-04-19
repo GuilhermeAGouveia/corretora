@@ -1,5 +1,5 @@
 import TelefoneController from "../controller/TelefoneController";
-import MultiKeyRoutesFactory from "./MultiKeyRoutesFactory";
+import MultiKeyRoutesFactory from "./factory/MultiKeyRoutesFactory";
 
 const routesFactory = new MultiKeyRoutesFactory("/telefone", TelefoneController);
 

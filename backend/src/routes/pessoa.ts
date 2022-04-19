@@ -2,7 +2,7 @@ import { Router } from "express";
 import CorretorController from "../controller/CorretorController";
 import LocadorController from "../controller/LocadorController";
 import LocatarioController from "../controller/LocatarioController";
-import UniqueKeyRoutesFactory from "./UniqueKeyRoutesFactory";
+import UniqueKeyRoutesFactory from "./factory/UniqueKeyRoutesFactory";
 
 
 const routerLocador = new UniqueKeyRoutesFactory("/pessoa/locador", LocadorController);

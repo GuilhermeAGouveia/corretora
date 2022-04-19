@@ -1,5 +1,5 @@
 import AssociadoController from "../controller/AssociadoController";
-import MultiKeyRoutesFactory from "./MultiKeyRoutesFactory";
+import MultiKeyRoutesFactory from "./factory/MultiKeyRoutesFactory";
 
 
 const routesFactory = new MultiKeyRoutesFactory("/associado", AssociadoController);

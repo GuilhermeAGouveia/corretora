@@ -1,5 +1,5 @@
 import CorretorLocadorController from "../controller/CorretorLocadorController";
-import MultiKeyRoutesFactory from "./MultiKeyRoutesFactory";
+import MultiKeyRoutesFactory from "./factory/MultiKeyRoutesFactory";
 
 const routesFactory = new MultiKeyRoutesFactory("/corretorlocador", CorretorLocadorController);
 
