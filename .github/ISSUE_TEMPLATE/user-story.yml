@@ -1,7 +1,7 @@
 name: User Story
 description: Crie sua história de usuário
-title: "[HOS-N]: "
-labels: ["user-story"]
+title: "[COR-N]: "
+labels: "user-story"
 assignees:
   - GuilhermeAGouveia
 body:
@@ -11,7 +11,7 @@ body:
       label: Descrição
       description: Dê a descrição de sua histório utilizando o formato Como ..., eu quero ... para ...
       placeholder: Tell us what you see!
-      value: "Como [YOUR_ROLE], </br> eu quero [SOMETHING] </br> para [FINALITY]"
+      value: Como [YOUR_ROLE], </br> eu quero [SOMETHING] </br> para [FINALITY]
     validations:
       required: true
   - type: textarea
