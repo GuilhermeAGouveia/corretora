@@ -28,10 +28,11 @@ model Pessoa {
 
 model Telefone {
   numero   String
-  pessoa   Pessoa @relation(fields: [pessoaId], references: [id], onDelete: Cascade)
-  pessoaId String
+  idPessoa String
 
-  @@id([numero, pessoaId], name: "idTelefone")
+  pessoa Pessoa @relation(fields: [idPessoa], references: [id], onDelete: Cascade)
+
+  @@id([numero, idPessoa], name: "idTelefone")
 }
 
 model Locador {
@@ -47,6 +48,7 @@ model Locatario {
   birthdate  DateTime
   pessoa     Pessoa      @relation(fields: [cod_lct], references: [id], onDelete: Cascade)
   associados Associado[]
+  Contrato   Contrato[]
 }
 
 model Corretor {
@@ -54,6 +56,7 @@ model Corretor {
   score     Int                @default(0)
   pessoa    Pessoa             @relation(fields: [cod_cor], references: [id], onDelete: Cascade)
   contratos Corretor_Locador[]
+  Contrato  Contrato[]
 }
 
 model Imovel {
@@ -87,6 +90,7 @@ model Imovel {
 
   locador       Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
   Regras_Imovel Regras_Imovel[]
+  Contrato      Contrato[]
 }
 
 enum LevelFurnished {
@@ -101,9 +105,9 @@ enum ImovelType {
 }
 
 model Regras_Imovel {
-  cod_imv String
-  regra   String
-  imovel  Imovel @relation(fields: [cod_imv], references: [cod_imv], onDelete: Cascade)
+  cod_imv  String
+  regra    String
+  imovel   Imovel        @relation(fields: [cod_imv], references: [cod_imv], onDelete: Cascade)
   priority Rule_Priority @default(NORMAL)
 
   @@id([cod_imv, regra], name: "idRegra")
@@ -144,4 +148,28 @@ enum AssociadoType {
   PAI
   MAE
   OUTRO
+}
+
+model Contrato {
+  cod_cor String
+  cod_imv String
+  cod_lct String
+
+  date_init DateTime
+  date_end  DateTime
+
+  type ContratoType @default(LOCACAO)
+
+  createdAt DateTime @default(now())
+
+  corretor  Corretor  @relation(fields: [cod_cor], references: [cod_cor], onDelete: Restrict)
+  imovel    Imovel    @relation(fields: [cod_imv], references: [cod_imv], onDelete: Restrict)
+  locatario Locatario @relation(fields: [cod_lct], references: [cod_lct], onDelete: Restrict)
+
+  @@id([cod_cor, cod_imv, cod_lct], name: "idContrato")
+}
+
+enum ContratoType {
+  LOCACAO
+  VENDA
 }
