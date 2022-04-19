@@ -40,7 +40,7 @@ export default {
         data: telefone,
       });
 
-      return res.json(telefoneInsert.pessoaId);
+      return res.json(telefoneInsert.idPessoa);
     } catch (error: any) {
       return res.status(400).json(error);
     }
