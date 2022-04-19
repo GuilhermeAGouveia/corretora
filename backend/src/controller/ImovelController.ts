@@ -30,13 +30,17 @@ export default {
   },
 
   insert: async (req: Request, res: Response) => {
-    const imovel = req.body as Imovel;
-    const imovelInsert = await prisma.imovel.create({
-      data: {
-        ...imovel,
-      },
-    });
-    res.json(imovelInsert.cod_imv);
+    try {
+      const imovel = req.body as Imovel;
+      const imovelInsert = await prisma.imovel.create({
+        data: {
+          ...imovel,
+        },
+      });
+      res.json(imovelInsert.cod_imv);
+    } catch (error: any) {
+      res.status(400).json(error);
+    }
   },
   delete: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
@@ -46,5 +50,5 @@ export default {
       },
     });
     res.json(imovel);
-  }
+  },
 } as Controller;

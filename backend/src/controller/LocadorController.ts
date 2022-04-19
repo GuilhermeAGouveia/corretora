@@ -50,11 +50,15 @@ export default {
     res.json(locador);
   },
   insert: async (req: Request, res: Response) => {
-    const locador = req.body as Locador;
+    try {
+      const locador = req.body as Locador;
 
-    const locadorInsert = await pessoaInsert.insertLocador(locador);
+      const locadorInsert = await pessoaInsert.insertLocador(locador);
 
-    res.json(locadorInsert.id);
+      res.json(locadorInsert.id);
+    } catch (error: any) {
+      res.json(error);
+    }
   },
   delete: async (req: Request, res: Response) => {
     try {

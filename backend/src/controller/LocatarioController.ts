@@ -58,11 +58,15 @@ export default {
   },
 
   insert: async (req: Request, res: Response) => {
-    const locatario = req.body as Locatario;
+    try {
+      const locatario = req.body as Locatario;
 
-    const locatarioInsert = await pessoaInsert.insertLocatario(locatario);
+      const locatarioInsert = await pessoaInsert.insertLocatario(locatario);
 
-    res.json(locatarioInsert.id);
+      res.json(locatarioInsert.id);
+    } catch (error: any) {
+      res.json(error);
+    }
   },
   delete: async (req: Request, res: Response) => {
     try {

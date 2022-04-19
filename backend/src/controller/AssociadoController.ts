@@ -38,13 +38,17 @@ export default {
   },
 
   insert: async (req: Request, res: Response) => {
-    const associado = req.body as Associado;
+    try {
+      const associado = req.body as Associado;
 
-    const associadoInsert = await prisma.associado.create({
-      data: associado,
-    });
+      const associadoInsert = await prisma.associado.create({
+        data: associado,
+      });
 
-    res.json(associadoInsert.name);
+      return res.json(associadoInsert.name);
+    } catch (error: any) {
+      return res.status(400).json(error);
+    }
   },
   delete: async (req: Request, res: Response) => {
     const idAssociado = req.query as any as IdAssociado;
@@ -56,5 +60,5 @@ export default {
     });
 
     res.json(associado);
-  }
+  },
 } as Controller;

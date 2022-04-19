@@ -1,5 +1,6 @@
 import { Router } from "express";
 import AssociadoController from "../controller/AssociadoController";
+import { convertStringToDateMiddleware } from "../middleware";
 
 const router = Router();
 
@@ -10,7 +11,7 @@ router.get(`${rootPath}/count`, AssociadoController.count);
 router.get(`${rootPath}/get`, AssociadoController.getByCod);
 router.get(`${rootPath}/all`, AssociadoController.getAll);
 
-router.post(`${rootPath}/`, AssociadoController.insert);
+router.post(`${rootPath}/`, convertStringToDateMiddleware ,AssociadoController.insert);
 
 router.delete(`${rootPath}/`, AssociadoController.delete);
 

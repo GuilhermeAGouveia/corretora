@@ -52,11 +52,15 @@ export default {
   },
 
   insert: async (req: Request, res: Response) => {
-    const corretor = req.body as Corretor;
+    try {
+      const corretor = req.body as Corretor;
 
-    const corretorInsert = await pessoaInsert.insertCorretor(corretor);
+      const corretorInsert = await pessoaInsert.insertCorretor(corretor);
 
-    res.json(corretorInsert.id);
+      res.json(corretorInsert.id);
+    } catch (error: any) {
+      res.status(400).json(error);
+    }
   },
   delete: async (req: Request, res: Response) => {
     try {
