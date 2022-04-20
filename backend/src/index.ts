@@ -1,9 +1,11 @@
+require('dotenv').config();
 import express from "express";
 import morgan from "morgan";
 import { AddressInfo } from "net";
 import associadoRouter from "./routes/associado";
 import contratoRouter from "./routes/contrato";
 import corretorLocadorRouter from "./routes/corretorLocador";
+import imageRouter from "./routes/image";
 import imvRouter from "./routes/imovel";
 import pessoaRouter from "./routes/pessoa";
 import telefoneRouter from "./routes/telefone";
@@ -14,7 +16,8 @@ const app = express();
 
 app.use(cors());
 app.use(morgan("dev"));
-app.use(express.json());
+app.use(express.json()); // support json encoded bodies (parser)
+app.use(express.urlencoded({ extended: true })); // support encoded bodies in application/x-www-form-urlencoded (parser)
 
 // Roteamento
 app.use([
@@ -24,6 +27,7 @@ app.use([
   telefoneRouter,
   corretorLocadorRouter,
   contratoRouter,
+  imageRouter,
 ]);
 
 app.get("/", (req, res) => {

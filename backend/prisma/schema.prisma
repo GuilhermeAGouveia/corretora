@@ -39,7 +39,7 @@ model Locador {
   cod_lcd    String             @id
   is_partner Boolean
   pessoa     Pessoa             @relation(fields: [cod_lcd], references: [id], onDelete: Cascade)
-  Imovel     Imovel[]
+  imovel     Imovel[]
   contratos  Corretor_Locador[]
 }
 
@@ -48,15 +48,15 @@ model Locatario {
   birthdate  DateTime
   pessoa     Pessoa      @relation(fields: [cod_lct], references: [id], onDelete: Cascade)
   associados Associado[]
-  Contrato   Contrato[]
+  contrato   Contrato[]
 }
 
 model Corretor {
-  cod_cor   String             @id
-  score     Int                @default(0)
-  pessoa    Pessoa             @relation(fields: [cod_cor], references: [id], onDelete: Cascade)
-  contratos Corretor_Locador[]
-  Contrato  Contrato[]
+  cod_cor         String             @id
+  score           Int                @default(0)
+  pessoa          Pessoa             @relation(fields: [cod_cor], references: [id], onDelete: Cascade)
+  corretorLocador Corretor_Locador[]
+  contrato        Contrato[]
 }
 
 model Imovel {
@@ -88,9 +88,10 @@ model Imovel {
   mensalidade Float?
   createdAt   DateTime @default(now())
 
-  locador       Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
-  Regras_Imovel Regras_Imovel[]
-  Contrato      Contrato[]
+  locador      Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
+  regrasImovel Regras_Imovel[]
+  contratos    Contrato[]
+  images       Image[]
 }
 
 enum LevelFurnished {
@@ -155,8 +156,8 @@ model Contrato {
   cod_imv String
   cod_lct String
 
-  date_init DateTime?
-  date_end  DateTime?
+  dateInit DateTime?
+  dateEnd  DateTime?
 
   type ContratoType @default(LOCACAO)
 
@@ -172,4 +173,13 @@ model Contrato {
 enum ContratoType {
   LOCACAO
   VENDA
+}
+
+model Image {
+  idOwner String
+  url       String
+  createdAt DateTime @default(now())
+  imovel    Imovel   @relation(fields: [idOwner], references: [cod_imv], onDelete: Cascade) 
+
+  @@id([idOwner, url], name: "idImage")
 }
