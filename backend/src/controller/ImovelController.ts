@@ -20,7 +20,13 @@ export default {
       },
       include: {
         locador: true,
-        images: true,
+        images: {
+          select: {
+            url: true,
+            originalname: true,
+            size: true,
+          },
+        },
       },
     });
 
@@ -30,7 +36,13 @@ export default {
   getAll: async (req: Request, res: Response) => {
     const imoveis = await prisma.imovel.findMany({
       include: {
-        images: true,
+        images: {
+          select: {
+            url: true,
+            originalname: true,
+            size: true,
+          },
+        },
       }
     });
     res.json(imoveis);
