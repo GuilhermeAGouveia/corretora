@@ -1,8 +1,15 @@
-import { Image, PrismaClient } from "@prisma/client";
-import { Request, Response } from "express";
+import { PrismaClient } from "@prisma/client";
+import { Express, Request, Response } from "express";
+import deleteFile from "../lib/deleteFile";
 import Controller from "./IController";
 
 const prisma = new PrismaClient();
+
+interface MulterFileS3 extends Express.Multer.File {
+  location: string;
+  key: string;
+}
+
 
 export default {
   count: async (req: Request, res: Response) => {
@@ -14,10 +21,10 @@ export default {
   },
   getByCod: async (req: Request, res: Response) => {
     try {
-      const idImage = req.query as any as Image;
+      const key = req.params.cod;
       const image = await prisma.image.findUnique({
         where: {
-          idImage,
+          key,
         },
       });
 
@@ -31,17 +38,21 @@ export default {
 
     res.json(image);
   },
-
   insert: async (req: Request, res: Response) => {
     try {
-      const image = req.file;
-      process.env.PUBLIC_URL;
+      const { location, key, filename: localFilename, originalname, size} = req.file as MulterFileS3;
       const { idOwner } = req.query as any;
-      if (image) {
+      if (req.file) {
+        const filename = key || localFilename;
+        const url = location || `http://localhost:3333/storage/image/${filename}`;
         const imageInsert = await prisma.image.create({
           data: {
+            key: filename,
             idOwner,
-            url: `${process.env.PUBLIC_URL}/storage/image/${image.filename}`,
+            url,
+            originalname,
+            size,
+
           },
         });
 
@@ -55,13 +66,17 @@ export default {
   },
   delete: async (req: Request, res: Response) => {
     try {
-      const idImage = req.query as any as Image;
+      const key = req.params.cod;
+
+      
 
       const image = await prisma.image.delete({
         where: {
-          idImage,
+          key,
         },
       });
+
+      await deleteFile(image); // delete file from s3 or local
 
       res.json(image);
     } catch (error: any) {

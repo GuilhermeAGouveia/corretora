@@ -91,7 +91,7 @@ model Imovel {
   locador      Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
   regrasImovel Regras_Imovel[]
   contratos    Contrato[]
-  images       Image[]
+  images        Image[]
 }
 
 enum LevelFurnished {
@@ -176,10 +176,11 @@ enum ContratoType {
 }
 
 model Image {
-  idOwner String
-  url       String
-  createdAt DateTime @default(now())
-  imovel    Imovel   @relation(fields: [idOwner], references: [cod_imv], onDelete: Cascade) 
-
-  @@id([idOwner, url], name: "idImage")
+  key          String @id
+  idOwner      String
+  size         Int
+  originalname String
+  url          String
+  createdAt    DateTime @default(now())
+  imovel       Imovel   @relation(fields: [idOwner], references: [cod_imv], onDelete: Cascade)
 }
