@@ -34,7 +34,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderTop>
         <Button label={"Login"}></Button>
-        <Logo src={logoPng} alt="Logo" />
+        <Logo src={logoPng} width={83} height={70} alt="Logo" />
         <Button label={"Cadastrar"}></Button>
       </HeaderTop>
       <HeaderContent>

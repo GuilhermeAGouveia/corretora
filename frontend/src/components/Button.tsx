@@ -43,5 +43,5 @@ const ButtonText = styled.div`
     color: ${colors.primary};
     font-family: 'Montserrat', sans-serif;
     font-size: 14px;
-    font-weight: 300;
+    font-weight: 500;
 `
