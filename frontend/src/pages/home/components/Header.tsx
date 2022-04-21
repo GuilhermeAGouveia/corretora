@@ -27,8 +27,8 @@ const Header = () => {
         "https://images.sysone.com.br/39/fotos/imoveis/392948/hd/fachada-2.jpg",
     },
     {
-        text: "Temos tudo!",
-      },
+      text: "Temos tudo!",
+    },
   ];
   return (
     <HeaderContainer>
@@ -37,8 +37,9 @@ const Header = () => {
         <Logo src={logoPng} width={83} height={70} alt="Logo" />
         <Button label={"Cadastrar"}></Button>
       </HeaderTop>
+      <CompanyName>BlueHome</CompanyName>
       <HeaderContent>
-        <CompanyName>BlueHome</CompanyName>
+        
         <CompanyBanner>
           <CompanyBannerText>Aqui vc</CompanyBannerText>
           <CompanySlideVerticalBanner
@@ -50,13 +51,12 @@ const Header = () => {
             contentCards={contentHorizontalCards}
           ></CompanySlideHorizontalBanner>
         </CompanyBanner2>
-
-        <HeaderBottom>
-          <HeaderBottomButton>Anunciar</HeaderBottomButton>
-          <LineDivision />
-          <HeaderBottomButton>Procurar</HeaderBottomButton>
-        </HeaderBottom>
       </HeaderContent>
+      <HeaderBottom>
+        <HeaderBottomButton>Anunciar</HeaderBottomButton>
+        <LineDivision />
+        <HeaderBottomButton>Procurar</HeaderBottomButton>
+      </HeaderBottom>
     </HeaderContainer>
   );
 };
@@ -68,6 +68,7 @@ const HeaderContainer = styled.header`
   height: 100vh;
   width: 100%;
   background-color: ${colors.secondary};
+  overflow: hidden;
 `;
 
 const HeaderTop = styled.div`
@@ -89,6 +90,11 @@ const HeaderContent = styled.div`
   position: relative;
   height: calc(100% - 52px);
   width: 100%;
+  display: block;
+
+  @media screen and (max-height: 600px) {
+    display: flex;
+  }
 `;
 
 const CompanyName = styled.div`
@@ -117,9 +123,15 @@ const CompanyBanner2 = styled.div`
   position: relative;
   width: 100%;
   height: 150px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
+  @media screen and (max-height: 400px) {
+    height: 100px;
+  }
+
 `;
 
 const CompanyBannerText = styled.div`

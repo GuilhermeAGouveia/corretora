@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import Document, { Head, Html, Main, NextScript } from "next/document";
 import React from "react";
 import { ServerStyleSheet } from "styled-components";
+import colors from "../styles/colors";
 
 export default class MyDocument extends Document {
   static async getInitialProps(ctx: any) {
@@ -34,6 +35,7 @@ export default class MyDocument extends Document {
     return (
       <Html lang="pt-BR">
         <Head>
+          <meta name="theme-color" content={colors.secondary}/>
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link
             rel="preconnect"
