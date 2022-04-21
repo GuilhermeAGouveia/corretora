@@ -1,5 +1,6 @@
 import { ButtonHTMLAttributes } from 'react';
 import styled from "styled-components";
+import colors from '../styles/colors';
 
 interface ButtonProps extends ButtonHTMLAttributes<any> {
     label: string;
@@ -9,22 +10,38 @@ interface ButtonProps extends ButtonHTMLAttributes<any> {
 export default function Button({label, onClick, ...rest} : ButtonProps) {
     return (
         <ButtonRoot onClick={onClick} {...rest}>
-            {label}
+            <ButtonText>{label}</ButtonText>
+            <ButtonBg /> 
         </ButtonRoot>
     )
 }
 
 const ButtonRoot = styled.button`
-    height: 40px;
-    width: 100px;
-    border: 1px solid #2e21e7;
-    background-color: #4f44f0;
-    color: white;
-    font-weight: 600;
-    font-family: 'MontSerrat', sans-serif;
-    transition: all 0.2s ease-in-out;
+    position: relative;
+    height: 36px;
+    width: 94px;
 
-    &:hover {
-        transform: scale(1.1);
-    }
-    `
+    background: none;
+    border: none;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+`
+
+const ButtonBg = styled.div`
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background-color: ${colors.tertiary};
+    opacity: 0.2;
+`
+
+const ButtonText = styled.div`
+    position: relative;
+    color: ${colors.primary};
+    font-family: 'Montserrat', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+`

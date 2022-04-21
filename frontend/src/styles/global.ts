@@ -1,13 +1,12 @@
 import { createGlobalStyle } from "styled-components";
 
-const GlobalStyle = createGlobalStyle`
 
+const GlobalStyle = createGlobalStyle`
     body {
         position: relative;
         height: 100%;
         min-height: 100vh;
         width: 100%;
-        min-width: 100vw;
     }
 
     * {

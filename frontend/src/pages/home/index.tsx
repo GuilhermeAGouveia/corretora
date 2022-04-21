@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Button from "../../components/Button";
+import Header from "./components/Header";
 
 export default function Home() {
   const router = useRouter();
@@ -10,13 +10,15 @@ export default function Home() {
   };
 
   return (
-    <HomeRoot>
-      <Button onClick={handleBack} label="voltar" />
-    </HomeRoot>
+    <HomeContainer>
+      <Header/>
+      
+    </HomeContainer>
   );
 }
 
-const HomeRoot = styled.div`
+const HomeContainer = styled.div`
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
