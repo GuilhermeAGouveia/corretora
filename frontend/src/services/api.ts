@@ -2,8 +2,7 @@ import axios from "axios";
 import { parseCookies } from "nookies";
 
 export const getAPIHTTPClient = (ctx?: any) => {
-  const token = parseCookies(ctx);
-  console.log("token1:", token);
+  const {'@corretora:token': token} = parseCookies(ctx);
   const api = axios.create({
     baseURL: `${process.env.BACKEND_PUBLIC_URL || "http://localhost:3333"}`,
   });
@@ -13,7 +12,7 @@ export const getAPIHTTPClient = (ctx?: any) => {
   }
 
   api.interceptors.request.use((config) => {
-    //console.log("config", config.headers);
+    //console.log("config", config);
     return config;
   });
 
