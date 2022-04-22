@@ -43,7 +43,7 @@ const Header = () => {
           label={labelButton}
           onClick={() => {
             router.push("/imovel/cl27u669x0007mjly3n30dvn3");
-            setLabelButton("Load...");
+            setLabelButton("Loading...");
           }}
         ></Button>
       </HeaderTop>
