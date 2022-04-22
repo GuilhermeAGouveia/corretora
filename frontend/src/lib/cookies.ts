@@ -1,6 +1,7 @@
 import { parseCookies, setCookie } from "nookies";
 
 export function getCookie(name: string, ctx: any = undefined) {
+  console.log("getCookie", ctx)
   const cookies = parseCookies(ctx);
   return cookies[name];
 }

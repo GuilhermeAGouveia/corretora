@@ -1,7 +1,9 @@
+import api from "../services/api";
+
 const delay = (time: number = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
-
-/* export async function sigIn(email: string, password: string) {
+/* 
+export async function sigIn(email: string, password: string) {
   try {
     const response = await api.post<{ token: string; user: any }>("/login", {
       email,
@@ -44,12 +46,11 @@ export async function getUserByToken(token: string) {
   } catch (error) {
     return false;
   }
-}
- */
+} */
 
 export async function getUserByToken(token: string) {
   try {
-    await delay();
+    await api.get("/imovel");
     return {
       name: "João da Silva",
       email: "joao@locao",

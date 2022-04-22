@@ -1,5 +1,6 @@
-import { getAllImovel, getByCodImovel } from "../../lib/imovel";
+import { getAllImovel } from "../../lib/imovel";
 import { IImovel } from "../../lib/interfaces";
+import { getAPIHTTPClient } from "../../services/api";
 interface Props {
   imovel: IImovel;
 }
@@ -15,8 +16,10 @@ export function ImovelPage({ imovel }: Props) {
 
 export default ImovelPage;
 
-export const getStaticProps = async ({ params }: any) => {
-  const imovel = await getByCodImovel(params.cod);
+export const getStaticProps = async (ctx: any) => {
+  const api = getAPIHTTPClient(ctx);
+  const { cod } = ctx.params || { cod: '' };
+  const {data: imovel} = await api.get<IImovel>(`/imovel/get/${cod}`);
   return {
     props: {
       imovel,

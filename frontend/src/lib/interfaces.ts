@@ -36,7 +36,7 @@ enum LevelFurnished {
   NONE = "NONE",
 }
 
-interface Credenciais {
+export interface Credenciais {
   email: string;
   password: string;
 }
