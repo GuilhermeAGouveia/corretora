@@ -35,3 +35,8 @@ enum LevelFurnished {
   SEMI = "SEMI",
   NONE = "NONE",
 }
+
+interface Credenciais {
+  email: string;
+  password: string;
+}

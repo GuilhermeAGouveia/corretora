@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState } from "react";
 import styled from "styled-components";
 import logoPng from "../../../assets/images/logo.png";
 import Button from "../../../components/Button";
@@ -7,6 +9,8 @@ import SlideVerticalBanner from "../../../components/SlideVerticalBanner";
 import colors from "../../../styles/colors";
 
 const Header = () => {
+  const router = useRouter();
+  const [labelButton, setLabelButton] = useState("Teste");
   const contentHorizontalCards = [
     {
       text: "O que você procura?",
@@ -33,13 +37,18 @@ const Header = () => {
   return (
     <HeaderContainer>
       <HeaderTop>
-        <Button label={"Login"}></Button>
+        <Button label={"Login"} onClick={() => router.push("/login")}></Button>
         <Logo src={logoPng} width={83} height={70} alt="Logo" />
-        <Button label={"Cadastrar"}></Button>
+        <Button
+          label={labelButton}
+          onClick={() => {
+            router.push("/imovel/cl27u669x0007mjly3n30dvn3");
+            setLabelButton("Load...");
+          }}
+        ></Button>
       </HeaderTop>
       <CompanyName>BlueHome</CompanyName>
       <HeaderContent>
-        
         <CompanyBanner>
           <CompanyBannerText>Aqui vc</CompanyBannerText>
           <CompanySlideVerticalBanner
@@ -131,7 +140,6 @@ const CompanyBanner2 = styled.div`
   @media screen and (max-height: 400px) {
     height: 100px;
   }
-
 `;
 
 const CompanyBannerText = styled.div`

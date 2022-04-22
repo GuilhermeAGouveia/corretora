@@ -1,10 +1,18 @@
-require('dotenv').config();
-import axios from 'axios';
+import axios from "axios";
+import { getCookie } from "../lib/cookies";
 
+export const getAPIHTTPClient = (ctx?: any) => {
+  const token = getCookie("@corretora:token", ctx);
 
-const api = axios.create({
-    
-    baseURL: `${process.env.BACKEND_PUBLIC_URL || 'http://localhost:3000'}`,
-});
+  const api = axios.create({
+    baseURL: `${process.env.BACKEND_PUBLIC_URL || "http://localhost:3303"}`,
+  });
 
-export default api;
+  if (token) {
+    api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  }
+
+  return api;
+};
+
+export default getAPIHTTPClient();
