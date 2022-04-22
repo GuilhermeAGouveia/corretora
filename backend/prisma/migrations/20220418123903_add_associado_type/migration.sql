@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `Associado` ADD COLUMN `tipo` ENUM('CONJUGE', 'FILHO', 'IRMAO', 'PAI', 'MAE', 'OUTRO') NOT NULL DEFAULT 'OUTRO';

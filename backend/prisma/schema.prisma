@@ -12,9 +12,11 @@ datasource db {
 
 model Pessoa {
   id        String     @id @default(cuid())
+  email     String     @unique
   firstName String
   lastName  String
-  email     String
+  password  String
+  birthdate  DateTime
   address   String
   city      String
   state     String
@@ -23,7 +25,6 @@ model Pessoa {
   createdAt DateTime   @default(now())
   Locador   Locador?
   Locatario Locatario?
-  Corretor  Corretor?
 }
 
 model Telefone {
@@ -36,27 +37,18 @@ model Telefone {
 }
 
 model Locador {
-  cod_lcd    String             @id
-  is_partner Boolean
-  pessoa     Pessoa             @relation(fields: [cod_lcd], references: [id], onDelete: Cascade)
+  cod_lcd    String     @id
+  is_partner Boolean    @default(false)
+  pessoa     Pessoa     @relation(fields: [cod_lcd], references: [id], onDelete: Cascade)
   imovel     Imovel[]
-  contratos  Corretor_Locador[]
+  Contrato   Contrato[]
 }
 
 model Locatario {
   cod_lct    String      @id
-  birthdate  DateTime
   pessoa     Pessoa      @relation(fields: [cod_lct], references: [id], onDelete: Cascade)
   associados Associado[]
   contrato   Contrato[]
-}
-
-model Corretor {
-  cod_cor         String             @id
-  score           Int                @default(0)
-  pessoa          Pessoa             @relation(fields: [cod_cor], references: [id], onDelete: Cascade)
-  corretorLocador Corretor_Locador[]
-  contrato        Contrato[]
 }
 
 model Imovel {
@@ -91,7 +83,7 @@ model Imovel {
   locador      Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
   regrasImovel Regras_Imovel[]
   contratos    Contrato[]
-  images        Image[]
+  images       Image[]
 }
 
 enum LevelFurnished {
@@ -120,18 +112,6 @@ enum Rule_Priority {
   NORMAL
 }
 
-// Contrato entre corretor e locador
-model Corretor_Locador {
-  cod_cor    String
-  cod_lcd    String
-  commission Float    @default(0)
-  createdAt  DateTime @default(now())
-  locador    Locador  @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
-  corretor   Corretor @relation(fields: [cod_cor], references: [cod_cor], onDelete: Restrict)
-
-  @@id([cod_cor, cod_lcd], name: "idCorretorLocador")
-}
-
 model Associado {
   name      String
   cod_lct   String
@@ -152,9 +132,9 @@ enum AssociadoType {
 }
 
 model Contrato {
-  cod_cor String
   cod_imv String
   cod_lct String
+  cod_lcd String
 
   dateInit DateTime?
   dateEnd  DateTime?
@@ -163,11 +143,11 @@ model Contrato {
 
   createdAt DateTime @default(now())
 
-  corretor  Corretor  @relation(fields: [cod_cor], references: [cod_cor], onDelete: Restrict)
   imovel    Imovel    @relation(fields: [cod_imv], references: [cod_imv], onDelete: Restrict)
   locatario Locatario @relation(fields: [cod_lct], references: [cod_lct], onDelete: Restrict)
+  locador   Locador   @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
 
-  @@id([cod_cor, cod_imv, cod_lct], name: "idContrato")
+  @@id([cod_imv, cod_lct], name: "idContrato")
 }
 
 enum ContratoType {
@@ -176,7 +156,7 @@ enum ContratoType {
 }
 
 model Image {
-  key          String @id
+  key          String   @id
   idOwner      String
   size         Int
   originalname String

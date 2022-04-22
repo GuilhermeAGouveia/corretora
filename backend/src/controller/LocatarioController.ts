@@ -1,12 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { Locatario } from "../utils/pessoa/interfaces";
-import PessoaInsert from "../utils/pessoa/PessoaInsert";
 import Controller from "./IController";
 
 const prisma = new PrismaClient();
-
-const pessoaInsert = new PessoaInsert();
 
 export default {
   count: async (req: Request, res: Response) => {
@@ -58,15 +54,7 @@ export default {
   },
 
   insert: async (req: Request, res: Response) => {
-    try {
-      const locatario = req.body as Locatario;
-
-      const locatarioInsert = await pessoaInsert.insertLocatario(locatario);
-
-      res.json(locatarioInsert.id);
-    } catch (error: any) {
-      res.json(error);
-    }
+    res.status(404).send("Not supported");
   },
   delete: async (req: Request, res: Response) => {
     try {

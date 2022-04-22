@@ -45,7 +45,7 @@ export default {
                 data: Contrato,
             });
 
-            return res.json(ContratoInsert.cod_cor + "|" + ContratoInsert.cod_lct + "|" + ContratoInsert.cod_imv);
+            return res.json(ContratoInsert.cod_lcd + "|" + ContratoInsert.cod_lct + "|" + ContratoInsert.cod_imv);
         } catch (error: any) {
             return res.status(400).json(error);
         }

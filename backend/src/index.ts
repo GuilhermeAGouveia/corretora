@@ -4,10 +4,10 @@ import morgan from "morgan";
 import { AddressInfo } from "net";
 import associadoRouter from "./routes/associado";
 import contratoRouter from "./routes/contrato";
-import corretorLocadorRouter from "./routes/corretorLocador";
 import imageRouter from "./routes/image";
 import imvRouter from "./routes/imovel";
 import pessoaRouter from "./routes/pessoa";
+import sessionRouter from "./routes/session";
 import telefoneRouter from "./routes/telefone";
 
 const cors = require("cors");
@@ -25,9 +25,9 @@ app.use([
   imvRouter,
   associadoRouter,
   telefoneRouter,
-  corretorLocadorRouter,
   contratoRouter,
   imageRouter,
+  sessionRouter,
 ]);
 
 app.get("/", (req, res) => {

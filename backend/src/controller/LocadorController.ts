@@ -1,12 +1,8 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import { Locador } from "../utils/pessoa/interfaces";
-import PessoaInsert from "../utils/pessoa/PessoaInsert";
 import Controller from "./IController";
 
 const prisma = new PrismaClient();
-
-const pessoaInsert = new PessoaInsert();
 
 export default {
   count: async (req: Request, res: Response) => {
@@ -44,21 +40,18 @@ export default {
             },
           },
         },
+        imovel: {
+          select: {
+            cod_imv: true,
+          },
+        },
       },
     });
 
     res.json(locador);
   },
   insert: async (req: Request, res: Response) => {
-    try {
-      const locador = req.body as Locador;
-
-      const locadorInsert = await pessoaInsert.insertLocador(locador);
-
-      res.json(locadorInsert.id);
-    } catch (error: any) {
-      res.json(error);
-    }
+    res.status(404).send("Not supported");
   },
   delete: async (req: Request, res: Response) => {
     try {
