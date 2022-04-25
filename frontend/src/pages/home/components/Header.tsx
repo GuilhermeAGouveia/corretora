@@ -1,12 +1,12 @@
-import Image from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
-import logoPng from "../../../assets/images/logo.png";
 import Button from "../../../components/Button";
+import Logo from '../../../components/Logo';
 import SlideHorizontalBanner from "../../../components/SlideHorizontalBanner";
 import SlideVerticalBanner from "../../../components/SlideVerticalBanner";
 import colors from "../../../styles/colors";
+
 
 const Header = () => {
   const router = useRouter();
@@ -38,7 +38,7 @@ const Header = () => {
     <HeaderContainer>
       <HeaderTop>
         <Button label={"Login"} onClick={() => router.push("/login")}></Button>
-        <Logo src={logoPng} width={83} height={70} alt="Logo" />
+        <Logo/>
         <Button
           label={labelButton}
           onClick={() => {
@@ -89,11 +89,6 @@ const HeaderTop = styled.div`
   justify-content: space-between;
 `;
 
-const Logo = styled(Image)`
-  position: relative;
-  height: 70px;
-  width: 83px;
-`;
 
 const HeaderContent = styled.div`
   position: relative;

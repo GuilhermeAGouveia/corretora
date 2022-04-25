@@ -1,11 +1,12 @@
 import api from "../services/api";
+import { Credenciais, Pessoa } from "./interfaces";
 
 const delay = (time: number = 500) =>
   new Promise((resolve) => setTimeout(resolve, time));
-/* 
-export async function sigIn(email: string, password: string) {
+
+export async function sigIn({email, password}: Credenciais) {
   try {
-    const response = await api.post<{ token: string; user: any }>("/login", {
+    const response = await api.post<{ token: string; user: any }>("/auth/login", {
       email,
       password,
     });
@@ -22,13 +23,9 @@ export async function sigIn(email: string, password: string) {
   }
 }
 
-export async function sigUp(name: string, email: string, password: string) {
+export async function sigUp(pessoa: Pessoa) {
   try {
-    const response = await api.post("/signup", {
-      name,
-      email,
-      password,
-    });
+    const response = await api.post("/pessoa", pessoa);
     return response.data;
   } catch (error) {
     return error;
@@ -37,17 +34,15 @@ export async function sigUp(name: string, email: string, password: string) {
 
 export async function getUserByToken(token: string) {
   try {
-    const response = await api.get("/user/token", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+    const response = await api.post("/auth/user/token", {
+      token,
     });
     return response.data;
   } catch (error) {
     return false;
   }
-} */
-
+}
+/* 
 export async function getUserByToken(token: string) {
   try {
     await api.get("/imovel");
@@ -79,3 +74,4 @@ export async function sigIn(email: string, password: string) {
     };
   }
 }
+ */

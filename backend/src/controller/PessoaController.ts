@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import bcrypt from "../utils/bcrypt";
+import encrypt from "../utils/encrypt";
 import { PessoaWithTelefone } from "../utils/pessoa/interfaces";
 import Controller from "./IController";
 
@@ -41,7 +41,7 @@ export default {
     try {
       const { telefones, ...pessoa } = req.body as PessoaWithTelefone;
 
-      pessoa.password = await bcrypt.hash(pessoa.password);
+      pessoa.password = await encrypt.hash(pessoa.password);
 
       const phones = telefones
         ? {

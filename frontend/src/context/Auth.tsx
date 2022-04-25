@@ -40,8 +40,8 @@ export function AuthProvider({ children }: any) {
     else setUser(null);
   }, []);
 
-  const login = async ({ email, password }: Credenciais) => {
-    const { token, user, error } = await sigIn(email, password);
+  const login = async (credenciais: Credenciais) => {
+    const { token, user, error } = await sigIn(credenciais);
     if (error) throw error;
 
     setCookieWithOptions("@corretora:token", token, {

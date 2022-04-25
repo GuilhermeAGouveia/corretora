@@ -40,3 +40,15 @@ export interface Credenciais {
   email: string;
   password: string;
 }
+
+export interface Pessoa {
+  email: string;
+  firstName: string;
+  lastName: string;
+  password: string;
+  birthdate: Date;
+  address: string;
+  city: string;
+  state: string;
+  cep: string;
+}
