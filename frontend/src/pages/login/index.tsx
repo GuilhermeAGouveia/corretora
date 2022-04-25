@@ -83,6 +83,11 @@ export default function Login() {
               {loading ? "Carregando..." : "Entrar"}
             </LoginFormButton>
           </LoginForm>
+          <DivisionLine>
+            <p>Novo aqui? {'\t'}
+            <SignUpButton type="button">Cadastrar</SignUpButton>
+            </p>
+          </DivisionLine>
         </LoginLeftContent>
       </LoginLeft>
       <LoginRight></LoginRight>
@@ -223,4 +228,16 @@ const LoginRight = styled.div`
   @media screen and (max-width: 450px) {
     display: none;
   }
+`;
+
+const SignUpButton = styled.button`
+  position: relative;
+  height: 42px;
+  width: auto;
+  border: none;
+  background-color: transparent;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: ${colors.primary};
 `;
