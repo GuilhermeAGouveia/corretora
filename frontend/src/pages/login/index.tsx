@@ -13,13 +13,23 @@ export default function Login() {
   const { register, handleSubmit } = useForm();
   const { login } = useAuth();
 
-  const setErrorOrSucess = (state: 'sucess' | 'error') => {
-    if (state === 'sucess') {
-      setSucess(true);
-      setError(false);
-    } else {
-      setSucess(false);
-      setError(true);
+  const setErrorOrSucess = (state: "sucess" | "error" | "reset") => {
+    switch (state) {
+      case "sucess":
+        setSucess(true);
+        setError(false);
+        break;
+      case "error":
+        setError(true);
+        setSucess(false);
+        break;
+      case "reset":
+        setError(false);
+        setSucess(false);
+
+        break;
+      default:
+        break;
     }
   };
 
@@ -27,12 +37,16 @@ export default function Login() {
     setLoading(true);
     try {
       await login(data);
-      setErrorOrSucess('sucess');
+      setErrorOrSucess("sucess");
     } catch (error) {
       console.log(error);
-      setErrorOrSucess('error');
+      setErrorOrSucess("error");
     }
     setLoading(false);
+    const timeout = setTimeout(() => {
+      setErrorOrSucess("reset");
+    }, 3100);
+    return () => clearTimeout(timeout);
   };
 
   return (
@@ -40,9 +54,7 @@ export default function Login() {
       {error && (
         <BannerInfo bgColor={"red"}>Erro no login, tente novamente</BannerInfo>
       )}
-      {sucess && (
-        <BannerInfo bgColor={"green"}>Sucesso</BannerInfo>
-      )}
+      {sucess && <BannerInfo bgColor={"green"}>Sucesso</BannerInfo>}
       <LoginLeft>
         <Logo />
         <LoginLeftContent>
@@ -69,7 +81,7 @@ export default function Login() {
             />
             <LoginFormButton type="submit">
               {loading ? "Carregando..." : "Entrar"}
-              </LoginFormButton>
+            </LoginFormButton>
           </LoginForm>
         </LoginLeftContent>
       </LoginLeft>
@@ -97,7 +109,7 @@ const LoginLeft = styled.div`
   width: 50%;
   background-color: white;
 
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 450px) {
     width: 100%;
   }
 `;
@@ -208,7 +220,7 @@ const LoginRight = styled.div`
   width: 50%;
   background-color: ${colors.secondary};
 
-  @media screen and (max-width: 400px) {
+  @media screen and (max-width: 450px) {
     display: none;
   }
 `;
