@@ -1,25 +1,68 @@
 import { parseCookies } from "nookies";
+import { useEffect, useState } from "react";
+import styled from "styled-components";
+import CardImovel from "../../components/CardImovel";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
+import { getAllImovel } from "../../lib/imovel";
+import { IImovel } from "../../lib/interfaces";
+import colors from "../../styles/colors";
 
-export default function Dashboard(props: any) {
+interface MarketplaceProps {
+  imoveis: IImovel[];
+}
+
+export default function Marketplace({ imoveis }: MarketplaceProps) {
+    const [blockSelect, setBlockSelect] = useState(false);
+
   const { user } = useAuth();
-  console.log(user)
   const optionsSelect = [
-      {
-        label: "Alugar",
-      },
-      {
-        label: "Comprar",
-      },
-      {
-        label: "Vender",
-      }
-  ]
+    {
+      label: "Alugar",
+    },
+    {
+      label: "Comprar",
+    },
+    {
+      label: "Vender",
+    },
+  ];
+
+  useEffect(() => {
+      
+      window.addEventListener("scroll", function(e){
+        const scrollTop = window.scrollY;
+        
+        if (scrollTop >= 100 && !blockSelect) {
+            setBlockSelect(true);
+        } else if (scrollTop < 100 && blockSelect) {
+            setBlockSelect(false);
+        }
+      });
+  }, [])
   return (
     <div>
-      <SelectOption options={optionsSelect}></SelectOption>
-      <p>Bem vindo {user?.firstName}</p>
+    <Header>
+        <Salutation>
+            <h1>Bem vindo, {user?.firstName}</h1>
+        </Salutation>
+    </Header>
+      <SelectOption style={blockSelect ? {
+            position: 'fixed',
+            top: '0',
+            left: '0',
+            zIndex: '1',
+            background: '#fff',
+      }
+      : {}}
+       options={optionsSelect}/>
+      <CardsContainerRoot>
+        <CardsContainer>
+          {imoveis.map((imovel: IImovel) => (
+            <CardImovel key={imovel.cod_imv} imovel={imovel}></CardImovel>
+          ))}
+        </CardsContainer>
+      </CardsContainerRoot>
     </div>
   );
 }
@@ -34,7 +77,69 @@ export const getServerSideProps = async (ctx: any) => {
       },
     };
   }
+
+  const imoveis = await getAllImovel(ctx);
+  console.log(imoveis);
   return {
-    props: {},
+    props: {
+      imoveis,
+    },
   };
 };
+
+const CardsContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 0 auto;
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 5%;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    margin: 0;
+  }
+`;
+
+const CardsContainerRoot = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: ${colors.white};
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+`;
+
+const Header = styled.header`
+    position: relative;
+    width: 100%;
+    height: auto;
+    background: ${colors.secondary};
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+`;
+
+const Salutation = styled.div`
+    position: relative;
+    width: 100%;
+    height: auto;
+    background: ${colors.secondary};
+    display: flex;
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    font-weight: 500;
+    color: ${colors.primary};
+    justify-content: center;
+    align-items: flex-start;
+`
+
+const SelectOptionCard = styled(SelectOption)<any>`
+    position: fixed;
+    width: 100%;
+    height: auto;
+
+    `

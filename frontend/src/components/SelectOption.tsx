@@ -8,11 +8,11 @@ interface Option {
   onClick?: () => void;
 }
 
-interface SelectOptionPros {
+interface SelectOptionPros extends React.InputHTMLAttributes<HTMLInputElement> {
   options: Option[];
 }
 
-const SelectOption = ({ options }: SelectOptionPros) => {
+const SelectOption = ({ options, style }: SelectOptionPros) => {
   // create refs for each option;
   const optionRef = useRef<RefObject<HTMLObjectElement>[]>([]);
 
@@ -44,7 +44,7 @@ const SelectOption = ({ options }: SelectOptionPros) => {
   }, []);
 
   return (
-    <SelectOptionContainer>
+    <SelectOptionContainer style={style} layout>
       {options.map((option, index) => (
         <Option
           key={"select-option-" + index}
@@ -73,7 +73,7 @@ const SelectOption = ({ options }: SelectOptionPros) => {
 
 export default SelectOption;
 
-export const SelectOptionContainer = styled("header")`
+export const SelectOptionContainer = styled(motion.div)`
   position: relative;
   height: 50px;
   width: 100%;

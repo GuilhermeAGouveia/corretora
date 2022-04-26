@@ -7,6 +7,10 @@ const nextConfig = {
   env: {
     BACKEND_PUBLIC_URL: process.env.BACKEND_PUBLIC_URL,
   },
+  images: {
+    domains: ['corretora-storage.s3.amazonaws.com', 'picsum.photos'],
+  },
 }
+
 
 module.exports = nextConfig

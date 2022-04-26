@@ -2,6 +2,12 @@ export interface IButton {
   label: string;
 }
 
+export interface Image {
+  url: string;
+  originalname?: string;
+  size?: number;
+}
+
 export interface IImovel {
   cod_imv: string;
   cod_lcd: string;
@@ -22,8 +28,19 @@ export interface IImovel {
   supDescribe: string | null;
   price: number | null;
   mensalidade: number | null;
+  images: Image[];
   createdAt: Date;
 }
+
+export interface ImovelCard {
+  city: string;
+  state: string;
+  mensalidade: number | null;
+  price: number | null;
+  supDescribe: string | null;
+  type: ImovelType;
+}
+
 
 enum ImovelType {
   APTO = "APTO",
