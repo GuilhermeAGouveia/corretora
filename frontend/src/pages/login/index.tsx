@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import BannerInfo from "../../components/BannerInfo";
+import Input from "../../components/Input";
 import Logo from "../../components/Logo";
 import { useAuth } from "../../context/Auth";
 import colors from "../../styles/colors";
@@ -69,23 +70,18 @@ export default function Login() {
             <p>or Sign with Email</p>
           </DivisionLine>
           <LoginForm onSubmit={handleSubmit(onSubmit)}>
-            <LoginFormInput
-              type="email"
-              placeholder="Email"
-              {...register("email")}
-            />
-            <LoginFormInput
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-            />
+            <Input type="email" placeholder="Email" register={register}></Input>
+
+            <Input type="password" placeholder="Password" register={register}></Input>
+
             <LoginFormButton type="submit">
               {loading ? "Carregando..." : "Entrar"}
             </LoginFormButton>
           </LoginForm>
           <DivisionLine>
-            <p>Novo aqui? {'\t'}
-            <SignUpButton type="button">Cadastrar</SignUpButton>
+            <p>
+              Novo aqui? {"\t"}
+              <SignUpButton type="button">Cadastrar</SignUpButton>
             </p>
           </DivisionLine>
         </LoginLeftContent>
@@ -189,6 +185,17 @@ const LoginForm = styled.form`
 
 const LoginFormInput = styled.input`
   position: relative;
+  height: 100%;
+  width: 100%;
+  font-family: "Montserrat", sans-serif;
+  font-size: 14px;
+  border: none;
+  background: none;
+  color: rgba(0, 0, 0, 0.8);
+`;
+
+const LoginFormInputContainer = styled.div`
+  position: relative;
   height: 42px;
   width: 100%;
   border: 1px solid rgba(0, 0, 0, 0.2);
@@ -196,9 +203,15 @@ const LoginFormInput = styled.input`
   padding: 0 10px;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   margin: 10px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
+`;
+
+const LoginFormInputPlaceholder = styled.div`
+  position: absolute;
 `;
 
 const LoginFormButton = styled.button`
@@ -208,7 +221,7 @@ const LoginFormButton = styled.button`
   width: 100%;
   border: none;
   border-radius: 21px;
-  background-color: ${colors.primary};
+  background-color: ${colors.secondary};
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -239,5 +252,5 @@ const SignUpButton = styled.button`
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
-  color: ${colors.primary};
+  color: ${colors.secondary};
 `;
