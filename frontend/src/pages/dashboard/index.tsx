@@ -1,12 +1,24 @@
 import { parseCookies } from "nookies";
+import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 
 export default function Dashboard(props: any) {
   const { user } = useAuth();
-  console.log(user);
+  console.log(user)
+  const optionsSelect = [
+      {
+        label: "Alugar",
+      },
+      {
+        label: "Comprar",
+      },
+      {
+        label: "Vender",
+      }
+  ]
   return (
     <div>
-      <h1>Dashboard</h1>
+      <SelectOption options={optionsSelect}></SelectOption>
       <p>Bem vindo {user?.firstName}</p>
     </div>
   );
@@ -14,7 +26,6 @@ export default function Dashboard(props: any) {
 
 export const getServerSideProps = async (ctx: any) => {
   const token = parseCookies(ctx)["@corretora:token"];
-  console.log(token);
   if (!token) {
     return {
       redirect: {
