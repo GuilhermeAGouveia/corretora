@@ -13,7 +13,7 @@ interface MarketplaceProps {
 }
 
 export default function Marketplace({ imoveis }: MarketplaceProps) {
-    const [blockSelect, setBlockSelect] = useState(false);
+  const [blockSelect, setBlockSelect] = useState(false);
 
   const { user } = useAuth();
   const optionsSelect = [
@@ -29,33 +29,39 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
   ];
 
   useEffect(() => {
-      
-      window.addEventListener("scroll", function(e){
-        const scrollTop = window.scrollY;
-        
-        if (scrollTop >= 100 && !blockSelect) {
-            setBlockSelect(true);
-        } else if (scrollTop < 100 && blockSelect) {
-            setBlockSelect(false);
-        }
-      });
-  }, [])
+    window.addEventListener("scroll", function (e) {
+      const scrollTop = window.scrollY;
+
+      if (scrollTop >= 100 && !blockSelect) {
+        setBlockSelect(true);
+      } else if (scrollTop < 100 && blockSelect) {
+        setBlockSelect(false);
+      }
+    });
+  }, []);
   return (
     <div>
-    <Header>
+      <Header>
         <Salutation>
-            <h1>Bem vindo, {user?.firstName}</h1>
+          <h1>Bem vindo, {user?.firstName}</h1>
         </Salutation>
-    </Header>
-      <SelectOption style={blockSelect ? {
-            position: 'fixed',
-            top: '0',
-            left: '0',
-            zIndex: '1',
-            background: '#fff',
-      }
-      : {}}
-       options={optionsSelect}/>
+      </Header>
+      <SelectOption
+        style={
+          blockSelect
+            ? {
+                position: "fixed",
+                top: "0",
+                left: "0",
+                zIndex: "1",
+                background: "#fff",
+              }
+            : {
+                position: "relative",
+              }
+        }
+        options={optionsSelect}
+      />
       <CardsContainerRoot>
         <CardsContainer>
           {imoveis.map((imovel: IImovel) => (
@@ -114,32 +120,31 @@ const CardsContainerRoot = styled.div`
 `;
 
 const Header = styled.header`
-    position: relative;
-    width: 100%;
-    height: auto;
-    background: ${colors.secondary};
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: ${colors.secondary};
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 `;
 
 const Salutation = styled.div`
-    position: relative;
-    width: 100%;
-    height: auto;
-    background: ${colors.secondary};
-    display: flex;
-    font-family: "Poppins", sans-serif;
-    font-size: 24px;
-    font-weight: 500;
-    color: ${colors.primary};
-    justify-content: center;
-    align-items: flex-start;
-`
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: ${colors.secondary};
+  display: flex;
+  font-family: "Poppins", sans-serif;
+  font-size: 24px;
+  font-weight: 500;
+  color: ${colors.primary};
+  justify-content: center;
+  align-items: flex-start;
+`;
 
 const SelectOptionCard = styled(SelectOption)<any>`
-    position: fixed;
-    width: 100%;
-    height: auto;
-
-    `
+  position: fixed;
+  width: 100%;
+  height: auto;
+`;
