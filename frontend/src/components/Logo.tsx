@@ -3,13 +3,11 @@ import styled from "styled-components";
 import logoPng from "../assets/images/logo.png";
 
 const LogoComponent = () => {
-  return <Logo src={logoPng} width={83} height={70} alt="Logo" />;
+  return <Logo src={logoPng} width={83} height={70}/>;
 };
 
 export default LogoComponent;
 
 const Logo = styled(Image)`
   position: relative;
-  height: 70px;
-  width: 83px;
 `;
