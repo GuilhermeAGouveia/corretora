@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import BannerInfo from "../../components/BannerInfo";
@@ -7,6 +8,8 @@ import { useAuth } from "../../context/Auth";
 import { DivisionLine, LoginContainer, LoginContainerTitle, LoginForm, LoginFormButton, LoginLeft, LoginLeftContent, LoginRight, LogoCompany, SignInGoogleButton, SignUpButton } from "./styles";
 
 export default function Login() {
+
+  const router = useRouter();
   const [error, setError] = useState(false);
   const [sucess, setSucess] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -37,7 +40,8 @@ export default function Login() {
     setLoading(true);
     try {
       await login(data);
-      setErrorOrSucess("sucess");
+      router.push("/dashboard");
+
     } catch (error) {
       console.log(error);
       setErrorOrSucess("error");

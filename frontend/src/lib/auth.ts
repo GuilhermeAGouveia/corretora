@@ -37,7 +37,7 @@ export async function getUserByToken(token: string) {
     const response = await api.post("/auth/user/token", {
       token,
     });
-    return response.data;
+    return response.data.user;
   } catch (error) {
     return false;
   }

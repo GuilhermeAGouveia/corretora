@@ -7,16 +7,10 @@ import {
 } from "react";
 import { getUserByToken, sigIn } from "../lib/auth";
 import { getCookie, setCookieWithOptions } from "../lib/cookies";
-import { Credenciais } from "../lib/interfaces";
-
-interface User {
-  id: string;
-  name: string;
-  email: string;
-}
+import { Credenciais, Pessoa } from "../lib/interfaces";
 
 interface AuthValue {
-  user: User;
+  user: Pessoa | null;
   login(credentials: Credenciais): Promise<void>;
   logout(): void;
   isAuthenticated: boolean;
@@ -27,17 +21,21 @@ const Auth = createContext({} as AuthValue);
 export default Auth;
 
 export function AuthProvider({ children }: any) {
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<Pessoa | null>(null);
 
   useEffect(() => {
     const token = getCookie("@corretora:token"); // get token from cookie
-    const getUser = async () => await getUserByToken(token);
- 
+    const getUser = async () => {
+      const user = await getUserByToken(token);
+
+      if (user) {
+        setUser(user);
+      } else setUser(null);
+    };
+
     if (token) {
-      const user = getUser();
-      setUser(user);
+      getUser();
     }
-    else setUser(null);
   }, []);
 
   const login = async (credenciais: Credenciais) => {
@@ -48,7 +46,7 @@ export function AuthProvider({ children }: any) {
       maxAge: 30 * 24 * 60 * 60, // 30 days
     });
     setUser(user);
-  }
+  };
 
   const logout = useCallback(() => {
     setUser(null);
