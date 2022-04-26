@@ -38,7 +38,7 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
         setBlockSelect(false);
       }
     });
-  }, []);
+  }, [blockSelect]);
   return (
     <div>
       <Header>
@@ -136,15 +136,9 @@ const Salutation = styled.div`
   background: ${colors.secondary};
   display: flex;
   font-family: "Poppins", sans-serif;
-  font-size: 24px;
+  font-size: 18px;
   font-weight: 500;
   color: ${colors.primary};
   justify-content: center;
   align-items: flex-start;
-`;
-
-const SelectOptionCard = styled(SelectOption)<any>`
-  position: fixed;
-  width: 100%;
-  height: auto;
 `;
