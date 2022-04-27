@@ -1,11 +1,14 @@
 import { parseCookies } from "nookies";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import CardImovel from "../../components/CardImovel";
+import Filter from "../../components/lista/Filter";
+import ListCards from "../../components/lista/ListCards";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 import { getAllImovel } from "../../lib/imovel";
 import { IImovel } from "../../lib/interfaces";
+import api from "../../services/api";
 import colors from "../../styles/colors";
 
 interface MarketplaceProps {
@@ -13,7 +16,11 @@ interface MarketplaceProps {
 }
 
 export default function Marketplace({ imoveis }: MarketplaceProps) {
+  const { register, handleSubmit } = useForm();
+
   const [blockSelect, setBlockSelect] = useState(false);
+  const [imoveisState, setImoveisState] = useState(imoveis);
+  const [isLoadingItems, setisLoadingItems] = useState(false);
 
   const { user } = useAuth();
   const optionsSelect = [
@@ -27,6 +34,48 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
       label: "Vender",
     },
   ];
+
+  const onFilter = async (data: any) => {
+    setisLoadingItems(true);
+
+    var path = "/imovel/filter?";
+
+    const builderQuery = {
+      type: (type?: string) =>
+        !!type ? path.concat(`type=${type}&`) : path,
+      mensalidade: ({ min, max }: any) => {
+        min = !!min ? min : 0
+        max = !!max ? max : Number.POSITIVE_INFINITY
+        return path.concat(`mensalidade=${min}-${max}&`)
+      },
+      price: ({ min, max }: any) => {
+        min = !!min ? min : 0
+        max = !!max ? max : Number.POSITIVE_INFINITY
+        return path.concat(`price=${min}-${max}&`)
+      },
+    };
+
+    const { type, mensalidadeMax, mensalidadeMin } = data;
+
+    path = builderQuery.type(type);
+    path = builderQuery.mensalidade({
+      min: mensalidadeMin,
+      max: mensalidadeMax,
+    });
+
+    path = builderQuery.price({
+      min: data.priceMin,
+      max: data.priceMax,
+    });
+
+
+
+    
+
+    const { data: imoveis } = await api.get(path);
+    setImoveisState(imoveis);
+    setisLoadingItems(false);
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", function (e) {
@@ -62,13 +111,11 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
         }
         options={optionsSelect}
       />
-      <CardsContainerRoot>
-        <CardsContainer>
-          {imoveis.map((imovel: IImovel) => (
-            <CardImovel key={imovel.cod_imv} imovel={imovel}></CardImovel>
-          ))}
-        </CardsContainer>
-      </CardsContainerRoot>
+
+      <SectionImoveis>
+        <Filter onFilter={onFilter} />
+        <ListCards imoveis={imoveisState} isLoadingItems={isLoadingItems} />
+      </SectionImoveis>
     </div>
   );
 }
@@ -85,39 +132,13 @@ export const getServerSideProps = async (ctx: any) => {
   }
 
   const imoveis = await getAllImovel(ctx);
-  console.log(imoveis);
+  
   return {
     props: {
       imoveis,
     },
   };
 };
-
-const CardsContainer = styled.div`
-  position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0 auto;
-  max-width: 1200px;
-  width: 90%;
-  margin: 0 5%;
-
-  @media (max-width: 768px) {
-    width: 100%;
-    margin: 0;
-  }
-`;
-
-const CardsContainerRoot = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  background: ${colors.white};
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-`;
 
 const Header = styled.header`
   position: relative;
@@ -139,6 +160,17 @@ const Salutation = styled.div`
   font-size: 18px;
   font-weight: 500;
   color: ${colors.primary};
+  justify-content: center;
+  align-items: flex-start;
+`;
+
+const SectionImoveis = styled.section`
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  height: auto;
+  background: ${colors.white};
+  display: flex;
   justify-content: center;
   align-items: flex-start;
 `;

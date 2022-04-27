@@ -69,10 +69,9 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
 
 export default CardImovel;
 
-const CardImovelContainer = styled.div`
+const CardImovelContainer = styled('div')`
   position: relative;
-  min-width: 200px;
-  max-width: 250px;
+  width: 250px;
   min-height: 200px;
   background: white;
   margin: 5px;

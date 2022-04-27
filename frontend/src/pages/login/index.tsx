@@ -40,7 +40,7 @@ export default function Login() {
     setLoading(true);
     try {
       await login(data);
-      router.push("/dashboard");
+      router.push("/lista");
 
     } catch (error) {
       console.log(error);
