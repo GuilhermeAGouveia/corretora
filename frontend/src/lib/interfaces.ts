@@ -47,7 +47,7 @@ enum ImovelType {
   CASA = "CASA",
 }
 
-enum LevelFurnished {
+export enum LevelFurnished {
   FULL = "FULL",
   SEMI = "SEMI",
   NONE = "NONE",

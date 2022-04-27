@@ -1,6 +1,6 @@
 import Image from "next/image";
 import styled from "styled-components";
-import { IImovel } from "../lib/interfaces";
+import { IImovel, LevelFurnished } from "../lib/interfaces";
 import colors from "../styles/colors";
 
 interface CardImovelProps {
@@ -8,24 +8,54 @@ interface CardImovelProps {
 }
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
+  const getPlural = (num: number, word: string) => {
+    return num > 1 ? `${num} ${word}s` : `${num} ${word}`;
+  };
   return (
     <CardImovelContainer>
       <CardImovelImage>
         <Image
-          src={imovel.images[0] ? imovel.images[0].url : "https://picsum.photos/200/300"}
+          src={
+            imovel.images[0]
+              ? imovel.images[0].url
+              : "https://picsum.photos/200/300"
+          }
           alt={imovel.images[0] ? imovel.images[0].originalname : "genericAlt"}
           layout="fill"
           blurDataURL="https://picsum.photos/200/300"
           priority
         />
       </CardImovelImage>
+      <LineDivider />
       <CardDescription>
-        <CardTitle>{imovel.type}</CardTitle>
-        <ImovelLocation>{imovel.city}, {imovel.state}</ImovelLocation>
         <CardImovelPrice>
-            {new Intl.NumberFormat( 'pt-BR', {style: 'currency', currency: 'BRL'}).format(imovel.price || 0)} / mês
+          <span>R$</span>{" "}
+          {new Intl.NumberFormat("pt-BR", { maximumFractionDigits: 0 }).format(
+            imovel.price || 0
+          )}{" "}
+          <span>/ mês</span>
         </CardImovelPrice>
-            
+
+        <ImovelLocation>
+          {imovel.city}, {imovel.state}
+        </ImovelLocation>
+        <LineDivider />
+        <CardLabelContainer>
+          <CardLabel>{imovel.type}</CardLabel>
+
+          {!!imovel.nBathrooms && (
+            <CardLabel>{getPlural(imovel.nBathrooms, "banheiro")}</CardLabel>
+          )}
+          {!!imovel.nRooms && (
+            <CardLabel>{getPlural(imovel.nRooms, "quarto")}</CardLabel>
+          )}
+          {!(imovel.isFurnished == LevelFurnished.NONE) && (
+            <CardLabel>
+              {imovel.isFurnished == LevelFurnished.SEMI && "Parcialmente"}{" "}
+              Imobiliado
+            </CardLabel>
+          )}
+        </CardLabelContainer>
       </CardDescription>
     </CardImovelContainer>
   );
@@ -35,12 +65,29 @@ export default CardImovel;
 
 const CardImovelContainer = styled.div`
   position: relative;
-  min-width: 150px;
-  max-width: 200px;
+  min-width: 200px;
+  max-width: 250px;
   min-height: 150px;
-  background: ${colors.white};
+  background: white;
   margin: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  box-shadow: 1px 4px 13px 0 rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    box-shadow: 1px 4px 13px 0 rgba(0, 0, 0, 0.5);
+    transform: translateY(-5px);
+  }
+
+  @media (max-width: 768px) {
+    max-width: 50vw;
+    margin: 0;
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.25);
+    border-radius: 0;
+  }
 `;
 
 const CardImovelImage = styled.div`
@@ -53,33 +100,69 @@ const CardDescription = styled.div`
   position: relative;
   width: 100%;
   height: auto;
-`;
-const CardTitle = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  font-family: "Montserrat", sans-serif;
-  text-transform: capitalize;
+  font-family: "Poppins", sans-serif;
   font-size: 14px;
-
-  font-weight: bold;
-  color: ${colors.secondary};
+  padding: 10px;
+  padding-top: 0;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.9);
 `;
 
 const ImovelLocation = styled.div`
-    position: relative;
-    width: 100%;
-    height: auto;
-    font-family: "Montserrat", sans-serif;
-    font-size: 14px;
-    color: ${colors.secondary};
+  position: relative;
+  width: 100%;
+  height: auto;
+  color: ${colors.secondary};
 `;
 
 const CardImovelPrice = styled.div`
-    position: relative;
-    width: 100%;
-    height: auto;
-    font-family: "Montserrat", sans-serif;
-    font-size: 14px;
-    color: ${colors.secondary};
+  position: relative;
+  width: 100%;
+  height: auto;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.3em;
+  font-weight: 500;
+
+  span:last-child {
+    position: absolute;
+    font-size: 0.7rem;
+    padding-left: 5px;
+    font-weight: 600;
+    color: rgba(0, 0, 0, 0.7);
+    top: 1px;
+  }
+`;
+
+const LineDivider = styled.div`
+  position: relative;
+  width: 100%;
+  margin: 10px 0;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
+`;
+
+const CardLabel = styled.div`
+  position: relative;
+  padding: 3px 5px;
+  border-radius: 10px;
+
+  font-size: 9px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: ${colors.secondary};
+  margin: 0 1px;
+  font-weight: bold;
+  color: white;
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.1);
+  text-transform: lowercase;
+`;
+
+const CardLabelContainer = styled.div`
+  position: relative;
+  height: 20px;
+  display: flex;
+  width: ${Infinity}px;
+  justify-content: flex-start;
+  align-items: center;
 `;
