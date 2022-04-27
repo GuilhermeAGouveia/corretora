@@ -95,6 +95,7 @@ enum LevelFurnished {
 enum ImovelType {
   CASA
   APTO
+  COMERCIO
 }
 
 model Regras_Imovel {

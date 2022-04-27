@@ -45,6 +45,7 @@ export interface ImovelCard {
 enum ImovelType {
   APTO = "APTO",
   CASA = "CASA",
+  COMERCIO = "COMERCIO",
 }
 
 export enum LevelFurnished {

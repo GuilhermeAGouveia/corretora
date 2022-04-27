@@ -1,6 +1,5 @@
 import { createGlobalStyle } from "styled-components";
 
-
 const GlobalStyle = createGlobalStyle`
     body {
         position: relative;
@@ -15,12 +14,15 @@ const GlobalStyle = createGlobalStyle`
         outline: 0;
         box-sizing: border-box;
         font-family: 'Roboto', sans-serif;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
     }
 
     button {
         cursor: pointer;
     }
 
-`
+`;
 
-export default GlobalStyle
+export default GlobalStyle;

@@ -9,7 +9,12 @@ interface CardImovelProps {
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const getPlural = (num: number, word: string) => {
-    return num > 1 ? `${num} ${word}s` : `${num} ${word}`;
+    return (
+      <>
+        <span>{num}</span>
+        <span>{num > 1 ? word + "s" : word}</span>
+      </>
+    );
   };
   return (
     <CardImovelContainer>
@@ -20,7 +25,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
               ? imovel.images[0].url
               : "https://picsum.photos/200/300"
           }
-          alt={imovel.images[0] ? imovel.images[0].originalname : "genericAlt"}
+          alt={imovel.images[0] ? imovel.images[0].originalname : "Imagem"}
           layout="fill"
           blurDataURL="https://picsum.photos/200/300"
           priority
@@ -42,7 +47,6 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
         <LineDivider />
         <CardLabelContainer>
           <CardLabel>{imovel.type}</CardLabel>
-
           {!!imovel.nBathrooms && (
             <CardLabel>{getPlural(imovel.nBathrooms, "banheiro")}</CardLabel>
           )}
@@ -51,8 +55,10 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
           )}
           {!(imovel.isFurnished == LevelFurnished.NONE) && (
             <CardLabel>
-              {imovel.isFurnished == LevelFurnished.SEMI && "Parcialmente"}{" "}
-              Imobiliado
+              <span>
+                {imovel.isFurnished == LevelFurnished.SEMI && "Parcialmente "}
+              </span>
+              <span>mobiliado</span>
             </CardLabel>
           )}
         </CardLabelContainer>
@@ -67,7 +73,7 @@ const CardImovelContainer = styled.div`
   position: relative;
   min-width: 200px;
   max-width: 250px;
-  min-height: 150px;
+  min-height: 200px;
   background: white;
   margin: 5px;
   border-radius: 4px;
@@ -78,7 +84,6 @@ const CardImovelContainer = styled.div`
 
   &:hover {
     box-shadow: 1px 4px 13px 0 rgba(0, 0, 0, 0.5);
-    transform: translateY(-5px);
   }
 
   @media (max-width: 768px) {
@@ -119,7 +124,7 @@ const CardImovelPrice = styled.div`
   position: relative;
   width: 100%;
   height: auto;
-  color: rgba(0, 0, 0, 0.8);
+  color: rgba(0, 0, 0, 0.9);
   font-size: 1.3em;
   font-weight: 500;
 
@@ -147,22 +152,28 @@ const CardLabel = styled.div`
   border-radius: 10px;
 
   font-size: 9px;
+  max-height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${colors.secondary};
-  margin: 0 1px;
+  background-color: ${colors.primary};
+  margin: 1px;
   font-weight: bold;
   color: white;
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.1);
   text-transform: lowercase;
+
+  span {
+    margin-left: 2px;
+  }
 `;
 
 const CardLabelContainer = styled.div`
   position: relative;
   height: 20px;
   display: flex;
-  width: ${Infinity}px;
+  width: 100%;
+  flex-wrap: wrap;
   justify-content: flex-start;
   align-items: center;
 `;
