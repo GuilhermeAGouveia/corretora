@@ -16,7 +16,7 @@ model Pessoa {
   firstName String
   lastName  String
   password  String
-  birthdate  DateTime
+  birthdate DateTime
   address   String
   city      String
   state     String
@@ -72,12 +72,12 @@ model Imovel {
   hasSuite    Boolean        @default(false)
   nRooms      Int            @default(0)
   nBathrooms  Int            @default(0)
-  area        Float          @default(0)
+  area        Float
   isFurnished LevelFurnished @default(NONE)
   supDescribe String? // Descrição complementar
 
-  price       Float?
-  mensalidade Float?
+  price       Float    @default(0)
+  mensalidade Float    @default(0)
   createdAt   DateTime @default(now())
 
   locador      Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
