@@ -1,13 +1,9 @@
-import {
-    Controller,
-    ControllerRenderProps,
-    FieldValues,
-    useForm
-} from "react-hook-form";
-import Select from "react-select";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import { FilterValues } from "../../lib/interfaces";
 import colors from "../../styles/colors";
+import SelectReactHookForm from "../SelectReactHookForm";
+import FilterInputRangeNumber from "./FilterInputRangeNumber";
 
 interface FilterProps {
   onFilter: (data: any) => void;
@@ -39,100 +35,45 @@ const Filter = ({ onFilter, filterValues }: FilterProps) => {
           <FilterLabel>
             <h3>Tipo</h3>
           </FilterLabel>
-          <FilterInput>
-            <Controller
-              control={control}
-              defaultValue={filterValues.type || typeSelectOptions[0].value}
-              name="type"
-              render={({
-                field: { onChange, ...rest },
-              }: {
-                field: ControllerRenderProps<FieldValues, "type">;
-              }) => (
-                <Select
-                  ref={rest.ref}
-                  defaultValue={
-                    typeSelectOptions.find(
-                      (option) => option.value === filterValues.type
-                    ) || typeSelectOptions[0]
-                  }
-                  options={typeSelectOptions}
-                  onChange={(val) => onChange(val?.value)}
-                />
-              )}
-            />
-          </FilterInput>
+          <SelectReactHookForm
+            value={filterValues.type || typeSelectOptions[0].value}
+            controlReactHookForm={control}
+            name={"type"}
+            options={typeSelectOptions}
+          ></SelectReactHookForm>
         </FilterItem>
         <FilterItem>
           <FilterLabel>
             <h3>Mensalidade</h3>
           </FilterLabel>
-          <FilterInputNumber>
-            <input
-              type="number"
-              {...register("mensalidadeMin")}
-              placeholder={filterValues.mensalidadeMin?.toString() || "0"}
-              min={0}
-              
-            />{" "}
-            -{" "}
-            <input
-              type="number"
-              {...register("mensalidadeMax")}
-              placeholder={filterValues.mensalidadeMax?.toString() || "Máx."}
-              min={0}
-            />
-          </FilterInputNumber>
+          <FilterInputRangeNumber
+            name="mensalidade"
+            minValue={filterValues.mensalidadeMin?.toString() || "0"}
+            maxValue={filterValues.mensalidadeMax?.toString() || "Máx."}
+            registerReactHookForm={register}
+          ></FilterInputRangeNumber>
         </FilterItem>
         <FilterItem>
           <FilterLabel>
             <h3>Preço</h3>
           </FilterLabel>
-          <FilterInputNumber>
-            <input
-              type="number"
-              {...register("priceMin")}
-              placeholder={filterValues.priceMin?.toString() || "0"}
-              min={0}
-            />
-            -
-            <input
-              type="number"
-              {...register("priceMax")}
-              placeholder={filterValues.priceMax?.toString() || "Máx."}
-              min={0}
-            />
-          </FilterInputNumber>
+          <FilterInputRangeNumber
+            name="price"
+            minValue={filterValues.priceMin?.toString() || "0"}
+            maxValue={filterValues.priceMax?.toString() || "Máx."}
+            registerReactHookForm={register}
+          ></FilterInputRangeNumber>
         </FilterItem>
         <FilterItem>
           <FilterLabel>
             <h3>Tipo de Oferta</h3>
           </FilterLabel>
-          <FilterInput>
-            <Controller
-              control={control}
-              defaultValue={
-                filterValues.offerType || offerTypeSelectOptions[0].value
-              }
-              name="offerType"
-              render={({
-                field: { onChange, ...rest },
-              }: {
-                field: ControllerRenderProps<FieldValues, "offerType">;
-              }) => (
-                <Select
-                  ref={rest.ref}
-                  defaultValue={
-                    offerTypeSelectOptions.find(
-                      (option) => option.value === filterValues.offerType
-                    ) || offerTypeSelectOptions[0]
-                  }
-                  options={offerTypeSelectOptions}
-                  onChange={(val) => onChange(val?.value)}
-                />
-              )}
-            />
-          </FilterInput>
+          <SelectReactHookForm
+            value={filterValues.offerType || offerTypeSelectOptions[0].value}
+            controlReactHookForm={control}
+            name={"offerType"}
+            options={offerTypeSelectOptions}
+          ></SelectReactHookForm>
         </FilterItem>
 
         <FilterButton type="submit">Filtrar</FilterButton>
@@ -189,28 +130,6 @@ const FilterLabel = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 10px;
-`;
-
-const FilterInput = styled.div`
-  position: relative;
-  width: 100%;
-`;
-
-const FilterInputNumber = styled.div`
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  input {
-    border: 1px solid rgba(0, 0, 0, 0.4);
-    width: 40%;
-    height: 40px;
-    border-radius: 4px;
-    font-family: "Poppins", sans-serif;
-    text-align: center;
-  }
 `;
 
 const FilterButton = styled.button`
