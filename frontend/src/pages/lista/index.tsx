@@ -1,32 +1,33 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { parseCookies } from "nookies";
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
-import { FiFilter } from 'react-icons/fi';
+import { useEffect, useRef, useState } from "react";
+import { FiFilter } from "react-icons/fi";
 import styled from "styled-components";
 import Filter from "../../components/lista/Filter";
 import ListCards from "../../components/lista/ListCards";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
-import { getAllImovel } from "../../lib/imovel";
-import { FilterValues, IImovel } from "../../lib/interfaces";
-import { FilterQueryBuilder } from "../../lib/queryBuilder";
-import api from "../../services/api";
+import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
+import { FilterValues, IImovel, Page } from "../../lib/interfaces";
 import colors from "../../styles/colors";
 
 interface MarketplaceProps {
-  imoveis: IImovel[];
+  pageImoveis: Page<IImovel>;
 }
 
-export default function Marketplace({ imoveis }: MarketplaceProps) {
-  const { register, handleSubmit } = useForm();
+export default function Marketplace({ pageImoveis }: MarketplaceProps) {
+  const listaRoot = useRef<any>(null);
 
   const [blockSelect, setBlockSelect] = useState(false);
-  const [imoveisState, setImoveisState] = useState(imoveis);
+  const [imoveisState, setImoveisState] = useState(pageImoveis.data);
+  const [imoveisSize, setImoveisSize] = useState(pageImoveis.total);
   const [isLoadingItems, setisLoadingItems] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
+  const [page, setPage] = useState(1);
+
+
 
   const { user } = useAuth();
   const optionsSelect = [
@@ -42,52 +43,58 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
     setisLoadingItems(true);
 
     setFilterValues(data);
+
+    const pageImoveis = await getImoveisByFilterWithPage(data, 1);
     
-    const {
-      type,
-      mensalidadeMax,
-      mensalidadeMin,
-      offerType,
-      priceMin,
-      priceMax,
-    } = data;
-
-
-
-    const queryBuilder = new FilterQueryBuilder("/imovel/filter");
-
-    queryBuilder.type(type);
-    queryBuilder.offerType(offerType);
-    queryBuilder.mensalidade({ min: mensalidadeMin, max: mensalidadeMax });
-    queryBuilder.price({ min: priceMin, max: priceMax });
-
-    const { data: imoveis } = await api.get(queryBuilder.getQuery());
-    setImoveisState(imoveis);
+    setPage(1);
+    setImoveisState(pageImoveis.data);
+    setImoveisSize(pageImoveis.total);
     setisLoadingItems(false);
   };
+
+  async function onScrollEnd() {
+    const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
+
+    if (scrollTop + clientHeight === scrollHeight) {
+      
+      const moreImoveis = await getImoveisByFilterWithPage(filterValues, page + 1);
+      setImoveisState(oldState => [...oldState, ...moreImoveis.data]);
+      setImoveisSize(moreImoveis.total);
+      setPage(page + 1);
+      console.log(page)
+    }
+  }
+
+  function swapDisplaySelect(e: any) {
+    const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
+
+    if (scrollTop >= 150 && !blockSelect) {
+      setBlockSelect(true);
+    } else if (scrollTop < 150 && blockSelect) {
+      setBlockSelect(false);
+    }
+  }
 
   useEffect(() => {
     const defineMobileScreen = () => {
       const isMobile = window.innerWidth < 768;
       setIsMobileDevice(isMobile);
-    }
+    };
 
     defineMobileScreen();
 
     window.addEventListener("resize", defineMobileScreen);
-    
-    window.addEventListener("scroll", function (e) {
-      const scrollTop = window.scrollY;
+  }, []);
 
-      if (scrollTop >= 150 && !blockSelect) {
-        setBlockSelect(true);
-      } else if (scrollTop < 150 && blockSelect) {
-        setBlockSelect(false);
-      }
-    });
-  }, [blockSelect]);
+
   return (
-    <div>
+    <ListRoot
+      ref={listaRoot}
+      onScroll={(e) => {
+        swapDisplaySelect(e);
+        onScrollEnd();
+      }}
+    >
       <Header>
         <Salutation>
           <h1>Bem vindo, {user?.firstName}</h1>
@@ -113,12 +120,12 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
       <SectionImoveis>
         <LeftSection>
           <SearchInfo>
-            <SearchTotal>{imoveisState.length} imóveis encontrados</SearchTotal>
+            <SearchTotal>{imoveisSize} imóveis encontrados</SearchTotal>
             {isMobileDevice && (
               <FilterDisplayButton
                 onClick={() => setShowMobileFilter((oldState) => !oldState)}
               >
-                <FiFilter size={24} color={'rgba(0, 0, 0, 0.7)'}/>
+                <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
               </FilterDisplayButton>
             )}
           </SearchInfo>
@@ -129,14 +136,14 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -100 }}
               >
-                <Filter onFilter={onFilter} filterValues={filterValues}/>
+                <Filter onFilter={onFilter} filterValues={filterValues} />
               </FilterContainer>
             )}
           </AnimatePresence>
         </LeftSection>
         <ListCards imoveis={imoveisState} isLoadingItems={isLoadingItems} />
       </SectionImoveis>
-    </div>
+    </ListRoot>
   );
 }
 
@@ -151,14 +158,26 @@ export const getServerSideProps = async (ctx: any) => {
     };
   }
 
-  const imoveis = await getAllImovel(ctx);
+  const pageImoveis = await getImovelByPage(1);
 
   return {
     props: {
-      imoveis,
+      pageImoveis,
     },
   };
 };
+
+const ListRoot = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+
+  /**
+    As duas linhas acima forçam o scroll neste elemento ao invés de ocorrer no body,
+    assim eu consigo determinar o scroll máximo da página que é o scroll do elemento
+   */
+`;
 
 const Header = styled.header`
   position: relative;

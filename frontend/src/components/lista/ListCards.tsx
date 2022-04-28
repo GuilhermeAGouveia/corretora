@@ -9,18 +9,17 @@ interface ListCardsProps {
 }
 
 const ListCards = ({ isLoadingItems, imoveis }: ListCardsProps) => {
+
     return (
 
         <CardsContainerRoot>
-          {isLoadingItems ? (
-            "Loading"
-          ) : (
+       
             <CardsContainer>
-              {imoveis.map((imovel: IImovel) => (
+              {imoveis?.map((imovel: IImovel) => (
                 <CardImovel key={imovel.cod_imv} imovel={imovel}></CardImovel>
               ))}
             </CardsContainer>
-          )}
+          {isLoadingItems && (<Loading>Loading</Loading>)}
         </CardsContainerRoot>
 
     )
@@ -58,3 +57,9 @@ const CardsContainerRoot = styled.div`
     height: auto;
   }
 `;
+
+const Loading = styled.div`
+    position: absolute;
+    top: 0px;
+    
+    `;

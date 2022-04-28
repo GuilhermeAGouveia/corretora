@@ -79,3 +79,8 @@ export interface FilterValues {
   priceMin: number;
   priceMax: number;
 }
+
+export interface Page<T> {
+  data: T[];
+  total: number;
+}

@@ -97,6 +97,9 @@ export default {
       offerType?: OfferType; // Indica se é aluguel ou venda
     };
 
+    const page = parseInt((req.params.page as string) || "1");
+    const limit = parseInt((req.query.limit as string) || "10");
+
     function getRangeObject(range?: string) {
       if (!range) {
         return {};
@@ -150,17 +153,21 @@ export default {
       },
     };
 
-    const imoveis = await prisma.imovel.findMany({
-      where: {
-        ...filter.area,
-        ...filter.state,
-        ...filter.mensalidade,
-        ...filter.price,
-        ...filter.supDescribe,
-        ...filter.offerType(offerType),
-        ...filter.area,
-        ...filter.type,
-      },
+    const wherePrisma = {
+      ...filter.area,
+      ...filter.state,
+      ...filter.mensalidade,
+      ...filter.price,
+      ...filter.supDescribe,
+      ...filter.offerType(offerType),
+      ...filter.area,
+      ...filter.type,
+    };
+
+    const imoveis = prisma.imovel.findMany({
+      skip: (page - 1) * limit,
+      take: limit,
+      where: wherePrisma,
       include: {
         images: {
           select: {
@@ -171,8 +178,50 @@ export default {
         },
       },
     });
-    res.json(imoveis);
+
+    const count = prisma.imovel.count({
+      where: wherePrisma,
+    });
+
+    const [imoveisList, total] = await prisma.$transaction([imoveis, count]);
+
+    res.json({
+      data: imoveisList,
+      total,
+    });
+  },
+
+  page: async (req: Request, res: Response) => {
+    const page = parseInt(req.params.page as string); // page é um string que vem do params
+    const perPage = parseInt((req.query.perPage as string) || "10"); // perPage é um string que vem do query, se não tiver, usa 10 como default
+
+    const imoveis = prisma.imovel.findMany({
+      skip: perPage * (page - 1),
+      take: perPage,
+      include: {
+        images: {
+          select: {
+            url: true,
+            originalname: true,
+            size: true,
+          },
+        },
+      },
+    });
+
+    const total = prisma.imovel.count();
+
+    const [imoveisPage, totalPage] = await prisma.$transaction([
+      imoveis,
+      total,
+    ]);
+
+    res.json({
+      data: imoveisPage,
+      total: totalPage,
+    });
   },
 } as Controller & {
   filter: (req: Request, res: Response) => Promise<void>;
+  page: (req: Request, res: Response) => Promise<void>;
 };

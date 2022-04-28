@@ -62,9 +62,9 @@ const Header = () => {
         </CompanyBanner2>
       </HeaderContent>
       <HeaderBottom>
-        <HeaderBottomButton>Anunciar</HeaderBottomButton>
+        <HeaderBottomButton onClick={() => router.push("lista")}>Anunciar</HeaderBottomButton>
         <LineDivision />
-        <HeaderBottomButton>Procurar</HeaderBottomButton>
+        <HeaderBottomButton onClick={() => router.push("lista")}>Procurar</HeaderBottomButton>
       </HeaderBottom>
     </HeaderContainer>
   );
