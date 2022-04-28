@@ -54,7 +54,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
   async function onScrollEnd() {
     const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
 
-    if (scrollTop + clientHeight === scrollHeight) {
+    if (scrollTop + clientHeight === scrollHeight - 50) {
       
       const moreImoveis = await getImoveisByFilterWithPage(filterValues, page + 1);
       setImoveisState(oldState => [...oldState, ...moreImoveis.data]);
