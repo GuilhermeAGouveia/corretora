@@ -53,13 +53,14 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
 
   async function onScrollEnd() {
     const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
-
-    if (scrollTop + clientHeight === scrollHeight - 50) {
-      
+    //alert(`${scrollTop} ${clientHeight} ${scrollHeight}`);
+    if (scrollTop + clientHeight >= scrollHeight - 50 && !isLoadingItems) {
+      setisLoadingItems(true);
       const moreImoveis = await getImoveisByFilterWithPage(filterValues, page + 1);
       setImoveisState(oldState => [...oldState, ...moreImoveis.data]);
       setImoveisSize(moreImoveis.total);
       setPage(page + 1);
+      setisLoadingItems(false);
       console.log(page)
     }
   }
