@@ -227,7 +227,9 @@ const FilterContainer = styled(motion.div)`
   width: 100%;
   @media (max-width: 768px) {
     position: absolute;
+    width: 95%;
     top: auto;
+    left: 2.5%;
     z-index: 2;
     border-radius: 5px;
     background: white;
@@ -237,7 +239,7 @@ const FilterContainer = styled(motion.div)`
       content: "";
       position: absolute;
       top: -5px;
-      right: 30px;
+      right: 10px;
       width: 10px;
 
       height: 10px;
