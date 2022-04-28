@@ -53,7 +53,8 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
 
   async function onScrollEnd() {
     const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
-    //alert(`${scrollTop} ${clientHeight} ${scrollHeight}`);
+
+    // !isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
     if (scrollTop + clientHeight >= scrollHeight - 50 && !isLoadingItems) {
       setisLoadingItems(true);
       const moreImoveis = await getImoveisByFilterWithPage(filterValues, page + 1);
@@ -61,7 +62,6 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
       setImoveisSize(moreImoveis.total);
       setPage(page + 1);
       setisLoadingItems(false);
-      console.log(page)
     }
   }
 
@@ -207,6 +207,8 @@ const SectionImoveis = styled.section`
 
   @media (max-width: 768px) {
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
   }
 `;
 
