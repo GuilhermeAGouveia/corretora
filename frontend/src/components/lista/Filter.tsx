@@ -6,6 +6,7 @@ import {
 } from "react-hook-form";
 import Select from "react-select";
 import styled from "styled-components";
+import colors from "../../styles/colors";
 
 interface FilterProps {
   onFilter: (data: any) => void;
@@ -20,70 +21,123 @@ const Filter = ({ onFilter }: FilterProps) => {
     { value: "APTO", label: "Apartamento" },
     { value: "COMERCIO", label: "Comercio" },
   ];
-  return (
-    <FilterContainer>
-      <FilterTitle>
-        <h2>Filtros</h2>
-      </FilterTitle>
-      <FilterContent onSubmit={handleSubmit(onFilter)}>
-        <FilterItem>
-          <FilterLabel>
-            <h3>Tipo</h3>
-          </FilterLabel>
-          <FilterInput>
-            <Controller
-              control={control}
-              defaultValue={typeSelectOptions[0].value}
-              name="type"
-              render={({
-                field: { onChange, ...rest },
-              }: {
-                field: ControllerRenderProps<FieldValues, "type">;
-              }) => (
-                <Select
-                  ref={rest.ref}
-                  defaultValue={typeSelectOptions[0]}
-                  options={typeSelectOptions}
-                  onChange={(val) => onChange(val?.value)}
-                />
-              )}
-            />
-          </FilterInput>
-        </FilterItem>
-        <FilterItem>
-          <FilterLabel>
-            <h3>Mensalidade</h3>
-          </FilterLabel>
-          <FilterInputNumber>
-            <input type="number" {...register("mensalidadeMin")} /> - <input type="number"{...register("mensalidadeMax")} />
-          </FilterInputNumber>
-        </FilterItem>
-        <FilterItem>
-        <FilterLabel>
-          <h3>Preco</h3>
-        </FilterLabel>
-        <FilterInputNumber>
-          <input type="number" {...register("priceMin")} /> - <input type="number"{...register("priceMax")} />
-        </FilterInputNumber>
-      </FilterItem>
 
-        <button type="submit">Filtrar</button>
-      </FilterContent>
-    </FilterContainer>
+  const offerTypeSelectOptions = [
+    { value: "", label: "Todos" },
+    { value: "ALUGUEL", label: "Aluguel" },
+    { value: "VENDA", label: "Venda" },
+  ];
+
+  return (
+
+      <FilterContainer>
+        <FilterTitle>
+          <h2>Filtros</h2>
+        </FilterTitle>
+        <FilterContent onSubmit={handleSubmit(onFilter)}>
+          <FilterItem>
+            <FilterLabel>
+              <h3>Tipo</h3>
+            </FilterLabel>
+            <FilterInput>
+              <Controller
+                control={control}
+                defaultValue={typeSelectOptions[0].value}
+                name="type"
+                render={({
+                  field: { onChange, ...rest },
+                }: {
+                  field: ControllerRenderProps<FieldValues, "type">;
+                }) => (
+                  <Select
+                    ref={rest.ref}
+                    defaultValue={typeSelectOptions[0]}
+                    options={typeSelectOptions}
+                    onChange={(val) => onChange(val?.value)}
+                  />
+                )}
+              />
+            </FilterInput>
+          </FilterItem>
+          <FilterItem>
+            <FilterLabel>
+              <h3>Mensalidade</h3>
+            </FilterLabel>
+            <FilterInputNumber>
+              <input
+                type="number"
+                {...register("mensalidadeMin")}
+                placeholder="0"
+                min={0}
+              />{" "}
+              -{" "}
+              <input
+                type="number"
+                {...register("mensalidadeMax")}
+                placeholder="Máx."
+                min={0}
+              />
+            </FilterInputNumber>
+          </FilterItem>
+          <FilterItem>
+            <FilterLabel>
+              <h3>Preço</h3>
+            </FilterLabel>
+            <FilterInputNumber>
+              <input
+                type="number"
+                {...register("priceMin")}
+                placeholder="0"
+                min={0}
+              />{" "}
+              -{" "}
+              <input
+                type="number"
+                {...register("priceMax")}
+                placeholder="Máx."
+                min={0}
+              />
+            </FilterInputNumber>
+          </FilterItem>
+          <FilterItem>
+            <FilterLabel>
+              <h3>Tipo de Oferta</h3>
+            </FilterLabel>
+            <FilterInput>
+              <Controller
+                control={control}
+                defaultValue={offerTypeSelectOptions[0].value}
+                name="offerType"
+                render={({
+                  field: { onChange, ...rest },
+                }: {
+                  field: ControllerRenderProps<FieldValues, "offerType">;
+                }) => (
+                  <Select
+                    ref={rest.ref}
+                    defaultValue={offerTypeSelectOptions[0]}
+                    options={offerTypeSelectOptions}
+                    onChange={(val) => onChange(val?.value)}
+                  />
+                )}
+              />
+            </FilterInput>
+          </FilterItem>
+
+          <FilterButton type="submit">Filtrar</FilterButton>
+        </FilterContent>
+      </FilterContainer>
   );
 };
 
 export default Filter;
 
+
 const FilterContainer = styled.div`
   position: relative;
-  width: 210px;
+  width: 100%;
   height: auto;
   padding: 10px;
-
-  @media (max-width: 768px) {
-    display: none;
-  }
 `;
 
 const FilterTitle = styled.div`
@@ -97,13 +151,19 @@ const FilterContent = styled.form`
   position: relative;
   width: 100%;
   height: auto;
+  @media (max-width: 768px) {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+  }
 `;
 
 const FilterItem = styled.div`
   position: relative;
   width: 100%;
+  max-width: 150px;
   margin: 20px 0;
-
 
   &::after {
     content: "";
@@ -119,7 +179,6 @@ const FilterLabel = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 10px;
-
 `;
 
 const FilterInput = styled.div`
@@ -128,13 +187,32 @@ const FilterInput = styled.div`
 `;
 
 const FilterInputNumber = styled.div`
-    position: relative;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    input {
-        width: 40%;
-    }
+  input {
+    border: 1px solid rgba(0, 0, 0, 0.4);
+    width: 40%;
+    height: 40px;
+    border-radius: 4px;
+    font-family: "Poppins", sans-serif;
+    text-align: center;
+  }
+`;
+
+const FilterButton = styled.button`
+  position: relative;
+  width: 100%;
+  height: 40px;
+  border-radius: 5px;
+  background: ${colors.primary};
+  color: #fff;
+  font-family: "Poppins", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  border: none;
 `;

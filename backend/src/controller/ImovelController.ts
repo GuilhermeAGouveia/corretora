@@ -2,6 +2,11 @@ import { Imovel, ImovelType, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import Controller from "./IController";
 
+enum OfferType {
+  Venda = "VENDA",
+  Aluguel = "ALUGUEL",
+}
+
 const prisma = new PrismaClient();
 export default {
   count: async (req: Request, res: Response) => {
@@ -72,62 +77,89 @@ export default {
   },
 
   filter: async (req: Request, res: Response) => {
-    const { city, state, mensalidade, price, supDescribe, type, area } =
-      req.query as {
-        city?: string;
-        state?: string;
-        mensalidade?: string;
-        price?: string;
-        supDescribe?: string;
-        type?: ImovelType;
-        area?: string;
-      };
+    const {
+      city,
+      state,
+      mensalidade,
+      price,
+      supDescribe,
+      type,
+      area,
+      offerType,
+    } = req.query as {
+      city?: string;
+      state?: string;
+      mensalidade?: string;
+      price?: string;
+      supDescribe?: string;
+      type?: ImovelType;
+      area?: string;
+      offerType?: OfferType; // Indica se é aluguel ou venda
+    };
 
     function getRangeObject(range?: string) {
       if (!range) {
         return {};
       }
       const [min, max] = range.split("-");
-      
+
       return {
         min: parseInt(min),
-        max: max === 'Infinity' ? undefined : parseInt(max),
+        max: max === "Infinity" ? undefined : parseInt(max),
       };
     }
 
-    //mensalidade chega no formato min-max
+    // mensalidade, price e area chega no formato min-max
     const mensalidadeRange = getRangeObject(mensalidade);
-    console.log(mensalidadeRange)
     const priceRange = getRangeObject(price);
     const areaRange = getRangeObject(area);
 
-    const cityFilter = city ? { city: { contains: city } } : {};
-    const stateFilter = state ? { state: { contains: state } } : {};
-    const mensalidadeFilter = mensalidadeRange
-      ? {
-          mensalidade: { gte: mensalidadeRange.min, lte: mensalidadeRange.max },
-        }
-      : {};
-    const priceFilter = priceRange
-      ? { price: { gte: priceRange.min, lte: priceRange.max } }
-      : {};
-    const areaFilter = areaRange
-      ? { area: { gte: areaRange.min, lte: areaRange.max } }
-      : {};
-    const supDescribeFilter = supDescribe
-      ? { supDescribe: { contains: supDescribe } }
-      : {};
-    const typeFilter = type ? { type: { equals: type } } : {};
+    // cria um objeto com os filtros
+    const filter = {
+      city: city ? { city: { contains: city } } : {},
 
-     const imoveis = await prisma.imovel.findMany({
+      state: state ? { state: { contains: state } } : {},
+
+      mensalidade: mensalidadeRange
+        ? {
+            mensalidade: {
+              gte: mensalidadeRange.min,
+              lte: mensalidadeRange.max,
+            },
+          }
+        : {},
+      price: priceRange
+        ? { price: { gte: priceRange.min, lte: priceRange.max } }
+        : {},
+      area: areaRange
+        ? { area: { gte: areaRange.min, lte: areaRange.max } }
+        : {},
+      supDescribe: supDescribe
+        ? { supDescribe: { contains: supDescribe } }
+        : {},
+      type: type ? { type: { equals: type } } : {},
+      offerType: (offerType?: string) => {
+        switch (offerType) {
+          case OfferType.Venda:
+            return { price: { not: { equals: 0 } } };
+          case OfferType.Aluguel:
+            return { mensalidade: { not: { equals: 0 } } };
+          default:
+            return {};
+        }
+      },
+    };
+
+    const imoveis = await prisma.imovel.findMany({
       where: {
-        ...cityFilter,
-        ...stateFilter,
-        ...mensalidadeFilter,
-        ...priceFilter,
-        ...supDescribeFilter,
-        ...typeFilter,
-        ...areaFilter,
+        ...filter.area,
+        ...filter.state,
+        ...filter.mensalidade,
+        ...filter.price,
+        ...filter.supDescribe,
+        ...filter.offerType(offerType),
+        ...filter.area,
+        ...filter.type,
       },
       include: {
         images: {
