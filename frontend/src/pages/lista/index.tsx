@@ -9,7 +9,7 @@ import ListCards from "../../components/lista/ListCards";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 import { getAllImovel } from "../../lib/imovel";
-import { IImovel } from "../../lib/interfaces";
+import { FilterValues, IImovel } from "../../lib/interfaces";
 import { FilterQueryBuilder } from "../../lib/queryBuilder";
 import api from "../../services/api";
 import colors from "../../styles/colors";
@@ -26,6 +26,7 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
   const [isLoadingItems, setisLoadingItems] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
+  const [filterValues, setFilterValues] = useState({} as FilterValues);
 
   const { user } = useAuth();
   const optionsSelect = [
@@ -37,9 +38,11 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
     },
   ];
 
-  const onFilter = async (data: any) => {
+  const onFilter = async (data: FilterValues) => {
     setisLoadingItems(true);
 
+    setFilterValues(data);
+    
     const {
       type,
       mensalidadeMax,
@@ -48,6 +51,8 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
       priceMin,
       priceMax,
     } = data;
+
+
 
     const queryBuilder = new FilterQueryBuilder("/imovel/filter");
 
@@ -124,7 +129,7 @@ export default function Marketplace({ imoveis }: MarketplaceProps) {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -100 }}
               >
-                <Filter onFilter={onFilter} />
+                <Filter onFilter={onFilter} filterValues={filterValues}/>
               </FilterContainer>
             )}
           </AnimatePresence>

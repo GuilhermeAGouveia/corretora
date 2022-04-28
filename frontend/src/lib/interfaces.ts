@@ -70,3 +70,12 @@ export interface Pessoa {
   state: string;
   cep: string;
 }
+
+export interface FilterValues {
+  type: string;
+  offerType: string;
+  mensalidadeMin: number;
+  mensalidadeMax: number;
+  priceMin: number;
+  priceMax: number;
+}
