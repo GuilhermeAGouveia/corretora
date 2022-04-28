@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from "framer-motion";
-import { parseCookies } from "nookies";
 import { useEffect, useRef, useState } from "react";
 import { FiFilter } from "react-icons/fi";
 import styled from "styled-components";
@@ -147,16 +146,8 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
   );
 }
 
-export const getServerSideProps = async (ctx: any) => {
-  const token = parseCookies(ctx)["@corretora:token"];
-  if (!token) {
-    return {
-      redirect: {
-        destination: "/login",
-        permanent: false,
-      },
-    };
-  }
+export const getStaticProps = async (ctx: any) => {
+  
 
   const pageImoveis = await getImovelByPage(1);
 
