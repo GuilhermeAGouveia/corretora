@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { IImovel } from "../../lib/interfaces";
-import colors from "../../styles/colors";
-import CardImovel from "../CardImovel";
+import { IImovel } from "../../../lib/interfaces";
+import colors from "../../../styles/colors";
+import CardImovel from "../../CardImovel";
 
 interface ListCardsProps {
   imoveis: IImovel[];

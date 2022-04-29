@@ -3,7 +3,7 @@ import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
 import { FaSignOutAlt } from 'react-icons/fa';
 import styled from "styled-components";
-import { useAuth } from "../../../context/Auth";
+import { useAuth } from "../../../../context/Auth";
 
 const MenuUserOptions = () => {
   const { user, logout } = useAuth();

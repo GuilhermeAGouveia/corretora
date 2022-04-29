@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
-import Button from "../../../components/Button";
-import Logo from '../../../components/Logo';
-import SlideHorizontalBanner from "../../../components/SlideHorizontalBanner";
-import SlideVerticalBanner from "../../../components/SlideVerticalBanner";
 import colors from "../../../styles/colors";
+import Button from "../../Button";
+import Logo from '../../Logo';
+import SlideHorizontalBanner from "../../SlideHorizontalBanner";
+import SlideVerticalBanner from "../../SlideVerticalBanner";
 
 
 const Header = () => {

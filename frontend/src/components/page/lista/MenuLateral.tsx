@@ -3,7 +3,7 @@ import { useState } from "react";
 import { AiOutlineHome, AiOutlinePaperClip } from "react-icons/ai";
 import { FaBars, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
-import colors from "../../styles/colors";
+import colors from "../../../styles/colors";
 
 
 
@@ -87,7 +87,9 @@ const Item = styled.div`
 
 const ButtonMenuLateral = styled.button`
   position: relative;
-  width: 50px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
   background: transparent;
   border: none;
 `;

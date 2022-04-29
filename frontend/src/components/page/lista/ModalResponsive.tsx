@@ -77,5 +77,6 @@ const ActionButton = styled.button`
   color: #fff;
   width: 30px;
   height: 30px;
+  margin: 0 5px;
   border: none;
 `;

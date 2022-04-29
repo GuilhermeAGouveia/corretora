@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { FilterValues } from "../../../lib/interfaces";
-import SelectReactHookForm from "../../SelectReactHookForm";
+import { FilterValues } from "../../../../lib/interfaces";
+import SelectReactHookForm from "../../../SelectReactHookForm";
 import FilterInputRangeNumber from "../FilterInputRangeNumber";
 import { ActionButton, ActionContainer, ActionContent, ActionItem, ActionLabel, ActionTitle } from "./styles";
 

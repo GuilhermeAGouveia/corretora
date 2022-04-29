@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useAuth } from "../../context/Auth";
-import colors from "../../styles/colors";
+import { useAuth } from "../../../context/Auth";
+import colors from "../../../styles/colors";
 import MenuLateral from "./MenuLateral";
 import MenuUserOptions from "./MenuUserOptions/index";
 

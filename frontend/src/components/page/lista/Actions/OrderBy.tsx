@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
-import { OrderByValues } from "../../../lib/interfaces";
-import SelectReactHookForm from "../../SelectReactHookForm";
+import { OrderByValues } from "../../../../lib/interfaces";
+import SelectReactHookForm from "../../../SelectReactHookForm";
 import { ActionButton, ActionContainer, ActionContent, ActionItem, ActionLabel, ActionTitle } from "./styles";
 
 

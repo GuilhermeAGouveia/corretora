@@ -1,12 +1,12 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import { isMobile } from "react-device-detect";
 import { FaSortNumericDown } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
-import styled from "styled-components";
-import Filter from "../../components/lista/Actions/Filter";
-import OrderBy from "../../components/lista/Actions/OrderBy";
-import HeaderLista from "../../components/lista/Header";
-import ListCards from "../../components/lista/ListCards";
-import ModalResponsive from "../../components/lista/ModalResponsive";
+import Filter from "../../components/page/lista/Actions/Filter";
+import OrderBy from "../../components/page/lista/Actions/OrderBy";
+import HeaderLista from "../../components/page/lista/Header";
+import ListCards from "../../components/page/lista/ListCards";
+import ModalResponsive from "../../components/page/lista/ModalResponsive";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
@@ -16,7 +16,13 @@ import {
   OrderByValues,
   Page
 } from "../../lib/interfaces";
-import colors from "../../styles/colors";
+import {
+  LeftSection,
+  ListRoot,
+  SearchInfo,
+  SearchTotal,
+  SectionImoveis
+} from "./styles";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -29,7 +35,6 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
   const [imoveisState, setImoveisState] = useState(pageImoveis.data);
   const [imoveisSize, setImoveisSize] = useState(pageImoveis.total);
   const [isLoadingItems, setisLoadingItems] = useState(false);
-  const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
   const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
   const [page, setPage] = useState(1);
@@ -66,7 +71,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
 
     setFilterValues(filterValues);
 
-    const pageImoveis = await await getImoveisByFilterWithPage(
+    const pageImoveis = await getImoveisByFilterWithPage(
       { ...filterValues, ...orderByValues },
       1
     );
@@ -104,17 +109,6 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     }
   }
 
-  useEffect(() => {
-    const defineMobileScreen = () => {
-      const isMobile = window.innerWidth < 768;
-      setIsMobileDevice(isMobile);
-    };
-
-    defineMobileScreen();
-
-    window.addEventListener("resize", defineMobileScreen);
-  }, []);
-
   return (
     <ListRoot
       ref={listaRoot}
@@ -147,13 +141,13 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
             <SearchTotal>{imoveisSize} imóveis encontrados</SearchTotal>
           </SearchInfo>
           <ModalResponsive
-            isMobile={isMobileDevice}
+            isMobile={isMobile}
             buttonContent={<FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />}
           >
             <Filter onFilter={onFilter} filterValues={filterValues} />
           </ModalResponsive>
           <ModalResponsive
-            isMobile={isMobileDevice}
+            isMobile={isMobile}
             buttonContent={
               <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
             }
@@ -176,72 +170,3 @@ export const getStaticProps = async (ctx: any) => {
     },
   };
 };
-
-const ListRoot = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
-
-  /**
-    As duas linhas acima forçam o scroll neste elemento ao invés de ocorrer no body,
-    assim eu consigo determinar o scroll máximo da página que é o scroll do elemento
-   */
-`;
-
-const SectionImoveis = styled.section`
-  position: relative;
-  width: 100%;
-  min-height: 100%;
-  height: auto;
-  background: ${colors.white};
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-  }
-`;
-
-const LeftSection = styled.div`
-  position: relative;
-  width: 210px;
-  height: auto;
-  padding: 10px;
-  display: block;
-
-  @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 5px 10px;
-    width: 100%;
-  }
-`;
-
-const SearchInfo = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  padding: 10px;
-  display: block;
-
-  @media (max-width: 768px) {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-  }
-`;
-
-const SearchTotal = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  font-family: "Poppins", sans-serif;
-  font-size: 10px;
-  font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
-`;

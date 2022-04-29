@@ -118,7 +118,7 @@ const CardImovelContainer = styled("div")`
   margin: 5px;
   padding-bottom: 10px;
   border-radius: 4px;
-  box-shadow: 1px 4px 13px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 3px 4px 5px 0 rgba(0, 0, 0, 0.15);
   overflow: hidden;
   cursor: pointer;
   transition: all 0.3s ease;
@@ -128,11 +128,7 @@ const CardImovelContainer = styled("div")`
   }
 
   @media (max-width: 768px) {
-    max-width: 50vw;
-    margin: 0;
-    box-shadow: none;
-    border: 1px solid rgba(0, 0, 0, 0.25);
-    border-radius: 0;
+    width: calc(50% - 10px);
   }
 `;
 
