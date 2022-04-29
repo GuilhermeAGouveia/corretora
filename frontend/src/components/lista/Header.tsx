@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useAuth } from "../../context/Auth";
 import colors from "../../styles/colors";
-import Button from "../Button";
 import MenuLateral from "./MenuLateral";
 import MenuUserOptions from "./MenuUserOptions/index";
 
@@ -12,7 +11,6 @@ const HeaderLista = () => {
       <TopBar>
         <MenuLateral></MenuLateral>
         <RightButtons>
-          <Button label="Favoritos"></Button>
           <MenuUserOptions />
         </RightButtons>
       </TopBar>
@@ -32,7 +30,7 @@ const Header = styled.header`
 const TopBar = styled.div`
   position: relative;
   width: 100%;
-  height: auto;
+  height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;

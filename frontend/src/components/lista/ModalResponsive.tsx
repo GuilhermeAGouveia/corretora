@@ -1,29 +1,43 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { ReactElement, useRef, useState } from "react";
 import styled from "styled-components";
 
 interface ModalResponsiveProps {
-    children: React.ReactNode;
-    controlDisplay: boolean;
-    positionIndicatorButtonAction: number;
+  children: React.ReactNode;
+  isMobile: boolean;
+  buttonContent: ReactElement;
 }
 
-const ModalResponsive = ({children, controlDisplay, positionIndicatorButtonAction}: ModalResponsiveProps) => {
-    return (
-        <AnimatePresence>
-        {controlDisplay && (
-          <FilterContainer
-            positionindicator={
-                positionIndicatorButtonAction            }
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -100 }}
-          >
-            {children}
-          </FilterContainer>
-        )}
-      </AnimatePresence>
-    )
-}
+const ModalResponsive = ({
+  children,
+  buttonContent,
+  isMobile,
+}: ModalResponsiveProps) => {
+    const buttonActionRef = useRef<HTMLButtonElement>(null);
+  const [isActive, setIsActive] = useState(false);
+  return (
+    <AnimatePresence>
+      {isMobile && (
+        <ActionButton
+          onClick={() => setIsActive((oldState) => !oldState)}
+          ref={buttonActionRef}
+        >
+          {buttonContent}
+        </ActionButton>
+      )}
+      {(!isMobile || isActive) && (
+        <FilterContainer
+          positionindicator={ buttonActionRef.current?.getBoundingClientRect().left}
+          initial={{ opacity: 0, y: -100 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -100 }}
+        >
+          {children}
+        </FilterContainer>
+      )}
+    </AnimatePresence>
+  );
+};
 
 export default ModalResponsive;
 
@@ -33,7 +47,7 @@ const FilterContainer = styled(motion.div)<any>`
   @media (max-width: 768px) {
     position: absolute;
     width: 95%;
-    top: auto;
+    top: 45px; // 30px do button mais 15 px de distancia
     left: 2.5%;
     z-index: 2;
     border-radius: 5px;
@@ -52,4 +66,12 @@ const FilterContainer = styled(motion.div)<any>`
       background: white;
     }
   }
+`;
+
+const ActionButton = styled.button`
+  position: relative;
+  color: #fff;
+  width: 30px;
+  height: 30px;
+  border: none;
 `;

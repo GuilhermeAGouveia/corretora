@@ -4,35 +4,26 @@ import colors from "../../styles/colors";
 import CardImovel from "../CardImovel";
 
 interface ListCardsProps {
-    imoveis: IImovel[];
-    isLoadingItems: boolean;
+  imoveis: IImovel[];
+  isLoadingItems: boolean;
 }
 
 const ListCards = ({ isLoadingItems, imoveis }: ListCardsProps) => {
-
-    return (
-
-        <CardsContainerRoot>
-       
-            <CardsContainer>
-              {imoveis?.map((imovel: IImovel) => (
-                <CardImovel key={imovel.cod_imv} imovel={imovel}></CardImovel>
-              ))}
-            </CardsContainer>
-          {isLoadingItems && (<Loading>Loading</Loading>)}
-        </CardsContainerRoot>
-
-    )
-}
+  return (
+    <CardsContainerRoot>
+      <CardsContainer>
+        {imoveis?.map((imovel: IImovel) => (
+          <CardImovel key={imovel.cod_imv} imovel={imovel}></CardImovel>
+        ))}
+      </CardsContainer>
+      {isLoadingItems && <LoadingBottom>Loading More ...</LoadingBottom>}
+    </CardsContainerRoot>
+  );
+};
 export default ListCards;
-
 
 const CardsContainer = styled.div`
   position: relative;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin: 0 auto;
   max-width: 1200px;
   width: 90%;
   margin: 0 5%;
@@ -58,8 +49,12 @@ const CardsContainerRoot = styled.div`
   }
 `;
 
-const Loading = styled.div`
-    position: absolute;
-    top: 0px;
-    
-    `;
+const LoadingBottom = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  bottom: -50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

@@ -11,7 +11,7 @@ const MenuLateral = () => {
   return (
  
       <AnimatePresence>
-        <ButtonMenuLateral onClick={handleClick}><FaBars size={16} color={colors.primary}></FaBars></ButtonMenuLateral>
+        <ButtonMenuLateral onClick={handleClick}><FaBars size={20} color={colors.primary}></FaBars></ButtonMenuLateral>
         {isActive && (
             <>
           <MenuLateralContainer

@@ -31,6 +31,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
           priority
         />
       </CardImovelImage>
+
       <LineDivider />
       <CardDescription>
         <CardImovelPrice>
@@ -69,12 +70,14 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
 
 export default CardImovel;
 
-const CardImovelContainer = styled('div')`
+const CardImovelContainer = styled("div")`
   position: relative;
+  float: left;
   width: 250px;
   min-height: 200px;
   background: white;
   margin: 5px;
+  padding-bottom: 10px;
   border-radius: 4px;
   box-shadow: 1px 4px 13px 0 rgba(0, 0, 0, 0.25);
   overflow: hidden;
@@ -149,13 +152,13 @@ const CardLabel = styled.div`
   position: relative;
   padding: 3px 5px;
   border-radius: 10px;
-
+  float: left;
   font-size: 9px;
   max-height: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${colors.primary};
+  background-color: ${colors.secondary};
   margin: 1px;
   font-weight: bold;
   color: white;
@@ -170,9 +173,8 @@ const CardLabel = styled.div`
 const CardLabelContainer = styled.div`
   position: relative;
   height: 20px;
-  display: flex;
   width: 100%;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+ 
+
   align-items: center;
 `;
