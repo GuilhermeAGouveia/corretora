@@ -21,7 +21,7 @@ import {
   SearchInfo,
   SearchTotal,
   SectionImoveis
-} from "./styles";
+} from "../../styles/pages/lista";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;

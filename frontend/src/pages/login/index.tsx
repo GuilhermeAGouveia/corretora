@@ -5,7 +5,7 @@ import BannerInfo from "../../components/BannerInfo";
 import Input from "../../components/Input";
 import LogoComponent from "../../components/Logo";
 import { useAuth } from "../../context/Auth";
-import { DivisionLine, LoginContainer, LoginContainerTitle, LoginForm, LoginFormButton, LoginLeft, LoginLeftContent, LoginRight, LogoCompany, SignInGoogleButton, SignUpButton } from "./styles";
+import { DivisionLine, LoginContainer, LoginContainerTitle, LoginForm, LoginFormButton, LoginLeft, LoginLeftContent, LoginRight, LogoCompany, SignInGoogleButton, SignUpButton } from "../../styles/pages/login";
 
 export default function Login() {
 

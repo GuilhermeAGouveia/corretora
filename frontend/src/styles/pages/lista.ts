@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import colors from "../../styles/colors";
+import colors from "../colors";
 
 export const ListRoot = styled.div`
   position: relative;
