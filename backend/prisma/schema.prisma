@@ -11,20 +11,21 @@ datasource db {
 }
 
 model Pessoa {
-  id        String     @id @default(cuid())
-  email     String     @unique
-  firstName String
-  lastName  String
-  password  String
-  birthdate DateTime
-  address   String
-  city      String
-  state     String
-  cep       String
-  phones    Telefone[]
-  createdAt DateTime   @default(now())
-  Locador   Locador?
-  Locatario Locatario?
+  id             String           @id @default(cuid())
+  email          String           @unique
+  firstName      String
+  lastName       String
+  password       String
+  birthdate      DateTime
+  address        String
+  city           String
+  state          String
+  cep            String
+  phones         Telefone[]
+  createdAt      DateTime         @default(now())
+  Locador        Locador?
+  Locatario      Locatario?
+  FavoriteImovel FavoriteImovel[]
 }
 
 model Telefone {
@@ -49,6 +50,16 @@ model Locatario {
   pessoa     Pessoa      @relation(fields: [cod_lct], references: [id], onDelete: Cascade)
   associados Associado[]
   contrato   Contrato[]
+}
+
+model FavoriteImovel {
+  idPessoa String
+  idImovel String
+
+  pessoa Pessoa @relation(fields: [idPessoa], references: [id], onDelete: Cascade)
+  imovel Imovel @relation(fields: [idImovel], references: [cod_imv], onDelete: Cascade)
+
+  @@id([idPessoa, idImovel], name: "idFavoriteImovel")
 }
 
 model Imovel {
@@ -80,10 +91,11 @@ model Imovel {
   mensalidade Float    @default(0)
   createdAt   DateTime @default(now())
 
-  locador      Locador         @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
-  regrasImovel Regras_Imovel[]
-  contratos    Contrato[]
-  images       Image[]
+  locador        Locador          @relation(fields: [cod_lcd], references: [cod_lcd], onDelete: Restrict)
+  regrasImovel   Regras_Imovel[]
+  contratos      Contrato[]
+  images         Image[]
+  FavoriteImovel FavoriteImovel[]
 }
 
 enum LevelFurnished {
