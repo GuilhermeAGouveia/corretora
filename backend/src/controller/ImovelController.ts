@@ -77,118 +77,148 @@ export default {
   },
 
   filter: async (req: Request, res: Response) => {
-    const {
-      city,
-      state,
-      mensalidade,
-      price,
-      supDescribe,
-      type,
-      area,
-      offerType,
-    } = req.query as {
-      city?: string;
-      state?: string;
-      mensalidade?: string;
-      price?: string;
-      supDescribe?: string;
-      type?: ImovelType;
-      area?: string;
-      offerType?: OfferType; // Indica se é aluguel ou venda
-    };
-
-    const page = parseInt((req.params.page as string) || "1");
-    const limit = parseInt((req.query.limit as string) || "10");
-
-    function getRangeObject(range?: string) {
-      if (!range) {
-        return {};
-      }
-      const [min, max] = range.split("-");
-
-      return {
-        min: parseInt(min),
-        max: max === "Infinity" ? undefined : parseInt(max),
+    try {
+      const {
+        city,
+        state,
+        mensalidade,
+        price,
+        supDescribe,
+        type,
+        area,
+        offerType,
+        orderBy,
+        sort,
+      } = req.query as {
+        city?: string;
+        state?: string;
+        mensalidade?: string;
+        price?: string;
+        supDescribe?: string;
+        type?: ImovelType;
+        area?: string;
+        offerType?: OfferType; // Indica se é aluguel ou venda
+        orderBy?: string;
+        sort?: string;
       };
-    }
 
-    // mensalidade, price e area chega no formato min-max
-    const mensalidadeRange = getRangeObject(mensalidade);
-    const priceRange = getRangeObject(price);
-    const areaRange = getRangeObject(area);
+      const page = parseInt((req.params.page as string) || "1");
+      const limit = parseInt((req.query.limit as string) || "10");
 
-    // cria um objeto com os filtros
-    const filter = {
-      city: city ? { city: { contains: city } } : {},
-
-      state: state ? { state: { contains: state } } : {},
-
-      mensalidade: mensalidadeRange
-        ? {
-            mensalidade: {
-              gte: mensalidadeRange.min,
-              lte: mensalidadeRange.max,
-            },
-          }
-        : {},
-      price: priceRange
-        ? { price: { gte: priceRange.min, lte: priceRange.max } }
-        : {},
-      area: areaRange
-        ? { area: { gte: areaRange.min, lte: areaRange.max } }
-        : {},
-      supDescribe: supDescribe
-        ? { supDescribe: { contains: supDescribe } }
-        : {},
-      type: type ? { type: { equals: type } } : {},
-      offerType: (offerType?: string) => {
-        switch (offerType) {
-          case OfferType.Venda:
-            return { price: { not: { equals: 0 } } };
-          case OfferType.Aluguel:
-            return { mensalidade: { not: { equals: 0 } } };
-          default:
-            return {};
+      function getRangeObject(range?: string) {
+        if (!range) {
+          return {};
         }
-      },
-    };
+        const [min, max] = range.split("-");
 
-    const wherePrisma = {
-      ...filter.area,
-      ...filter.state,
-      ...filter.mensalidade,
-      ...filter.price,
-      ...filter.supDescribe,
-      ...filter.offerType(offerType),
-      ...filter.area,
-      ...filter.type,
-    };
+        return {
+          min: parseInt(min),
+          max: max === "Infinity" ? undefined : parseInt(max),
+        };
+      }
 
-    const imoveis = prisma.imovel.findMany({
-      skip: (page - 1) * limit,
-      take: limit,
-      where: wherePrisma,
-      include: {
-        images: {
-          select: {
-            url: true,
-            originalname: true,
-            size: true,
+      // mensalidade, price e area chega no formato min-max
+      const mensalidadeRange = getRangeObject(mensalidade);
+      const priceRange = getRangeObject(price);
+      const areaRange = getRangeObject(area);
+
+      // cria um objeto com os filtros
+      const filter = {
+        city: city ? { city: { contains: city } } : {},
+
+        state: state ? { state: { contains: state } } : {},
+
+        mensalidade: mensalidadeRange
+          ? {
+              mensalidade: {
+                gte: mensalidadeRange.min,
+                lte: mensalidadeRange.max,
+              },
+            }
+          : {},
+        price: priceRange
+          ? { price: { gte: priceRange.min, lte: priceRange.max } }
+          : {},
+        area: areaRange
+          ? { area: { gte: areaRange.min, lte: areaRange.max } }
+          : {},
+        supDescribe: supDescribe
+          ? { supDescribe: { contains: supDescribe } }
+          : {},
+        type: type ? { type: { equals: type } } : {},
+        offerType: (offerType?: string) => {
+          switch (offerType) {
+            case OfferType.Venda:
+              return { price: { not: { equals: 0 } } };
+            case OfferType.Aluguel:
+              return { mensalidade: { not: { equals: 0 } } };
+            default:
+              return {};
+          }
+        },
+      };
+
+      // define ordenação
+
+      const wherePrisma = {
+        ...filter.area,
+        ...filter.state,
+        ...filter.mensalidade,
+        ...filter.price,
+        ...filter.supDescribe,
+        ...filter.offerType(offerType),
+        ...filter.area,
+        ...filter.type,
+      };
+
+      // Se o campo em orderBy não existir, um error será lançado
+      function defineOrderBy(orderBy?: string, sort?: string) {
+        if (!orderBy) {
+          return {};
+        }
+
+        if (Object.keys({} as Imovel).includes(orderBy)) {
+          throw new Error(`Field ${orderBy} not found`);
+        }
+
+        if (!["asc", "desc"].includes((sort as string).toLowerCase())) {
+          throw new Error(`Sort ${sort} not found`);
+        }
+
+        return {
+          [orderBy]: sort?.toLowerCase() || "asc",
+        };
+      }
+
+      const imoveis = prisma.imovel.findMany({
+        skip: (page - 1) * limit,
+        take: limit,
+        where: wherePrisma,
+        orderBy: defineOrderBy(orderBy, sort),
+        include: {
+          images: {
+            select: {
+              url: true,
+              originalname: true,
+              size: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    const count = prisma.imovel.count({
-      where: wherePrisma,
-    });
+      const count = prisma.imovel.count({
+        where: wherePrisma,
+      });
 
-    const [imoveisList, total] = await prisma.$transaction([imoveis, count]);
+      const [imoveisList, total] = await prisma.$transaction([imoveis, count]);
 
-    res.json({
-      data: imoveisList,
-      total,
-    });
+      res.json({
+        data: imoveisList,
+        total,
+      });
+    } catch (error) {
+      res.status(400).json(error);
+    }
   },
 
   page: async (req: Request, res: Response) => {

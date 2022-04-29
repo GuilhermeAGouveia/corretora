@@ -10,7 +10,7 @@ import OrderBy from "../../components/lista/OrderBy";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
-import { FilterValues, IImovel, Page } from "../../lib/interfaces";
+import { FilterValues, IImovel, OrderByValues, Page } from "../../lib/interfaces";
 import colors from "../../styles/colors";
 
 interface MarketplaceProps {
@@ -30,7 +30,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
   const [showMobileOrder, setShowMobileOrder] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
-  const [orderByValues, setOrderByValues] = useState<string>();
+  const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
   const [page, setPage] = useState(1);
 
   const { user } = useAuth();
@@ -43,16 +43,26 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     },
   ];
 
-  const onOrderBy = (data: any) => {
-    console.log(data);
+  const onOrderBy = async (orderByOptions: OrderByValues) => {
+    console.log("orderByOptions", orderByOptions);
+     setisLoadingItems(true);
+
+    setOrderByValues(orderByOptions);
+
+    const pageImoveis = await getImoveisByFilterWithPage({...filterValues, ...orderByOptions}, 1);
+
+    setPage(1);
+    setImoveisState(pageImoveis.data);
+    setImoveisSize(pageImoveis.total);
+    setisLoadingItems(false);
   }
 
-  const onFilter = async (data: FilterValues) => {
+  const onFilter = async (filterValues: FilterValues) => {
     setisLoadingItems(true);
 
-    setFilterValues(data);
+    setFilterValues(filterValues);
 
-    const pageImoveis = await getImoveisByFilterWithPage(data, 1);
+    const pageImoveis = await await getImoveisByFilterWithPage({...filterValues, ...orderByValues}, 1);;
 
     setPage(1);
     setImoveisState(pageImoveis.data);

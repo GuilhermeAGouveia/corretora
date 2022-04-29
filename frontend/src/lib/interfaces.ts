@@ -72,13 +72,20 @@ export interface Pessoa {
 }
 
 export interface FilterValues {
-  type: string;
-  offerType: string;
-  mensalidadeMin: number;
-  mensalidadeMax: number;
-  priceMin: number;
-  priceMax: number;
+  type?: string;
+  offerType?: string;
+  mensalidadeMin?: number;
+  mensalidadeMax?: number;
+  priceMin?: number;
+  priceMax?: number;
 }
+
+export interface OrderByValues {
+  orderBy?: string;
+  sort?: string;
+}
+
+export interface FilterOrderQuery extends FilterValues, OrderByValues {}
 
 export interface Page<T> {
   data: T[];

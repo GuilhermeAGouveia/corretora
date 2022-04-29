@@ -1,12 +1,13 @@
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
+import { OrderByValues } from "../../lib/interfaces";
 import colors from "../../styles/colors";
 import SelectReactHookForm from "../SelectReactHookForm";
 
 interface OrderByProps {
   onOrderBy: (data: any) => void;
 
-  value?: string;
+  value?: OrderByValues;
 }
 
 const OrderBy = ({ onOrderBy, value }: OrderByProps) => {
@@ -17,9 +18,13 @@ const OrderBy = ({ onOrderBy, value }: OrderByProps) => {
     { value: "DESC", label: "Descendente" },
   ];
 
+
   const orderByFieldSelectOptions = [
+    { value: "createdAt", label: "Data de criação" },
     { value: "mensalidade", label: "Mensalidade" },
-    { value: "preco", label: "Preço" },
+    { value: "price", label: "Preço" },
+    { value: "city", label: "Cidade" },
+    { value: "area", label: "Área" },
   ];
   return (
     <FilterContainer>
@@ -32,10 +37,10 @@ const OrderBy = ({ onOrderBy, value }: OrderByProps) => {
             <h3>Campo</h3>
           </FilterLabel>
           <SelectReactHookForm
-            name={"orderbyfield"}
+            name={"orderBy"}
             options={orderByFieldSelectOptions}
             controlReactHookForm={control}
-            value={value || orderByFieldSelectOptions[0].value}
+            value={value?.orderBy || orderByFieldSelectOptions[0].value}
           ></SelectReactHookForm>
         </FilterItem>
         <FilterItem>
@@ -43,10 +48,10 @@ const OrderBy = ({ onOrderBy, value }: OrderByProps) => {
             <h3>Modo</h3>
           </FilterLabel>
           <SelectReactHookForm
-            name={"orderby"}
+            name={"sort"}
             options={orderBySelectOptions}
             controlReactHookForm={control}
-            value={value || orderBySelectOptions[0].value}
+            value={value?.orderBy || orderBySelectOptions[0].value}
           ></SelectReactHookForm>
         </FilterItem>
 

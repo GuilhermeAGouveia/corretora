@@ -42,4 +42,7 @@ export class FilterQueryBuilder extends QueryBuilder {
   };
   offerType = (offerType?: string) =>
     !!offerType && this.addFilter(`offerType=${offerType}`);
+  orderBy = (orderBy?: string) =>
+    !!orderBy && this.addFilter(`orderBy=${orderBy}`);
+  sort = (sort?: string) => !!sort && this.addFilter(`sort=${sort}`);
 }

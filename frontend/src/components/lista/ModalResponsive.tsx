@@ -12,7 +12,7 @@ const ModalResponsive = ({children, controlDisplay, positionIndicatorButtonActio
         <AnimatePresence>
         {controlDisplay && (
           <FilterContainer
-            positionIndicator={
+            positionindicator={
                 positionIndicatorButtonAction            }
             initial={{ opacity: 0, y: -100 }}
             animate={{ opacity: 1, y: 0 }}
@@ -44,7 +44,7 @@ const FilterContainer = styled(motion.div)<any>`
       content: "";
       position: absolute;
       top: -5px;
-      left: ${(props: any) => props.positionIndicator}px;
+      left: ${(props: any) => props.positionindicator}px;
       width: 10px;
 
       height: 10px;
