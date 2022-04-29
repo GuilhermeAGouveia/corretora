@@ -1,9 +1,12 @@
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
+import { FaSortNumericDown } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
 import styled from "styled-components";
 import Filter from "../../components/lista/Filter";
 import ListCards from "../../components/lista/ListCards";
+import ModalResponsive from "../../components/lista/ModalResponsive";
+import OrderBy from "../../components/lista/OrderBy";
 import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
@@ -27,6 +30,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
   const [showMobileOrder, setShowMobileOrder] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
+  const [orderByValues, setOrderByValues] = useState<string>();
   const [page, setPage] = useState(1);
 
   const { user } = useAuth();
@@ -38,6 +42,10 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
       label: "Vender",
     },
   ];
+
+  const onOrderBy = (data: any) => {
+    console.log(data);
+  }
 
   const onFilter = async (data: FilterValues) => {
     setisLoadingItems(true);
@@ -126,6 +134,8 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
             <SearchTotal>{imoveisSize} imóveis encontrados</SearchTotal>
 
             {isMobileDevice && (
+              // todos os botões de filtro e ordenação são exibidos apenas em dispositivos móveis, 
+              // e controlam a exibição de seus respectivos containers resposivos definidos abaixo
               <ActionsList>
                 <ActionButton
                   ref={buttonFilter}
@@ -137,39 +147,27 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
                   ref={buttonOrder}
                   onClick={() => setShowMobileOrder((oldState) => !oldState)}
                 >
-                  <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                  <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
                 </ActionButton>
               </ActionsList>
             )}
           </SearchInfo>
-          <AnimatePresence>
-            {(!isMobileDevice || showMobileFilter) && (
-              <FilterContainer
-                positionIndicator={
-                  buttonFilter.current?.getBoundingClientRect().left
-                }
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -100 }}
-              >
-                <Filter onFilter={onFilter} filterValues={filterValues} />
-              </FilterContainer>
-            )}
-          </AnimatePresence>
-          <AnimatePresence>
-            {(!isMobileDevice || showMobileOrder) && (
-              <FilterContainer
-                positionIndicator={
-                  buttonOrder.current?.getBoundingClientRect().left
-                }
-                initial={{ opacity: 0, y: -100 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -100 }}
-              >
-                <Filter onFilter={onFilter} filterValues={filterValues} />
-              </FilterContainer>
-            )}
-          </AnimatePresence>
+          <ModalResponsive
+            controlDisplay={!isMobileDevice || showMobileFilter}
+            positionIndicatorButtonAction={
+              buttonFilter.current?.getBoundingClientRect().left
+            }
+          >
+            <Filter onFilter={onFilter} filterValues={filterValues} />
+          </ModalResponsive>
+          <ModalResponsive
+            controlDisplay={!isMobileDevice || showMobileOrder}
+            positionIndicatorButtonAction={
+              buttonOrder.current?.getBoundingClientRect().left
+            }
+          >
+            <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
+          </ModalResponsive>
         </LeftSection>
         <ListCards imoveis={imoveisState} isLoadingItems={isLoadingItems} />
       </SectionImoveis>
