@@ -4,6 +4,7 @@ import { FaSortNumericDown } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
 import styled from "styled-components";
 import Filter from "../../components/lista/Filter";
+import HeaderLista from "../../components/lista/Header";
 import ListCards from "../../components/lista/ListCards";
 import ModalResponsive from "../../components/lista/ModalResponsive";
 import OrderBy from "../../components/lista/OrderBy";
@@ -116,11 +117,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
         onScrollEnd();
       }}
     >
-      <Header>
-        <Salutation>
-          <h1>Bem vindo, {user?.firstName}</h1>
-        </Salutation>
-      </Header>
+      <HeaderLista></HeaderLista>
       <SelectOption
         style={
           blockSelect
@@ -207,29 +204,7 @@ const ListRoot = styled.div`
    */
 `;
 
-const Header = styled.header`
-  position: relative;
-  width: 100%;
-  height: auto;
-  background: ${colors.secondary};
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-`;
 
-const Salutation = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  background: ${colors.secondary};
-  display: flex;
-  font-family: "Poppins", sans-serif;
-  font-size: 18px;
-  font-weight: 500;
-  color: ${colors.primary};
-  justify-content: center;
-  align-items: flex-start;
-`;
 
 const SectionImoveis = styled.section`
   position: relative;
