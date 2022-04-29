@@ -1,46 +1,50 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
-import { FaBars } from "react-icons/fa";
+import { AiOutlineHome, AiOutlinePaperClip } from "react-icons/ai";
+import { FaBars, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
 import colors from "../../styles/colors";
+
+
 
 const MenuLateral = () => {
   const [isActive, setIsActive] = useState(false);
   const handleClick = () => setIsActive(!isActive);
 
   return (
- 
-      <AnimatePresence>
-        <ButtonMenuLateral onClick={handleClick}><FaBars size={20} color={colors.primary}></FaBars></ButtonMenuLateral>
-        {isActive && (
-            <>
+    <AnimatePresence>
+      <ButtonMenuLateral onClick={handleClick}>
+        <FaBars size={20} color={colors.primary}></FaBars>
+      </ButtonMenuLateral>
+      {isActive && (
+        <>
           <MenuLateralContainer
             initial={{ opacity: 0, x: -300, y: -300 }}
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -300, y: -300 }}
-            >
-            <Item>Favoritos</Item>
+          >
+            <Item><FaRegHeart size={'1rem'}/><span>Favoritos</span></Item>
+            <Item><AiOutlinePaperClip size={'1rem'}/><span>Meus Contratos</span></Item>
+            <Item><AiOutlineHome size={'1rem'}/><span>Meus Imóveis</span></Item>
           </MenuLateralContainer>
           <FalseBg onClick={() => setIsActive(false)}></FalseBg>
-          </>
-        )}
-        
-      </AnimatePresence>
+        </>
+      )}
+    </AnimatePresence>
   );
 };
 
 export default MenuLateral;
 
 const FalseBg = styled.div`
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1;
-`
-
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+`;
 
 const MenuLateralContainer = styled(motion.div)`
   position: fixed;
@@ -54,14 +58,36 @@ const MenuLateralContainer = styled(motion.div)`
 `;
 
 const Item = styled.div`
+  position: relative;
   padding: 20px;
   border-bottom: 1px solid #e5e5e5;
   cursor: pointer;
+  display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+  &:hover:before {
+    content: "";
+    position: absolute;
+    height: 100%;
+    top: 0;
+    left: 0;
+    width: 4px;
+    background: ${colors.primary};
+  }
+
+  &:hover {
+      color: ${colors.primary};
+  }
+
+  span {
+    margin-left: 10px;
+  }
 `;
 
 const ButtonMenuLateral = styled.button`
   position: relative;
   width: 50px;
   background: transparent;
-    border: none;
+  border: none;
 `;

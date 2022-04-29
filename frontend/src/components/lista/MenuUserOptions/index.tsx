@@ -26,7 +26,7 @@ const MenuUserOptions = () => {
       <MenuItem>Copy</MenuItem>
       <MenuItem>Paste</MenuItem>
       <MenuDivider />
-      <MenuItemLogout onClick={handleLogout}><FaSignOutAlt size={'1em'} color={'red'}/>Logout</MenuItemLogout>
+      <MenuItemLogout onClick={handleLogout}><FaSignOutAlt size={'1em'} color={'red'}/>Sair</MenuItemLogout>
     </MenuContainer>
   );
 };

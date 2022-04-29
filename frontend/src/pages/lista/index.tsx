@@ -131,7 +131,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
                 position: "fixed",
                 top: "0",
                 left: "0",
-                zIndex: "1",
+                zIndex: "2",
                 background: "#fff",
               }
             : {

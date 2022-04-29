@@ -13,8 +13,10 @@ const ModalResponsive = ({
   buttonContent,
   isMobile,
 }: ModalResponsiveProps) => {
-    const buttonActionRef = useRef<HTMLButtonElement>(null);
+
+  const buttonActionRef = useRef<HTMLButtonElement>(null);
   const [isActive, setIsActive] = useState(false);
+  
   return (
     <AnimatePresence>
       {isMobile && (
@@ -27,7 +29,9 @@ const ModalResponsive = ({
       )}
       {(!isMobile || isActive) && (
         <FilterContainer
-          positionindicator={ buttonActionRef.current?.getBoundingClientRect().left}
+          positionindicator={
+            buttonActionRef.current?.getBoundingClientRect().left
+          }
           initial={{ opacity: 0, y: -100 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -100 }}

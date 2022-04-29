@@ -81,6 +81,7 @@ export const SelectOptionContainer = styled(motion.div)`
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px solid #ababab;
+
 `;
 
 export const Option = styled<any>("span")`

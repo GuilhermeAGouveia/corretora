@@ -1,4 +1,7 @@
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
+import { useState } from "react";
+import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
 import { IImovel, LevelFurnished } from "../lib/interfaces";
 import colors from "../styles/colors";
@@ -8,6 +11,16 @@ interface CardImovelProps {
 }
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
+  const [isFavorite, setIsFavorite] = useState(false);
+  const [isHover, setIsHover] = useState(false);
+
+  const handleFavorite = () => {
+    setIsFavorite(!isFavorite);
+  };
+
+  const handleHover = () => {
+    setIsHover(!isHover);
+  };
   const getPlural = (num: number, word: string) => {
     return (
       <>
@@ -18,6 +31,32 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
   };
   return (
     <CardImovelContainer>
+      <CardImovelButtonFavorite
+        onHoverStart={() => setIsHover(true)}
+        onHoverEnd={() => setIsHover(false)}
+        onClick={handleFavorite}
+        style={{
+          background:
+            isFavorite || isHover ? colors.white : "rgba(255, 255, 255, 0.5)",
+        }}
+      >
+        <AnimatePresence>
+          {(isFavorite || isHover) && (
+              <IconHeart
+                initial={{ width: 0, height: 0 }}
+                animate={{ width: 20, height: 20 }}
+                exit={{ width: 0, height: 0 }}
+              >
+                <FaHeart size={15} color={colors.primary} />
+              </IconHeart>
+            )}
+          <FaRegHeart
+            style={{ position: "absolute" }}
+            size={15}
+            color={"rgba(0, 0, 0, 0.2)"}
+          />
+        </AnimatePresence>
+      </CardImovelButtonFavorite>
       <CardImovelImage>
         <Image
           src={
@@ -174,7 +213,32 @@ const CardLabelContainer = styled.div`
   position: relative;
   height: 20px;
   width: 100%;
- 
 
   align-items: center;
+`;
+
+const CardImovelButtonFavorite = styled(motion.button)`
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+
+  box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.1);
+  border: none;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const IconHeart = styled(motion.div)`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
