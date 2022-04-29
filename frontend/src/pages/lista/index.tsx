@@ -16,17 +16,18 @@ interface MarketplaceProps {
 
 export default function Marketplace({ pageImoveis }: MarketplaceProps) {
   const listaRoot = useRef<any>(null);
+  const buttonFilter = useRef<any>(null);
+  const buttonOrder = useRef<any>(null);
 
   const [blockSelect, setBlockSelect] = useState(false);
   const [imoveisState, setImoveisState] = useState(pageImoveis.data);
   const [imoveisSize, setImoveisSize] = useState(pageImoveis.total);
   const [isLoadingItems, setisLoadingItems] = useState(false);
   const [showMobileFilter, setShowMobileFilter] = useState(false);
+  const [showMobileOrder, setShowMobileOrder] = useState(false);
   const [isMobileDevice, setIsMobileDevice] = useState(false);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
   const [page, setPage] = useState(1);
-
-
 
   const { user } = useAuth();
   const optionsSelect = [
@@ -44,7 +45,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     setFilterValues(data);
 
     const pageImoveis = await getImoveisByFilterWithPage(data, 1);
-    
+
     setPage(1);
     setImoveisState(pageImoveis.data);
     setImoveisSize(pageImoveis.total);
@@ -57,8 +58,11 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     // !isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
     if (scrollTop + clientHeight >= scrollHeight - 50 && !isLoadingItems) {
       setisLoadingItems(true);
-      const moreImoveis = await getImoveisByFilterWithPage(filterValues, page + 1);
-      setImoveisState(oldState => [...oldState, ...moreImoveis.data]);
+      const moreImoveis = await getImoveisByFilterWithPage(
+        filterValues,
+        page + 1
+      );
+      setImoveisState((oldState) => [...oldState, ...moreImoveis.data]);
       setImoveisSize(moreImoveis.total);
       setPage(page + 1);
       setisLoadingItems(false);
@@ -85,7 +89,6 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
 
     window.addEventListener("resize", defineMobileScreen);
   }, []);
-
 
   return (
     <ListRoot
@@ -121,17 +124,44 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
         <LeftSection>
           <SearchInfo>
             <SearchTotal>{imoveisSize} imóveis encontrados</SearchTotal>
+
             {isMobileDevice && (
-              <FilterDisplayButton
-                onClick={() => setShowMobileFilter((oldState) => !oldState)}
-              >
-                <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
-              </FilterDisplayButton>
+              <ActionsList>
+                <ActionButton
+                  ref={buttonFilter}
+                  onClick={() => setShowMobileFilter((oldState) => !oldState)}
+                >
+                  <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                </ActionButton>
+                <ActionButton
+                  ref={buttonOrder}
+                  onClick={() => setShowMobileOrder((oldState) => !oldState)}
+                >
+                  <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                </ActionButton>
+              </ActionsList>
             )}
           </SearchInfo>
           <AnimatePresence>
             {(!isMobileDevice || showMobileFilter) && (
               <FilterContainer
+                positionIndicator={
+                  buttonFilter.current?.getBoundingClientRect().left
+                }
+                initial={{ opacity: 0, y: -100 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -100 }}
+              >
+                <Filter onFilter={onFilter} filterValues={filterValues} />
+              </FilterContainer>
+            )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {(!isMobileDevice || showMobileOrder) && (
+              <FilterContainer
+                positionIndicator={
+                  buttonOrder.current?.getBoundingClientRect().left
+                }
                 initial={{ opacity: 0, y: -100 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -100 }}
@@ -148,8 +178,6 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
 }
 
 export const getStaticProps = async (ctx: any) => {
-  
-
   const pageImoveis = await getImovelByPage(1);
 
   return {
@@ -228,6 +256,13 @@ const SearchInfo = styled.div`
   width: 100%;
   height: auto;
   padding: 10px;
+  display: block;
+
+  @media (max-width: 768px) {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+  }
 `;
 
 const SearchTotal = styled.div`
@@ -240,7 +275,7 @@ const SearchTotal = styled.div`
   color: rgba(0, 0, 0, 0.8);
 `;
 
-const FilterContainer = styled(motion.div)`
+const FilterContainer = styled(motion.div)<any>`
   position: relative;
   width: 100%;
   @media (max-width: 768px) {
@@ -257,7 +292,7 @@ const FilterContainer = styled(motion.div)`
       content: "";
       position: absolute;
       top: -5px;
-      right: 10px;
+      left: ${(props: any) => props.positionIndicator}px;
       width: 10px;
 
       height: 10px;
@@ -267,12 +302,19 @@ const FilterContainer = styled(motion.div)`
   }
 `;
 
-const FilterDisplayButton = styled.button`
-  position: absolute;
-  top: 0;
-  right: 0;
+const ActionButton = styled.button`
+  position: relative;
   color: #fff;
   width: 30px;
   height: 30px;
   border: none;
+`;
+
+const ActionsList = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
 `;
