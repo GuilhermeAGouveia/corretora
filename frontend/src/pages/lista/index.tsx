@@ -1,5 +1,4 @@
-import { useRef, useState } from "react";
-import { isMobile } from "react-device-detect";
+import { useEffect, useState } from "react";
 import { FaSortNumericDown } from "react-icons/fa";
 import { FiFilter } from "react-icons/fi";
 import Filter from "../../components/page/lista/Actions/Filter";
@@ -28,16 +27,18 @@ interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
 }
 
-export default function Marketplace({ pageImoveis }: MarketplaceProps) {
-  const listaRoot = useRef<any>(null);
-
+export default function Marketplace({
+  pageImoveis: pageImoveisProp,
+}: MarketplaceProps) {
+  
   const [blockSelect, setBlockSelect] = useState(false);
-  const [imoveisState, setImoveisState] = useState(pageImoveis.data);
-  const [imoveisSize, setImoveisSize] = useState(pageImoveis.total);
+  const [imoveis, setImoveis] = useState(pageImoveisProp.data);
+  const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
   const [isLoadingItems, setisLoadingItems] = useState(false);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
   const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
   const [page, setPage] = useState(1);
+  const [isMobileView, setIsMobileView] = useState(false);
 
   const { user } = useAuth();
   const optionsSelect = [
@@ -61,8 +62,8 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     );
 
     setPage(1);
-    setImoveisState(pageImoveis.data);
-    setImoveisSize(pageImoveis.total);
+    setImoveis(pageImoveis.data);
+    setPageImoveis(pageImoveis);
     setisLoadingItems(false);
   };
 
@@ -77,30 +78,40 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     );
 
     setPage(1);
-    setImoveisState(pageImoveis.data);
-    setImoveisSize(pageImoveis.total);
+    setImoveis(pageImoveis.data);
+    setPageImoveis(pageImoveis);
     setisLoadingItems(false);
   };
 
-  async function onScrollEnd() {
-    const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
+  function onScrollEnd(e: HTMLElement, func: () => any) {
+    return () => {
+      const { scrollTop, clientHeight, scrollHeight } = e;
 
-    // !isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
-    if (scrollTop + clientHeight >= scrollHeight - 50 && !isLoadingItems) {
-      setisLoadingItems(true);
-      const moreImoveis = await getImoveisByFilterWithPage(
-        filterValues,
-        page + 1
-      );
-      setImoveisState((oldState) => [...oldState, ...moreImoveis.data]);
-      setImoveisSize(moreImoveis.total);
-      setPage(page + 1);
-      setisLoadingItems(false);
-    }
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
+        func();
+      }
+    };
   }
 
-  function swapDisplaySelect(e: any) {
-    const { scrollTop, clientHeight, scrollHeight } = listaRoot.current;
+  const getMoreImoveis = async () => {
+    // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
+    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a 
+    // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
+    if (isLoadingItems || !pageImoveis.data.length) return;
+
+    setisLoadingItems(true);
+    const moreImoveis = await getImoveisByFilterWithPage(
+      filterValues,
+      page + 1
+    );
+    setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
+    setPageImoveis(moreImoveis);
+    setPage(page + 1);
+    setisLoadingItems(false);
+  };
+
+  function swapDisplaySelect(e: HTMLElement) {
+    const { scrollTop, clientHeight, scrollHeight } = e;
 
     if (scrollTop >= 150 && !blockSelect) {
       setBlockSelect(true);
@@ -109,12 +120,22 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
     }
   }
 
+  useEffect(() => {
+    const defineMobileScreen = () => {
+      const isMobile = window.innerWidth < 768;
+      setIsMobileView(isMobile);
+    };
+
+    defineMobileScreen();
+
+    window.addEventListener("resize", defineMobileScreen);
+  }, []);
+
   return (
     <ListRoot
-      ref={listaRoot}
       onScroll={(e) => {
-        swapDisplaySelect(e);
-        onScrollEnd();
+        swapDisplaySelect(e.target as HTMLElement);
+        onScrollEnd(e.target as HTMLElement, getMoreImoveis)();
       }}
     >
       <HeaderLista></HeaderLista>
@@ -138,16 +159,16 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
       <SectionImoveis>
         <LeftSection>
           <SearchInfo>
-            <SearchTotal>{imoveisSize} imóveis encontrados</SearchTotal>
+            <SearchTotal>{pageImoveis.total} imóveis encontrados</SearchTotal>
           </SearchInfo>
           <ModalResponsive
-            isMobile={isMobile}
+            isMobile={isMobileView}
             buttonContent={<FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />}
           >
             <Filter onFilter={onFilter} filterValues={filterValues} />
           </ModalResponsive>
           <ModalResponsive
-            isMobile={isMobile}
+            isMobile={isMobileView}
             buttonContent={
               <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
             }
@@ -155,7 +176,7 @@ export default function Marketplace({ pageImoveis }: MarketplaceProps) {
             <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
           </ModalResponsive>
         </LeftSection>
-        <ListCards imoveis={imoveisState} isLoadingItems={isLoadingItems} />
+        <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} />
       </SectionImoveis>
     </ListRoot>
   );
