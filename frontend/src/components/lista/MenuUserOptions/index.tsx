@@ -1,17 +1,21 @@
 import { Menu, MenuDivider, MenuHeader, MenuItem } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
+import { FaSignOutAlt } from 'react-icons/fa';
 import styled from "styled-components";
 import { useAuth } from "../../../context/Auth";
 
 const MenuUserOptions = () => {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
+  const handleLogout = () => {
+    logout();
+  };
   return (
     <MenuContainer
       menuButton={<MenuButton>{user?.firstName || "Convidado"}</MenuButton>}
       direction={"bottom"}
-      offsetX={-80}      
-      
+      offsetX={-80} 
+      arrow={true}
     >
       <MenuItem>Meu perfil</MenuItem>
       <MenuItem>Save</MenuItem>
@@ -22,7 +26,7 @@ const MenuUserOptions = () => {
       <MenuItem>Copy</MenuItem>
       <MenuItem>Paste</MenuItem>
       <MenuDivider />
-      <MenuItem>Logout</MenuItem>
+      <MenuItemLogout onClick={handleLogout}><FaSignOutAlt size={'1em'} color={'red'}/>Logout</MenuItemLogout>
     </MenuContainer>
   );
 };
@@ -32,6 +36,7 @@ export default MenuUserOptions;
 const MenuButton = styled.button`
   position: relative;
   width: 100px;
+  height: 20px;
   right: 0;
   background: transparent;
   border: none;
@@ -43,4 +48,13 @@ const MenuButton = styled.button`
 
 const MenuContainer= styled(Menu)`
   position: absolute;
+  `;
+
+const MenuItemLogout = styled(MenuItem)`
+  color: red;
+  height: 100%;
+  margin: 0;
+  outline: none;
+  display: flex;
+  justify-content: space-around;
   `;
