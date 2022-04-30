@@ -27,22 +27,14 @@ export class FilterQueryBuilder extends QueryBuilder {
     }
   }
 
-  type = (type?: string) => !!type && this.addFilter(`type=${type}`);
+  addStringQuery = (field: string, value?: string) =>
+    !!value && this.addFilter(`${field}=${value}`);
 
-  mensalidade = ({ min, max }: any) => {
+  addRangeNumberQuery = (field: string, { min, max }: any) => {
     min = !!min ? min : 0;
     max = !!max ? max : Number.POSITIVE_INFINITY;
-    return this.addFilter(`mensalidade=${min}-${max}`);
+    return this.addFilter(`${field}=${min}-${max}`);
   };
 
-  price = ({ min, max }: any) => {
-    min = !!min ? min : 0;
-    max = !!max ? max : Infinity;
-    return this.addFilter(`price=${min}-${max}`);
-  };
-  offerType = (offerType?: string) =>
-    !!offerType && this.addFilter(`offerType=${offerType}`);
-  orderBy = (orderBy?: string) =>
-    !!orderBy && this.addFilter(`orderBy=${orderBy}`);
-  sort = (sort?: string) => !!sort && this.addFilter(`sort=${sort}`);
+ 
 }

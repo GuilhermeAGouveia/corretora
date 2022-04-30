@@ -45,12 +45,15 @@ export async function getImoveisByFilterWithPage(
 
   const queryBuilder = new FilterQueryBuilder(`/imovel/filter/${page}`);
 
-  queryBuilder.type(type);
-  queryBuilder.offerType(offerType);
-  queryBuilder.mensalidade({ min: mensalidadeMin, max: mensalidadeMax });
-  queryBuilder.price({ min: priceMin, max: priceMax });
-  queryBuilder.orderBy(orderBy);
-  queryBuilder.sort(sort);
+  queryBuilder.addStringQuery("type", type);
+  queryBuilder.addStringQuery("offerType", offerType);
+  queryBuilder.addRangeNumberQuery("mensalidade", {
+    min: mensalidadeMin,
+    max: mensalidadeMax,
+  });
+  queryBuilder.addRangeNumberQuery("price", { min: priceMin, max: priceMax });
+  queryBuilder.addStringQuery("orderBy", orderBy);
+  queryBuilder.addStringQuery("sort", sort);
 
   const { data: pageImoveis } = await api.get<Page<IImovel>>(
     queryBuilder.getQuery()

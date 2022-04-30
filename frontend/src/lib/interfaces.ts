@@ -42,7 +42,7 @@ export interface ImovelCard {
 }
 
 
-enum ImovelType {
+export enum ImovelType {
   APTO = "APTO",
   CASA = "CASA",
   COMERCIO = "COMERCIO",
