@@ -12,10 +12,15 @@ const ListCards = ({ isLoadingItems, imoveis }: ListCardsProps) => {
   return (
     <CardsContainerRoot>
       <CardsContainer>
-        {imoveis?.map((imovel: IImovel) => (
-          <CardImovel key={imovel.cod_imv} imovel={imovel}></CardImovel>
-        ))}
+        {imoveis.length ? (
+          imoveis.map((imovel: IImovel) => (
+            <CardImovel key={imovel.cod_imv} imovel={imovel} />
+          ))
+        ) : (
+          <NoneImoveis>Nenhum imóvel encontrado</NoneImoveis>
+        )}
       </CardsContainer>
+
       {isLoadingItems && <LoadingBottom>Loading More ...</LoadingBottom>}
     </CardsContainerRoot>
   );
@@ -57,4 +62,14 @@ const LoadingBottom = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+`;
+
+const NoneImoveis = styled.div`
+  position: relative;
+  width: 100%;
+  height: 300px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Poppins", sans-serif;
 `;
