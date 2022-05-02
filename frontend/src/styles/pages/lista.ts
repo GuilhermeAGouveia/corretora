@@ -15,7 +15,7 @@ export const ListRoot = styled.div`
     assim eu consigo determinar o scroll máximo da página que é o scroll do elemento
    */
 `;
-export const SectionImoveis = styled.section`
+export const SearchSection = styled.section`
   position: relative;
   width: 100%;
   min-height: 100%;
@@ -67,3 +67,53 @@ export const SearchTotal = styled.div`
   font-weight: 500;
   color: rgba(0, 0, 0, 0.8);
 `;
+
+export const AnounceSection = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  padding: 10px;
+  `;
+
+export const AnounceContent = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+
+  `;
+
+export const AnounceTitle = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  font-family: "Poppins", sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  margin: 20px;
+  color: rgba(0, 0, 0, 0.8);
+`;
+
+export const AnounceButton = styled.button`
+  position: relative;
+  width: 250px;
+  height: 250px;
+  background-color: white;
+  border-radius: 4px;
+  border: 1px solid ${colors.primary};
+  display: flex;
+  justify-content: center;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 600;
+  font-size: 20px;
+  align-items: center;
+  color: ${colors.primary};
+  cursor: pointer;
+  margin: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+  `;
+

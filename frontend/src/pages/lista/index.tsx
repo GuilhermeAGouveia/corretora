@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
 import { FiFilter, FiSearch } from "react-icons/fi";
@@ -11,16 +12,19 @@ import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
 import {
   FilterValues,
-  IImovel,
-  OrderByValues,
+  IImovel, OrderByValues,
   Page
 } from "../../lib/interfaces";
 import {
+  AnounceButton,
+  AnounceContent,
+  AnounceSection,
+  AnounceTitle,
   LeftSection,
   ListRoot,
   SearchInfo,
-  SearchTotal,
-  SectionImoveis
+  SearchSection,
+  SearchTotal
 } from "../../styles/pages/lista";
 
 interface MarketplaceProps {
@@ -30,6 +34,7 @@ interface MarketplaceProps {
 export default function Marketplace({
   pageImoveis: pageImoveisProp,
 }: MarketplaceProps) {
+  const router = useRouter();
   const [blockSelect, setBlockSelect] = useState(false);
   const [imoveis, setImoveis] = useState(pageImoveisProp.data);
   const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
@@ -119,7 +124,7 @@ export default function Marketplace({
         Icon: FiSearch,
       },
       content: (
-        <SectionImoveis>
+        <SearchSection>
           <LeftSection>
             <SearchInfo>
               <SearchTotal>{pageImoveis.total} imóveis encontrados</SearchTotal>
@@ -142,7 +147,7 @@ export default function Marketplace({
             </ModalResponsive>
           </LeftSection>
           <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} />
-        </SectionImoveis>
+        </SearchSection>
       ),
     },
     {
@@ -150,7 +155,29 @@ export default function Marketplace({
         label: "Anunciar",
         Icon: FaBullhorn,
       },
-      content: "Pimba",
+      content: (
+        <AnounceSection>
+          <AnounceTitle>Anuncie seus Imóveis por aqui</AnounceTitle>
+          <AnounceContent>
+            <AnounceButton
+              onClick={() => router.push(`/imoveis/cadastrar/CASA`)}
+            >
+              <span>Casa</span>
+            </AnounceButton>
+            <AnounceButton
+              onClick={() => router.push(`/imoveis/cadastrar/COMERCIO`)}
+            >
+              <span>Comércio</span>
+            </AnounceButton>
+            <AnounceButton
+              onClick={() => router.push(`/imoveis/cadastrar/APTO`)}
+            >
+            
+              <span>Apartamento</span>
+            </AnounceButton>
+          </AnounceContent>
+        </AnounceSection>
+      ),
     },
   ];
 
