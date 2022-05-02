@@ -1,5 +1,5 @@
 import { GetServerSideProps } from "next";
-import Cadastrar from "../../../components/page/imoveis/cadastrar/Cadastrar";
+import Cadastrar from "../../../components/Cadastrar";
 import { getCookie } from "../../../lib/cookies";
 import { ImovelType } from "../../../lib/interfaces";
 

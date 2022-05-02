@@ -96,7 +96,7 @@ export default function Login() {
           <DivisionLine>
             <p>
               Novo aqui? {"\t"}
-              <SignUpButton type="button">Cadastrar</SignUpButton>
+              <SignUpButton type="button" onClick={() => router.push("/register")}>Cadastrar</SignUpButton>
             </p>
           </DivisionLine>
         </LoginLeftContent>
