@@ -6,6 +6,9 @@ export const ListRoot = styled.div`
   width: 100%;
   height: 100vh;
   overflow-y: scroll;
+  background: ${colors.white};
+
+  
 
   /**
     As duas linhas acima forçam o scroll neste elemento ao invés de ocorrer no body,
@@ -17,7 +20,6 @@ export const SectionImoveis = styled.section`
   width: 100%;
   min-height: 100%;
   height: auto;
-  background: ${colors.white};
   display: flex;
   justify-content: center;
   align-items: flex-start;
