@@ -87,10 +87,12 @@ export default SelectOption;
 export const SelectOptionContainer = styled(motion.div)`
   position: relative;
   height: 50px;
+  background: white;
   width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
+  z-index: 2;
   border-bottom: 1px solid #ababab;
 `;
 
