@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { FaSortNumericDown } from "react-icons/fa";
-import { FiFilter } from "react-icons/fi";
+import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
+import { FiFilter, FiSearch } from "react-icons/fi";
 import Filter from "../../components/page/lista/Actions/Filter";
 import OrderBy from "../../components/page/lista/Actions/OrderBy";
+import ContentControlBySelectionFloatLine from "../../components/page/lista/ContentControlBySelectionFloatLine";
 import HeaderLista from "../../components/page/lista/Header";
 import ListCards from "../../components/page/lista/ListCards";
 import ModalResponsive from "../../components/page/lista/ModalResponsive";
-import SelectOption from "../../components/SelectOption";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
 import {
@@ -30,7 +30,6 @@ interface MarketplaceProps {
 export default function Marketplace({
   pageImoveis: pageImoveisProp,
 }: MarketplaceProps) {
-  
   const [blockSelect, setBlockSelect] = useState(false);
   const [imoveis, setImoveis] = useState(pageImoveisProp.data);
   const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
@@ -41,14 +40,6 @@ export default function Marketplace({
   const [isMobileView, setIsMobileView] = useState(false);
 
   const { user } = useAuth();
-  const optionsSelect = [
-    {
-      label: "Procurar",
-    },
-    {
-      label: "Anunciar",
-    },
-  ];
 
   const onOrderBy = async (orderByOptions: OrderByValues) => {
     console.log("orderByOptions", orderByOptions);
@@ -95,7 +86,7 @@ export default function Marketplace({
 
   const getMoreImoveis = async () => {
     // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
-    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a 
+    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
     // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
     if (isLoadingItems || !pageImoveis.data.length) return;
 
@@ -110,6 +101,7 @@ export default function Marketplace({
     setisLoadingItems(false);
   };
 
+  // Controla se o SelectFloatLine em ControlContentBySelectionFloatLine deve ser fixo ou relativo na tela
   function swapDisplaySelect(e: HTMLElement) {
     const { scrollTop, clientHeight, scrollHeight } = e;
 
@@ -119,6 +111,48 @@ export default function Marketplace({
       setBlockSelect(false);
     }
   }
+
+  const contentsForContentControl = [
+    {
+      buttonDisplayContent: {
+        label: "Procurar",
+        Icon: FiSearch,
+      },
+      content: (
+        <SectionImoveis>
+          <LeftSection>
+            <SearchInfo>
+              <SearchTotal>{pageImoveis.total} imóveis encontrados</SearchTotal>
+            </SearchInfo>
+            <ModalResponsive
+              isMobile={isMobileView}
+              buttonContent={
+                <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
+              }
+            >
+              <Filter onFilter={onFilter} filterValues={filterValues} />
+            </ModalResponsive>
+            <ModalResponsive
+              isMobile={isMobileView}
+              buttonContent={
+                <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
+              }
+            >
+              <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
+            </ModalResponsive>
+          </LeftSection>
+          <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} />
+        </SectionImoveis>
+      ),
+    },
+    {
+      buttonDisplayContent: {
+        label: "Anunciar",
+        Icon: FaBullhorn,
+      },
+      content: "Pimba",
+    },
+  ];
 
   useEffect(() => {
     const defineMobileScreen = () => {
@@ -139,45 +173,11 @@ export default function Marketplace({
       }}
     >
       <HeaderLista></HeaderLista>
-      <SelectOption
-        style={
-          blockSelect
-            ? {
-                position: "fixed",
-                top: "0",
-                left: "0",
-                zIndex: "2",
-                background: "#fff",
-              }
-            : {
-                position: "relative",
-              }
-        }
-        options={optionsSelect}
-      />
 
-      <SectionImoveis>
-        <LeftSection>
-          <SearchInfo>
-            <SearchTotal>{pageImoveis.total} imóveis encontrados</SearchTotal>
-          </SearchInfo>
-          <ModalResponsive
-            isMobile={isMobileView}
-            buttonContent={<FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />}
-          >
-            <Filter onFilter={onFilter} filterValues={filterValues} />
-          </ModalResponsive>
-          <ModalResponsive
-            isMobile={isMobileView}
-            buttonContent={
-              <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
-            }
-          >
-            <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
-          </ModalResponsive>
-        </LeftSection>
-        <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} />
-      </SectionImoveis>
+      <ContentControlBySelectionFloatLine
+        isFixed={blockSelect}
+        content={contentsForContentControl}
+      />
     </ListRoot>
   );
 }

@@ -1,22 +1,31 @@
 import { motion } from "framer-motion";
-import { createRef, RefObject, useEffect, useRef, useState } from "react";
+import React, {
+  createRef,
+  RefObject,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
 
-interface Option {
-  label: string;
+export interface ButtonSelectFloatLine {
+  content: {
+    label: string;
+    Icon?: React.ComponentType<any>;
+  };
   onClick?: () => void;
 }
 
-interface SelectOptionPros extends React.InputHTMLAttributes<HTMLInputElement> {
-  options: Option[];
+interface SelectOptionPros extends React.HTMLAttributes<HTMLDivElement> {
+  buttons: ButtonSelectFloatLine[];
 }
 
-const SelectOption = ({ options, style }: SelectOptionPros) => {
+const SelectOption = ({ buttons, style }: SelectOptionPros) => {
   // create refs for each option;
   const optionRef = useRef<RefObject<HTMLObjectElement>[]>([]);
 
-  optionRef.current = Array(options.length)
+  optionRef.current = Array(buttons.length)
     .fill(null)
     .map(() => createRef());
 
@@ -45,16 +54,18 @@ const SelectOption = ({ options, style }: SelectOptionPros) => {
 
   return (
     <SelectOptionContainer style={style} layout>
-      {options.map((option, index) => (
+      {buttons.map((option, index) => (
         <Option
           key={"select-option-" + index}
           ref={optionRef.current[index]}
           selected={index === selected}
           onClick={() => {
             handleSelect(index);
+            if (option.onClick) option.onClick();
           }}
         >
-          {option.label}
+          {option.content.Icon && <option.content.Icon />}
+          {option.content.label}
         </Option>
       ))}
       <LineSelect
@@ -81,10 +92,9 @@ export const SelectOptionContainer = styled(motion.div)`
   justify-content: space-around;
   align-items: center;
   border-bottom: 1px solid #ababab;
-
 `;
 
-export const Option = styled<any>("span")`
+export const Option = styled<any>("button")`
   position: relative;
   font-family: Montserrat;
   font-style: normal;
@@ -94,6 +104,12 @@ export const Option = styled<any>("span")`
   color: ${(props) => (props.selected ? colors.primary : "#ABABAB")};
   text-transform: uppercase;
   transition: color 0.2s ease-in-out;
+  border: none;
+  background: none;
+  & * {
+    margin: 5px;
+    color: ${(props) => (props.selected ? colors.primary : "#ABABAB")};
+  }
   cursor: pointer;
 `;
 
