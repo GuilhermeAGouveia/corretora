@@ -15,7 +15,6 @@ const Input = ({ placeholder, name, register, defaultValue, ...inputProps }: Inp
       event.target.value.length > 0
     ) {
       setIsChanging(true);
-      console.log(event.target.value);
       return ;
     }
 
