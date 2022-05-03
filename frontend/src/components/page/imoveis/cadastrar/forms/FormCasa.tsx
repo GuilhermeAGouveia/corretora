@@ -81,7 +81,7 @@ const FormCadastrarCasa = () => {
         <SectionInputContent>
           <Input name="rua" register={register} placeholder="Rua" />
           <Input name="numero" register={register} placeholder="Número" />
-          <Input name="bairro" register={register} placeholder="bairro" />
+          <Input name="bairro" register={register} placeholder="Bairro" />
           {"\n"}
           <SelectReactHookForm
             style={{
@@ -120,7 +120,6 @@ const SectionInputContainer = styled.div`
   position: relative;
   width: 100%;
   height: auto;
-  margin: 10px;
 `;
 
 const SectionLabel = styled.div`

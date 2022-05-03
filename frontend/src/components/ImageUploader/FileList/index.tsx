@@ -1,6 +1,7 @@
 import React from "react";
 import { UploadedFile } from "..";
-import { Container, DeleteButton, Preview } from "./styles";
+import InfoButton from "../../InfoButton";
+import { CapaIndicator, Container, DeleteButton, Preview } from "./styles";
 
 interface FileListProps {
   uploadedFiles: UploadedFile[];
@@ -27,9 +28,10 @@ export default class FileList extends React.Component<
     const { uploadedFiles, onDelete } = this.props;
     return (
       <Container>
-        {uploadedFiles.map((files) => (
+        {uploadedFiles.map((files, index) => (
           <li key={files.id}>
             <Preview src={files.preview} />
+          {index === 0 && <CapaIndicator>Capa<InfoButton width={15} info={"Imagem exibida como capa"} colorIcon={"green"}></InfoButton></CapaIndicator>}
             <DeleteButton onClick={() => onDelete(files.id)}>
               Excluir
             </DeleteButton>

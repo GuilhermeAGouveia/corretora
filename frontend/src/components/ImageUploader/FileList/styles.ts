@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 
+
 export const Container = styled.ul`
   position: relative;
   display: flex;
@@ -9,7 +10,12 @@ export const Container = styled.ul`
   margin: 0 20px;
   overflow: auto;
 
+  @media (max-width: 768px) {
+    margin: 10px 0;
+  }
+  
   li {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -34,7 +40,9 @@ export const Preview = styled.div<any>`
 
 export const DeleteButton = styled.button`
   position: absolute;
-  top: 0;
+  
+  top: 10px;
+  right: 10px;
   background: transparent;
   border: 0;
   color: #de3b3b;
@@ -45,3 +53,15 @@ export const DeleteButton = styled.button`
     color: #fe3b3b;
   }
 `;
+
+export const CapaIndicator = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-size: 0.9em;
+  color: green;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  `;
