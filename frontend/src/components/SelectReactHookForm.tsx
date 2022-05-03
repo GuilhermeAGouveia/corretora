@@ -1,20 +1,24 @@
 import {
-    Control,
-    Controller,
-    ControllerRenderProps,
-    FieldValues
+  Control,
+  Controller,
+  ControllerRenderProps,
+  FieldValues
 } from "react-hook-form";
 import Select from "react-select";
-import styled from "styled-components";
+import styled, { CSSProperties } from "styled-components";
+
+export interface SelectOption {
+  value: string;
+  label: string;
+}
 
 interface SelectReactHookFormProps {
-  options: {
-    label: string;
-    value: string;
-  }[];
+  options: SelectOption[];
   name: string;
-  value: string;
+  value?: string;
   controlReactHookForm: Control<FieldValues, any>;
+  style?: CSSProperties;
+  placeholder?: string;
 }
 
 const SelectReactHookForm = ({
@@ -22,8 +26,10 @@ const SelectReactHookForm = ({
   value,
   options,
   name,
+  placeholder,
+  style
 }: SelectReactHookFormProps) => (
-  <FilterInput>
+  <SelectReactHookFormContainer style={style}>
     <Controller
       control={controlReactHookForm}
       defaultValue={value}
@@ -37,16 +43,17 @@ const SelectReactHookForm = ({
           ref={rest.ref}
           defaultValue={options.find((option) => option.value === value)}
           options={options}
+          placeholder={placeholder}
           onChange={(val) => onChange(val?.value)}
         />
       )}
     />
-  </FilterInput>
+  </SelectReactHookFormContainer>
 );
 
 export default SelectReactHookForm;
 
-const FilterInput = styled.div`
+const SelectReactHookFormContainer = styled.div`
   position: relative;
   width: 100%;
 `;
