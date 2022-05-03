@@ -69,7 +69,7 @@ export const SearchTotal = styled.div`
 `;
 
 export const AnounceSection = styled.div`
-  position: relative;
+  position: fixed;
   width: 100%;
   height: auto;
   padding: 10px;
@@ -79,10 +79,7 @@ export const AnounceContent = styled.div`
   position: relative;
   width: 100%;
   height: auto;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  align-items: center;
+
 
   `;
 
@@ -99,21 +96,27 @@ export const AnounceTitle = styled.div`
 
 export const AnounceButton = styled.button`
   position: relative;
-  width: 250px;
-  height: 250px;
-  background-color: white;
-  border-radius: 4px;
-  border: 1px solid ${colors.primary};
+  width: 90%;
+  max-width: 300px;
+  margin: 5px auto;
+  height: 50px;
+  border: none;
   display: flex;
   justify-content: center;
   font-family: "Montserrat", sans-serif;
   font-weight: 600;
-  font-size: 20px;
+  font-size: 16px;
   align-items: center;
   color: ${colors.primary};
-  cursor: pointer;
-  margin: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
   `;
+
+export const AnnounceLineDivision = styled.div`
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+`;
 

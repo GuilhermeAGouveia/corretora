@@ -16,6 +16,7 @@ import {
   Page
 } from "../../lib/interfaces";
 import {
+  AnnounceLineDivision,
   AnounceButton,
   AnounceContent,
   AnounceSection,
@@ -164,11 +165,13 @@ export default function Marketplace({
             >
               <span>Casa</span>
             </AnounceButton>
+            <AnnounceLineDivision/>
             <AnounceButton
               onClick={() => router.push(`/imoveis/cadastrar/COMERCIO`)}
             >
               <span>Comércio</span>
             </AnounceButton>
+            <AnnounceLineDivision/>
             <AnounceButton
               onClick={() => router.push(`/imoveis/cadastrar/APTO`)}
             >

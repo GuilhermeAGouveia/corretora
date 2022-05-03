@@ -10,7 +10,6 @@ interface MulterFileS3 extends Express.Multer.File {
   key: string;
 }
 
-
 export default {
   count: async (req: Request, res: Response) => {
     const count = await prisma.image.count();
@@ -35,16 +34,22 @@ export default {
   },
   getAll: async (req: Request, res: Response) => {
     const image = await prisma.image.findMany();
-
     res.json(image);
   },
   insert: async (req: Request, res: Response) => {
     try {
-      const { location, key, filename: localFilename, originalname, size} = req.file as MulterFileS3;
+      const {
+        location,
+        key,
+        filename: localFilename,
+        originalname,
+        size,
+      } = req.file as MulterFileS3;
       const { idOwner } = req.query as any;
       if (req.file) {
         const filename = key || localFilename;
-        const url = location || `http://localhost:3333/storage/image/${filename}`;
+        const url =
+          location || `http://localhost:3333/storage/image/${filename}`;
         const imageInsert = await prisma.image.create({
           data: {
             key: filename,
@@ -52,7 +57,6 @@ export default {
             url,
             originalname,
             size,
-
           },
         });
 
@@ -67,8 +71,6 @@ export default {
   delete: async (req: Request, res: Response) => {
     try {
       const key = req.params.cod;
-
-      
 
       const image = await prisma.image.delete({
         where: {

@@ -1,5 +1,6 @@
 import { GetServerSideProps } from "next";
 import Cadastrar from "../../../components/Cadastrar";
+import FormCadastrarCasa from "../../../components/page/imoveis/cadastrar/forms/FormCasa";
 import { getCookie } from "../../../lib/cookies";
 import { ImovelType } from "../../../lib/interfaces";
 
@@ -10,7 +11,7 @@ interface CadastrarProps {
 export default function CadastrarImovel({tipo}: CadastrarProps) {
   const JSXByTipo = {
     [ImovelType.CASA]: (
-      <Cadastrar title="Cadastrar Casa" form={"Formulário para cadastrar casa"}/>
+      <Cadastrar title="Cadastrar Casa" form={<FormCadastrarCasa/>}/>
     ),
     [ImovelType.APTO]: (
       <Cadastrar title="Cadastrar Apartamento" form={"Formulário para cadastrar apartamento"}/>

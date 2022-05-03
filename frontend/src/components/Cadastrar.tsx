@@ -12,7 +12,7 @@ const Cadastrar = ({ title, form }: CadastrarProps) => {
     <RegisterContainer>
       <RegisterHeader>
         <RegisterTitle>{title}</RegisterTitle>
-        <MenuUserOptions buttonTextColor="black" />
+        <MenuUserOptions />
       </RegisterHeader>
 
       <RegisterContent>{form}</RegisterContent>
@@ -25,7 +25,7 @@ export default Cadastrar;
 const RegisterContainer = styled.div`
   position: relative;
   width: 100%;
-  background: ${colors.white};
+  background: ${colors.secondary};
   min-height: 100vh;
 `;
 
@@ -35,7 +35,7 @@ const RegisterTitle = styled.div`
   font-family: "Poppins", sans-serif;
   font-size: 20px;
   font-weight: 500;
-  color: rgba(0, 0, 0, 0.8);
+  color: ${colors.white};
 `;
 
 const RegisterHeader = styled.div`
@@ -53,8 +53,7 @@ const RegisterContent = styled.div`
   width: 100%;
   min-height: calc(100vh - 100px);
   background: white;
-  border-radius: 30px;
+  border-radius: 30px 30px 0 0;
   padding: 20px;
-  border: 1px solid ${colors.primary};
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 `;

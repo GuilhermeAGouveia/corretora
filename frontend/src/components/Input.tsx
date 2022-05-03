@@ -65,6 +65,7 @@ const LoginFormInputContainer = styled(motion.div)`
   position: relative;
   height: 42px;
   width: 100%;
+  max-width: 400px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 21px;
   padding: 0 10px;
