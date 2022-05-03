@@ -6,7 +6,7 @@ import Input from "../../../../../components/Input";
 import colors from "../../../../../styles/colors";
 import ImageUploader from "../../../../ImageUploader";
 import SelectReactHookForm, {
-    SelectOption
+  SelectOption
 } from "../../../../SelectReactHookForm";
 
 interface Estado {
@@ -116,7 +116,7 @@ const Form = styled.form`
   height: 100%;
 `;
 
-const SectionInputContainer = styled.label`
+const SectionInputContainer = styled.div`
   position: relative;
   width: 100%;
   height: auto;
