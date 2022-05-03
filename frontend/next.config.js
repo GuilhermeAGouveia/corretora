@@ -8,7 +8,7 @@ const nextConfig = {
     BACKEND_PUBLIC_URL: process.env.BACKEND_PUBLIC_URL,
   },
   images: {
-    domains: ['corretora-storage.s3.amazonaws.com', 'picsum.photos'],
+    domains: ['corretora-storage.s3.amazonaws.com', 'corretora-storage.s3.sa-east-1.amazonaws.com', 'picsum.photos'],
   },
 }
 

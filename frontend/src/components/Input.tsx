@@ -7,7 +7,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   register: any;
 }
 
-const Input = ({ placeholder, name, register, ...inputProps }: InputProps) => {
+const Input = ({ placeholder, name, register, defaultValue, ...inputProps }: InputProps) => {
   const [isChanging, setIsChanging] = useState(false);
   const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
     if (
@@ -38,6 +38,7 @@ const Input = ({ placeholder, name, register, ...inputProps }: InputProps) => {
       </LoginFormInputPlaceholder>
       <LoginFormInput
         {...inputProps}
+        placeholder={defaultValue}
         {...register(name)}
         onFocus={(e: any) => handleIsChanging(e, true)}
         onBlur={(e: any) => {

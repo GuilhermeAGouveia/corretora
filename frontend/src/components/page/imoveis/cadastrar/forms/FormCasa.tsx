@@ -3,8 +3,12 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import Input from "../../../../../components/Input";
+import { useAuth } from "../../../../../context/Auth";
+import { insertImage } from "../../../../../lib/imagens";
+import { insertImovel } from "../../../../../lib/imovel";
+import { IImovel, ImovelType } from "../../../../../lib/interfaces";
 import colors from "../../../../../styles/colors";
-import ImageUploader from "../../../../ImageUploader";
+import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import SelectReactHookForm, {
   SelectOption
 } from "../../../../SelectReactHookForm";
@@ -19,22 +23,72 @@ interface Cidade {
 }
 
 interface FormValues {
-  rua?: string;
-  numero?: string;
-  bairro?: string;
-  estado?: string;
+  street?: string;
+  number?: string;
+  district?: string;
+  state?: string;
+  city?: string;
+  apto?: string;
+  nRooms?: string;
+  nBathrooms?: string;
+  area?: string;
+  mensalidade?: string;
+  price?: string;
 }
 
 const FormCadastrarCasa = () => {
+  const { user } = useAuth();
   const { register, handleSubmit, control } = useForm();
-  const [estados, setEstados] = useState<SelectOption[]>([]);
-  const [cidades, setCidades] = useState<SelectOption[]>([]);
+  const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
+  const [estado, setEstado] = useState<string>(); //  //usado pelo select de cidades para determinar de qual estado buscar cidades
+  const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
+  const [imagens, setImagens] = useState<UploadedFile[]>([]);
   const [formValues, setFormValues] = useState<FormValues>({} as FormValues);
+  const [loading, setLoading] = useState(false);
 
-  const onSubmit = async (data: FormValues) => {
-    const { rua, numero, bairro, estado } = data;
-    console.log(data);
-    setFormValues(data);
+  const onSubmit = async (formValues: FormValues) => {
+    const {
+      street,
+      number,
+      district,
+      state,
+      city,
+      nRooms,
+      nBathrooms,
+      area,
+      mensalidade,
+      price,
+    } = formValues;
+
+
+    setFormValues(formValues);
+
+    if (!!user) {
+      setLoading(true);
+      const imovelData = {
+        address: `${street}, ${number}`,
+        district: district as string,
+        state: state as string,
+        city: city as string,
+        nRooms: nRooms ? parseInt(nRooms) : 0,
+        nBathrooms: nBathrooms ? parseInt(nBathrooms) : 0,
+        area: area ? parseFloat(area) : 0,
+        cod_lcd: user.id,
+        cep: "",
+        mensalidade: mensalidade ? parseFloat(mensalidade) : 0,
+        price: price ? parseFloat(price) : 0,
+        type: ImovelType.CASA,
+      } as IImovel
+      console.log(imovelData)
+      const idImovel = await insertImovel(imovelData);
+
+      imagens.forEach(async (file) => {
+        await insertImage(file.file, idImovel);
+      });
+
+
+      setLoading(false);
+    }
   };
   useEffect(() => {
     const getEstados = async () => {
@@ -51,59 +105,141 @@ const FormCadastrarCasa = () => {
       setEstados(estados);
     };
 
+    getEstados();
+  }, []);
+
+  useEffect(() => {
     const getCidades = async () => {
       const response = await axios.get<(Estado & { id: number })[]>(
-        "https://servicodados.ibge.gov.br/api/v1/localidades/estados"
+        `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${estado}/municipios`
       );
-      const cidades = response.data.map(({ sigla: value, nome: label, id }) => {
+      const cidades = response.data.map(({ nome }) => {
         return {
-          value,
-          label,
+          value: nome,
+          label: nome,
         };
       });
 
       setCidades(cidades);
     };
     getCidades();
-    getEstados();
-  }, []);
-  useEffect(() => {}, []);
+  }, [estado]);
+  useEffect(() => {
+    console.log("imagens", imagens);
+  }, [imagens]);
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
       <SectionInputContainer>
-        <SectionLabel>Imagens</SectionLabel>
+        <SectionLabel>
+          Insira imagens de seu imóvel <LineDivision />
+        </SectionLabel>
+
         <SectionInputContent>
-          <ImageUploader />
+          <ImageUploader uploaded={[imagens, setImagens]} />
         </SectionInputContent>
       </SectionInputContainer>
       <SectionInputContainer>
-        <SectionLabel>Endereço</SectionLabel>
+        <SectionLabel>
+          Endereço <LineDivision />
+        </SectionLabel>
+
         <SectionInputContent>
-          <Input name="rua" register={register} placeholder="Rua" />
-          <Input name="numero" register={register} placeholder="Número" />
-          <Input name="bairro" register={register} placeholder="Bairro" />
+          <Input
+            name="street"
+            register={register}
+            placeholder="Rua *"
+            required
+          />
+          <Input
+            name="number"
+            type="number"
+            register={register}
+            placeholder="Número *"
+            required
+          />
+          <Input
+            name="district"
+            register={register}
+            placeholder="Bairro *"
+            required
+          />
           {"\n"}
           <SelectReactHookForm
             style={{
               maxWidth: "400px",
             }}
-            name="estado"
-            placeholder="Estado"
+            name="state"
+            placeholder="Estado *"
             options={estados}
             controlReactHookForm={control}
+            onChange={(value) => setEstado(value)}
+            required
           ></SelectReactHookForm>
           <SelectReactHookForm
             style={{
               maxWidth: "400px",
             }}
-            name="cidade"
-            placeholder="Cidade"
-            options={estados}
+            name="city"
+            placeholder="Cidade *"
+            options={cidades}
             controlReactHookForm={control}
+            required
           ></SelectReactHookForm>
         </SectionInputContent>
       </SectionInputContainer>
-      <ButtonSubmit type="submit">Cadastrar</ButtonSubmit>
+      <SectionInputContainer>
+        <SectionLabel>
+          Caracteristicas <LineDivision />
+        </SectionLabel>
+
+        <SectionInputContent>
+          <Input
+            name="nRooms"
+            type="number"
+            register={register}
+            placeholder="Número de quartos"
+            defaultValue={0}
+          />
+          <Input
+            name="nBathrooms"
+            type="number"
+            register={register}
+            placeholder="Número de Banheiros"
+            defaultValue={0}
+          />
+          <Input
+            name="area"
+            type="number"
+            register={register}
+            placeholder="Área (m²)"
+            defaultValue={0}
+          />
+          {"\n"}
+        </SectionInputContent>
+      </SectionInputContainer>
+      <SectionInputContainer>
+        <SectionLabel>
+          Valores <LineDivision />
+        </SectionLabel>
+
+        <SectionInputContent>
+          <Input
+            name="mensalidade"
+            type="number"
+            register={register}
+            placeholder="Mensalidade (R$)"
+            defaultValue={0}
+          />
+          <Input
+            name="price"
+            type="number"
+            register={register}
+            placeholder="Preço de venda (R$)"
+            defaultValue={0}
+          />
+        </SectionInputContent>
+      </SectionInputContainer>
+      <ButtonSubmit type="submit">{loading ? "Loading..." : "Cadastrar"}</ButtonSubmit>
     </Form>
   );
 };
@@ -126,6 +262,9 @@ const SectionLabel = styled.div`
   position: relative;
   width: 100%;
   height: 50px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   font-weight: 500;
@@ -157,4 +296,12 @@ const ButtonSubmit = styled.button`
   border: none;
   border-radius: 5px;
   transition: 0.3s;
+`;
+
+const LineDivision = styled.div`
+  position: relative;
+  width: 100%;
+  margin: 0 10px;
+  height: 1px;
+  background-color: rgba(0, 0, 0, 0.1);
 `;

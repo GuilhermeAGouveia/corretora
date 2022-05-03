@@ -61,3 +61,9 @@ export async function getImoveisByFilterWithPage(
 
   return pageImoveis;
 }
+
+export async function insertImovel(imovel: IImovel, ctx?: any): Promise<string> {
+  const api = getAPIHTTPClient(ctx);
+  const response = await api.post<string>("/imovel", imovel);
+  return response.data;
+}

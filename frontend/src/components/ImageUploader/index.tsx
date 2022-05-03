@@ -1,6 +1,6 @@
 import filesize from "filesize";
 import { uniqueId } from "lodash";
-import React from "react";
+import React, { useEffect } from "react";
 import FileList from "./FileList";
 import { Container } from "./styles";
 import Upload from "./Uploader";
@@ -21,19 +21,15 @@ interface ImageUploaderState {
   uploadedFiles: UploadedFile[];
 }
 
-class ImageUploader extends React.Component<any, ImageUploaderState> {
-  state = {
-    uploadedFiles: [] as UploadedFile[],
-  };
+interface ImageUploaderProps {
+  uploaded: [UploadedFile[], (files: UploadedFile[]) => void];
+}
 
-  componentWillUnmount() {
-    this.state.uploadedFiles.forEach((file) =>
-      URL.revokeObjectURL(file.preview as string)
-    );
-  }
-  handleUpload = (files: File[]) => {
-    console.log(this.state.uploadedFiles);
-    const uploadedFiles: UploadedFile[] = files.map((file) => ({
+function ImageUploader({ uploaded }: ImageUploaderProps) {
+  const [uploadedFiles, setUploadedFiles] = uploaded;
+
+  const handleUpload = (files: File[]) => {
+    const newUploadedFiles: UploadedFile[] = files.map((file) => ({
       file,
       id: uniqueId(),
       name: file.name,
@@ -44,69 +40,35 @@ class ImageUploader extends React.Component<any, ImageUploaderState> {
       progress: 0,
       url: null,
     }));
-    this.setState({
-      uploadedFiles: [...this.state.uploadedFiles, ...uploadedFiles],
-    });
-    //uploadedFiles.forEach(this.processUpload);
+
+    setUploadedFiles(uploadedFiles.concat(newUploadedFiles));
+    //uploadedFiles.forEach(processUpload);
   };
 
-  handleDelete = async (id: string) => {
-    this.setState({
-      uploadedFiles: this.state.uploadedFiles.filter(
-        (files) => files.id !== id
-      ),
-    });
-  };
-  /*  updateFile = (id, data) => {
-    this.setState({
-      uploadedFiles: this.state.uploadedFiles.map((uploadedFile) => {
-        return id === uploadedFile.id
-          ? { ...uploadedFile, ...data }
-          : uploadedFile;
-      }),
-    });
+  const handleDelete = async (id: string) => {
+    setUploadedFiles(uploadedFiles.filter((files) => files.id !== id));
   };
 
-  processUpload = (uploadedFile) => {
-    const data = new FormData();
-    data.append("file", uploadedFile.file, uploadedFile.name);
-    api
-      .post("uploadFile", data, {
-        onUploadProgress: (e) => {
-          const progress = parseInt(Math.round((e.loaded * 100) / e.total));
-          this.updateFile(uploadedFile.id, {
-            progress,
-          });
-        },
-      })
-      .then((response) => {
-        this.updateFile(uploadedFile.id, {
-          uploaded: true,
-          id: response.data._id,
-          url: response.data.path,
-        });
-      })
-      .catch((error) => {
-        this.updateFile(uploadedFile.id, {
-          error: true,
-          errorString: `${error}`,
-        });
-      });
-  }; */
-  render() {
-    const { uploadedFiles } = this.state;
-    return (
-      <Container>
-        <Upload onUpload={this.handleUpload}></Upload>
-        {!!uploadedFiles.length && (
-          <FileList
-            onDelete={this.handleDelete}
-            uploadedFiles={uploadedFiles}
-          ></FileList>
-        )}
-      </Container>
-    );
-  }
+  useEffect(() => {
+    return () => {
+      uploadedFiles.forEach((file) =>
+        URL.revokeObjectURL(file.preview as string)
+      );
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  return (
+    <Container>
+      <Upload onUpload={handleUpload}></Upload>
+      {!!uploadedFiles.length && (
+        <FileList
+          onDelete={handleDelete}
+          uploadedFiles={uploadedFiles}
+        ></FileList>
+      )}
+    </Container>
+  );
 }
 
 export default ImageUploader;

@@ -19,6 +19,8 @@ interface SelectReactHookFormProps {
   controlReactHookForm: Control<FieldValues, any>;
   style?: CSSProperties;
   placeholder?: string;
+  onChange?: (value: string) => void;
+  required?: boolean;
 }
 
 const SelectReactHookForm = ({
@@ -27,13 +29,16 @@ const SelectReactHookForm = ({
   options,
   name,
   placeholder,
-  style
+  style,
+  required,
+  onChange: onChangeProp,
 }: SelectReactHookFormProps) => (
   <SelectReactHookFormContainer style={style}>
     <Controller
       control={controlReactHookForm}
       defaultValue={value}
       name={name}
+      rules={{ required }}
       render={({
         field: { onChange, ...rest },
       }: {
@@ -44,7 +49,11 @@ const SelectReactHookForm = ({
           defaultValue={options.find((option) => option.value === value)}
           options={options}
           placeholder={placeholder}
-          onChange={(val) => onChange(val?.value)}
+          onChange={(val) => {
+            onChange(val?.value);
+            onChangeProp && onChangeProp(val?.value || "");
+          }}
+          
         />
       )}
     />

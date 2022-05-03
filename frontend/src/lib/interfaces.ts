@@ -60,6 +60,7 @@ export interface Credenciais {
 }
 
 export interface Pessoa {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
