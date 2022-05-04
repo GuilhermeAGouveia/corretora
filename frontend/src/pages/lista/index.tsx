@@ -219,6 +219,6 @@ export const getStaticProps = async (ctx: any) => {
     props: {
       pageImoveis,
     },
-    revalidate: 10, // 1 min
+    revalidate: 10, // 10 seconds
   };
 };
