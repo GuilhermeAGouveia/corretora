@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
 
@@ -7,7 +7,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   register: any;
 }
 
-const Input = ({ placeholder, name, register, defaultValue, ...inputProps }: InputProps) => {
+const Input = ({
+  placeholder,
+  name,
+  register,
+  defaultValue,
+  ...inputProps
+}: InputProps) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [isChanging, setIsChanging] = useState(false);
   const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
     if (
@@ -15,7 +22,7 @@ const Input = ({ placeholder, name, register, defaultValue, ...inputProps }: Inp
       event.target.value.length > 0
     ) {
       setIsChanging(true);
-      return ;
+      return;
     }
 
     setIsChanging(stateValue);
@@ -32,8 +39,9 @@ const Input = ({ placeholder, name, register, defaultValue, ...inputProps }: Inp
           scale: isChanging ? 0.9 : 1,
           color: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.7)`,
         }}
+        onClick={() => inputRef.current?.focus()}
       >
-        {placeholder}
+        {inputProps.required ? placeholder + " *" : placeholder}
       </LoginFormInputPlaceholder>
       <LoginFormInput
         {...inputProps}
@@ -43,6 +51,7 @@ const Input = ({ placeholder, name, register, defaultValue, ...inputProps }: Inp
         onBlur={(e: any) => {
           handleIsChanging(e, false);
         }}
+        ref={inputRef}
       />
     </LoginFormInputContainer>
   );
@@ -84,4 +93,5 @@ const LoginFormInputPlaceholder = styled(motion.div)`
   background-color: white;
   padding: 0 5px;
   z-index: 1;
+  cursor: pointer;
 `;

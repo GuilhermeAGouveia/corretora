@@ -48,7 +48,7 @@ const SelectReactHookForm = ({
           ref={rest.ref}
           defaultValue={options.find((option) => option.value === value)}
           options={options}
-          placeholder={placeholder}
+          placeholder={required ? `${placeholder} *` : placeholder}
           onChange={(val) => {
             onChange(val?.value);
             onChangeProp && onChangeProp(val?.value || "");

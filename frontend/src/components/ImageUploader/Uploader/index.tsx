@@ -3,13 +3,13 @@ import Dropzone from "react-dropzone";
 import { DropContainer, UploadMessage } from "./styles";
 
 interface UploadProps {
-  onUpload: (files: any) => void;
+  onUpload: (files: File[]) => void;
 }
 
 export default class Upload extends React.Component<UploadProps> {
   returnTextState(isDragActive: boolean, isDragReject: boolean) {
     if (!isDragActive) {
-      return <UploadMessage>Arraste arquivos aqui...</UploadMessage>;
+      return <UploadMessage>Clique ou arraste imagens aqui...</UploadMessage>;
     }
     if (isDragReject) {
       return (

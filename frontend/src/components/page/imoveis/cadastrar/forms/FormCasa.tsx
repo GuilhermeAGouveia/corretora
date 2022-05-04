@@ -147,20 +147,20 @@ const FormCadastrarCasa = () => {
           <Input
             name="street"
             register={register}
-            placeholder="Rua *"
+            placeholder="Rua"
             required
           />
           <Input
             name="number"
             type="number"
             register={register}
-            placeholder="Número *"
+            placeholder="Número"
             required
           />
           <Input
             name="district"
             register={register}
-            placeholder="Bairro *"
+            placeholder="Bairro"
             required
           />
           {"\n"}
@@ -169,7 +169,7 @@ const FormCadastrarCasa = () => {
               maxWidth: "400px",
             }}
             name="state"
-            placeholder="Estado *"
+            placeholder="Estado"
             options={estados}
             controlReactHookForm={control}
             onChange={(value) => setEstado(value)}
@@ -180,7 +180,7 @@ const FormCadastrarCasa = () => {
               maxWidth: "400px",
             }}
             name="city"
-            placeholder="Cidade *"
+            placeholder="Cidade"
             options={cidades}
             controlReactHookForm={control}
             required
