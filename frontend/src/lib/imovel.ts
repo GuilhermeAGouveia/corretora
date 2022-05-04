@@ -1,5 +1,6 @@
+import { FormImovel } from "../components/page/imoveis/cadastrar/forms/FormCasa";
 import { getAPIHTTPClient } from "../services/api";
-import { FilterOrderQuery, IImovel, Page } from "./interfaces";
+import { FilterOrderQuery, IImovel, ImovelType, Page } from "./interfaces";
 import { FilterQueryBuilder } from "./queryBuilder";
 
 export async function getAllImovel(ctx?: any): Promise<IImovel[]> {
@@ -62,8 +63,44 @@ export async function getImoveisByFilterWithPage(
   return pageImoveis;
 }
 
-export async function insertImovel(imovel: IImovel, ctx?: any): Promise<string> {
+export async function insertImovel(
+  imovel: IImovel,
+  ctx?: any
+): Promise<string> {
   const api = getAPIHTTPClient(ctx);
   const response = await api.post<string>("/imovel", imovel);
   return response.data;
+}
+
+export function parseFormImovelToIImovel(
+  formImovel: FormImovel & {
+    idOwner: string;
+  }
+): IImovel {
+  const {
+    street,
+    number,
+    district,
+    state,
+    city,
+    area,
+    mensalidade,
+    price,
+    idOwner: id,
+  } = formImovel;
+
+  const imovel: IImovel = {
+    address: `${street}, ${number}`,
+    district: district as string,
+    state: state as string,
+    city: city as string,
+    area: area ? parseFloat(area) : 0,
+    cod_lcd: id,
+    cep: "",
+    mensalidade: mensalidade ? parseFloat(mensalidade) : 0,
+    price: price ? parseFloat(price) : 0,
+    type: ImovelType.CASA,
+  } as IImovel;
+
+  return imovel;
 }

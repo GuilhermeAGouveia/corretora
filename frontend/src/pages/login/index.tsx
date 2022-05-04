@@ -74,7 +74,7 @@ export default function Login() {
           <DivisionLine>
             <p>or Sign with Email</p>
           </DivisionLine>
-          <LoginForm onSubmit={handleSubmit(onSubmit)} autoComplete="off">
+          <LoginForm onSubmit={handleSubmit(onSubmit)}>
             <Input
               type="email"
               placeholder="Email"

@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
 
@@ -14,7 +14,7 @@ const Input = ({
   defaultValue,
   ...inputProps
 }: InputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
+
   const [isChanging, setIsChanging] = useState(false);
   const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
     if (
@@ -39,19 +39,19 @@ const Input = ({
           scale: isChanging ? 0.9 : 1,
           color: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.7)`,
         }}
-        onClick={() => inputRef.current?.focus()}
+
       >
         {inputProps.required ? placeholder + " *" : placeholder}
       </LoginFormInputPlaceholder>
       <LoginFormInput
         {...inputProps}
-        placeholder={defaultValue}
+        placeholder={defaultValue}        
         {...register(name)}
         onFocus={(e: any) => handleIsChanging(e, true)}
         onBlur={(e: any) => {
           handleIsChanging(e, false);
         }}
-        ref={inputRef}
+        
       />
     </LoginFormInputContainer>
   );
