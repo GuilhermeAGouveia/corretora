@@ -82,7 +82,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   }, []);
 
   const onSubmit = async (formValues: FormImovel) => {
-    if (!user) return;
+    if (!user || loading) return; //se o usuário não estiver logado ou o form estiver carregando, não faz nada
 
     setLoading(true);
     const imovelData = parseFormImovelToIImovel({
@@ -165,6 +165,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           <SelectReactHookForm
             style={{
               maxWidth: "400px",
+              opacity: cidades.length ? 1 : 0.5,
             }}
             name="city"
             placeholder="Cidade"

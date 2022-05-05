@@ -1,8 +1,6 @@
 import api from "../services/api";
 import { Credenciais, Pessoa } from "./interfaces";
 
-const delay = (time: number = 500) =>
-  new Promise((resolve) => setTimeout(resolve, time));
 
 export async function sigIn({email, password}: Credenciais) {
   try {
@@ -42,36 +40,3 @@ export async function getUserByToken(token: string) {
     return false;
   }
 }
-/* 
-export async function getUserByToken(token: string) {
-  try {
-    await api.get("/imovel");
-    return {
-      name: "João da Silva",
-      email: "joao@locao",
-    };
-  } catch (error) {
-    return false;
-  }
-}
-
-export async function sigIn(email: string, password: string) {
-  try {
-    await delay();
-    return {
-      user: {
-        name: "João da Silva",
-        email,
-      },
-      token: "token-123",
-      error: null,
-    };
-  } catch (error) {
-    return {
-      user: "",
-      token: "",
-      error,
-    };
-  }
-}
- */

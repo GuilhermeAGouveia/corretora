@@ -1,6 +1,6 @@
 import { GetServerSideProps } from "next";
 import Cadastrar from "../../../components/Cadastrar";
-import FormCadastrarCasa from "../../../components/page/imoveis/cadastrar/forms/FormCasa";
+import FormImovel from "../../../components/page/imoveis/cadastrar/forms/FormImovel";
 import { getCookie } from "../../../lib/cookies";
 import { ImovelType } from "../../../lib/interfaces";
 
@@ -12,7 +12,7 @@ export default function CadastrarImovel({ tipo }: CadastrarProps) {
   return (
     <Cadastrar
       title="Cadastrar Comércio"
-      form={<FormCadastrarCasa imovelType={tipo} />}
+      form={<FormImovel imovelType={tipo} />}
     />
   );
 }
