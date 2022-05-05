@@ -1,6 +1,6 @@
 import { FormImovel } from "../components/page/imoveis/cadastrar/forms/FormCasa";
 import { getAPIHTTPClient } from "../services/api";
-import { FilterOrderQuery, IImovel, ImovelType, Page } from "./interfaces";
+import { FilterOrderQuery, IImovel, Page } from "./interfaces";
 import { FilterQueryBuilder } from "./queryBuilder";
 
 export async function getAllImovel(ctx?: any): Promise<IImovel[]> {
@@ -86,7 +86,8 @@ export function parseFormImovelToIImovel(
     area,
     mensalidade,
     price,
-    idOwner: id,
+    type,
+    idOwner: id
   } = formImovel;
 
   const imovel: IImovel = {
@@ -99,7 +100,7 @@ export function parseFormImovelToIImovel(
     cep: "",
     mensalidade: mensalidade ? parseFloat(mensalidade) : 0,
     price: price ? parseFloat(price) : 0,
-    type: ImovelType.CASA,
+    type,
   } as IImovel;
 
   return imovel;

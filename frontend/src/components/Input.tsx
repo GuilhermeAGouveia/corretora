@@ -43,7 +43,7 @@ const InputComponent = ({
       </InputPlaceholder>
       <Input
         {...inputProps}
-        placeholder={isChanging && defaultValue} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
+        placeholder={isChanging ? defaultValue : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
         // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
         {...register(name)}
         onFocus={(e: any) => handleIsChanging(e, true)}

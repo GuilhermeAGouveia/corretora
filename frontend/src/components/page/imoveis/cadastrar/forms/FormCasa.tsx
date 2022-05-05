@@ -1,12 +1,14 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../../context/Auth";
+import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
 import { insertManyImages } from "../../../../../lib/imagens";
 import {
   insertImovel,
   parseFormImovelToIImovel
 } from "../../../../../lib/imovel";
+import { ImovelType } from "../../../../../lib/interfaces";
 import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
 import ProgressUpload from "../../../../ProgressUpload";
@@ -28,26 +30,19 @@ export interface FormImovel {
   district?: string;
   state?: string;
   city?: string;
+  type?: ImovelType;
   apto?: string;
   mensalidade?: string;
   price?: string;
   area?: string;
 }
 
-interface Field {
-  name: string;
-  label: string;
-  type: string;
-  placeholder?: string;
-  required?: boolean;
-  defaultValue?: string;
-}
-
 interface FormImovelProps {
   aditionalFields?: Field[];
+  imovelType: ImovelType;
 }
 
-const FormImovel = ({ aditionalFields }: FormImovelProps) => {
+const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   const { user } = useAuth();
   const { register, handleSubmit, control } = useForm();
   const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
@@ -93,6 +88,7 @@ const FormImovel = ({ aditionalFields }: FormImovelProps) => {
     const imovelData = parseFormImovelToIImovel({
       ...formValues,
       idOwner: user.id,
+      type: imovelType,
     });
     const idImovel = await insertImovel(imovelData);
 
@@ -191,14 +187,14 @@ const FormImovel = ({ aditionalFields }: FormImovelProps) => {
             placeholder="Área (m²)"
             defaultValue={0}
           />
-          {aditionalFields?.map((field) => {
+          {getAditionalFields(imovelType).map((field) => {
             return (
               <Input
                 key={field.name}
                 name={field.name}
                 type={field.type}
                 register={register}
-                placeholder={field.label}
+                placeholder={field.placeholder}
                 defaultValue={field.defaultValue}
               />
             );

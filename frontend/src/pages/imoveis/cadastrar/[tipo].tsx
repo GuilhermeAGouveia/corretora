@@ -8,21 +8,13 @@ interface CadastrarProps {
   tipo: ImovelType;
 }
 
-export default function CadastrarImovel({tipo}: CadastrarProps) {
-  const JSXByTipo = {
-    [ImovelType.CASA]: (
-      <Cadastrar title="Cadastrar Casa" form={<FormCadastrarCasa/>}/>
-    ),
-    [ImovelType.APTO]: (
-      <Cadastrar title="Cadastrar Apartamento" form={"Formulário para cadastrar apartamento"}/>
-    ),
-    [ImovelType.COMERCIO]: (
-      <Cadastrar title="Cadastrar Comércio" form={"Formulário para cadastrar comércio"}/>
-    ),
-  }
-
-  return JSXByTipo[tipo];
-
+export default function CadastrarImovel({ tipo }: CadastrarProps) {
+  return (
+    <Cadastrar
+      title="Cadastrar Comércio"
+      form={<FormCadastrarCasa imovelType={tipo} />}
+    />
+  );
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
