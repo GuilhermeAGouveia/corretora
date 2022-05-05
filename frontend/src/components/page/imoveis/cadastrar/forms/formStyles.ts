@@ -25,7 +25,7 @@ export const SectionLabel = styled.div`
 export const SectionInputContent = styled.div`
   position: relative;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;
   width: 100%;
@@ -39,6 +39,8 @@ export const SectionInputContent = styled.div`
     & > * {
       margin: 10px 0;
     }
+
+    justify-content: center;
   }
 `;
 export const ButtonSubmit = styled.button`
