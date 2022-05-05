@@ -89,6 +89,7 @@ export default {
         offerType,
         orderBy,
         sort,
+        cod_lcd
       } = req.query as {
         city?: string;
         state?: string;
@@ -100,6 +101,7 @@ export default {
         offerType?: OfferType; // Indica se é aluguel ou venda
         orderBy?: string;
         sort?: string;
+        cod_lcd?: string
       };
 
       const page = parseInt((req.params.page as string) || "1");
@@ -145,6 +147,7 @@ export default {
         supDescribe: supDescribe
           ? { supDescribe: { contains: supDescribe } }
           : {},
+        cod_lcd: cod_lcd ? { cod_lcd: { equals: cod_lcd } } : {},
         type: type ? { type: { equals: type } } : {},
         offerType: (offerType?: string) => {
           switch (offerType) {
@@ -169,6 +172,7 @@ export default {
         ...filter.offerType(offerType),
         ...filter.area,
         ...filter.type,
+        ...filter.cod_lcd,
       };
 
       // Se o campo em orderBy não existir, um error será lançado
