@@ -15,7 +15,6 @@ export const getEstados = async () => {
       label,
     };
   });
-
   return estados;
 };
 

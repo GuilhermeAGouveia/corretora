@@ -6,7 +6,7 @@ import {
   useState
 } from "react";
 import { getUserByToken, sigIn } from "../lib/auth";
-import { getCookie, setCookieWithOptions } from "../lib/cookies";
+import { deleteCookie, getCookie, setCookieWithOptions } from "../lib/cookies";
 import { Credenciais, Pessoa } from "../lib/interfaces";
 
 interface AuthValue {
@@ -43,16 +43,14 @@ export function AuthProvider({ children }: any) {
     if (error) throw error;
 
     setCookieWithOptions("@corretora:token", token, {
-      maxAge: 30 * 24 * 60 * 60, // 30 days
+      maxAge: 3600, // 1 hour, mesmo tempo do token jwt assinado no backend
     });
     setUser(user);
   };
 
   const logout = useCallback(() => {
     setUser(null);
-    setCookieWithOptions("@corretora:token", "", {
-      maxAge: -1,
-    });
+    deleteCookie("@corretora:token");
   }, []);
 
   const isAuthenticated = !!user;
