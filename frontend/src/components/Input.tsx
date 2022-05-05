@@ -7,14 +7,13 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
   register: any;
 }
 
-const Input = ({
+const InputComponent = ({
   placeholder,
   name,
   register,
   defaultValue,
   ...inputProps
 }: InputProps) => {
-
   const [isChanging, setIsChanging] = useState(false);
   const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
     if (
@@ -28,38 +27,38 @@ const Input = ({
     setIsChanging(stateValue);
   };
   return (
-    <LoginFormInputContainer
+    <InputContainer
       animate={{
         borderColor: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.2)`,
       }}
     >
-      <LoginFormInputPlaceholder
+      <InputPlaceholder
         animate={{
           y: isChanging ? -21 : 0,
           scale: isChanging ? 0.9 : 1,
           color: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.7)`,
         }}
-
       >
         {inputProps.required ? placeholder + " *" : placeholder}
-      </LoginFormInputPlaceholder>
-      <LoginFormInput
+      </InputPlaceholder>
+      <Input
         {...inputProps}
-        placeholder={defaultValue}        
+        placeholder={isChanging && defaultValue} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
+        // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
         {...register(name)}
         onFocus={(e: any) => handleIsChanging(e, true)}
         onBlur={(e: any) => {
           handleIsChanging(e, false);
         }}
-        
+        autoComplete="off"
       />
-    </LoginFormInputContainer>
+    </InputContainer>
   );
 };
 
-export default Input;
+export default InputComponent;
 
-const LoginFormInput = styled.input`
+const Input = styled.input`
   position: relative;
   height: 95%;
   width: 100%;
@@ -70,7 +69,7 @@ const LoginFormInput = styled.input`
   color: rgba(0, 0, 0, 0.8);
 `;
 
-const LoginFormInputContainer = styled(motion.div)`
+const InputContainer = styled(motion.div)`
   position: relative;
   height: 42px;
   width: 100%;
@@ -88,10 +87,9 @@ const LoginFormInputContainer = styled(motion.div)`
   font-weight: 500;
 `;
 
-const LoginFormInputPlaceholder = styled(motion.div)`
+const InputPlaceholder = styled(motion.div)`
   position: absolute;
   background-color: white;
   padding: 0 5px;
-  z-index: 1;
   cursor: pointer;
 `;
