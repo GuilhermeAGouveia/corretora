@@ -38,9 +38,9 @@ const SelectOption = ({ buttons, style }: SelectOptionPros) => {
   function handleSelect(index: number) {
     const e = optionRef.current[index].current as HTMLObjectElement;
     setLineProps({
-      width: e.offsetWidth || 0,
+      width: !!e ? e.offsetWidth : 0,
       // left é calculado pegando a posição absoluta de e na tela menos o que tem antes, que é a largura de sectionRef e os 5 pixels de padding da borda
-      left: e.offsetLeft || 0,
+      left: !!e ? e.offsetLeft : 0,
       // left: e.getBoundingClientRect().left - this.sectionRef.current.getBoundingClientRect().width - 5
     });
     setSelected(index);
