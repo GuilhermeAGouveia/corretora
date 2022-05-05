@@ -23,6 +23,12 @@ export const DropContainer = styled("div").attrs({
   transition: height 1s ease, border-color 0.2s;
   ${(props) => props.isDragActive && dragActive}
   ${(props) => props.isDragReject && dragReject}
+
+  @media (max-width: 768px) {
+    width: 90%;
+    margin: 0 5%;
+    height: auto;
+  }
 `;
 const messageOptions = {
   default: "#999",

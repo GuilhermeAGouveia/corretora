@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../../context/Auth";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
@@ -9,6 +9,7 @@ import {
 } from "../../../../../lib/imovel";
 import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
+import ProgressUpload from "../../../../ProgressUpload";
 import SelectReactHookForm, {
   SelectOption
 } from "../../../../SelectReactHookForm";
@@ -54,6 +55,36 @@ const FormImovel = ({ aditionalFields }: FormImovelProps) => {
   const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
   const [imagens, setImagens] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
+  const [totalProgress, setTotalProgress] = useState(0);
+
+  const setProgressUploadFile = (fileId: string, progress: number) => {
+    setImagens(
+      imagens.map((file) => {
+        if (file.id === fileId) {
+          file.progress = progress;
+        }
+        return file;
+      })
+    );
+  };
+
+  const getTotalSizeImagens = (imagens: UploadedFile[]) => {
+    let totalSize = 0;
+    imagens.forEach((imagem) => {
+      totalSize += imagem.file.size;
+    });
+    return totalSize;
+  };
+
+  const getAllProgressUploadFile = useCallback((imagens: UploadedFile[]) => {
+    let totalProgress = 0;
+    let totalSize = getTotalSizeImagens(imagens);
+    for (const imagem of imagens) {
+      if (!imagem.progress) break; //[Otimizacao] O array de imagens é processado sequenciamente, então se em algum momento o progress for 0, não precisa continuar o loop
+      totalProgress += imagem.progress * imagem.file.size;
+    }
+    return totalSize ? Math.round(totalProgress / totalSize) : 0; // O ternário evita divisão por zero
+  }, []);
 
   const onSubmit = async (formValues: FormImovel) => {
     if (!user) return;
@@ -65,19 +96,14 @@ const FormImovel = ({ aditionalFields }: FormImovelProps) => {
     });
     const idImovel = await insertImovel(imovelData);
 
-    insertManyImages(imagens, idImovel);
+    await insertManyImages(imagens, idImovel, setProgressUploadFile);
 
     setLoading(false);
   };
 
   useEffect(() => {
-    const setEstadosFromExternalData = async () => {
-      const estados = await getEstados();
-      setEstados(estados);
-    };
-
-    setEstadosFromExternalData();
-  }, []);
+    setTotalProgress(getAllProgressUploadFile(imagens));
+  }, [getAllProgressUploadFile, imagens]);
 
   useEffect(() => {
     const setCidadesFromExternalData = async () => {
@@ -87,6 +113,15 @@ const FormImovel = ({ aditionalFields }: FormImovelProps) => {
 
     setCidadesFromExternalData();
   }, [estado]);
+
+  useEffect(() => {
+    const setEstadosFromExternalData = async () => {
+      const estados = await getEstados();
+      setEstados(estados);
+    };
+
+    setEstadosFromExternalData();
+  }, []);
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -193,7 +228,11 @@ const FormImovel = ({ aditionalFields }: FormImovelProps) => {
         </SectionInputContent>
       </SectionInputContainer>
       <ButtonSubmit type="submit">
-        {loading ? "Loading..." : "Cadastrar"}
+        {!loading ? (
+          "Anunciar"
+        ) : (
+          <ProgressUpload progress={totalProgress}></ProgressUpload>
+        )}
       </ButtonSubmit>
     </Form>
   );
