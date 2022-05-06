@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
-import { insertManyImages } from "../../../../../lib/imagens";
+import { insertManyImages } from "../../../../../lib/imagem";
 import {
   insertImovel,
   parseFormImovelToIImovel
@@ -22,7 +22,7 @@ import {
   SectionInputContainer,
   SectionInputContent,
   SectionLabel
-} from "./formStyles";
+} from "./styles";
 
 export interface FormImovel {
   street?: string;

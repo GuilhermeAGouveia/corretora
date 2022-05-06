@@ -13,6 +13,10 @@ interface CardImovelProps {
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHover, setIsHover] = useState(false);
+  const [imageDimensions, setImageDimensions] = useState({
+    width: 0,
+    height: 0,
+  });
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -65,8 +69,17 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
               : "https://picsum.photos/200/300"
           }
           alt={imovel.images[0] ? imovel.images[0].originalname : "Imagem"}
-          layout="fill"
+          {...imageDimensions}
+          objectFit="cover"
+          
           blurDataURL="https://picsum.photos/200/300"
+          onLoadingComplete={({naturalHeight: height, naturalWidth: width}) => {
+            let newWidth = 250 / width;
+            let newHeight = height * newWidth;
+            if (newHeight < 250) newHeight = 250;
+            if (newHeight > 450) newHeight = 450;
+            setImageDimensions({ width: 250, height: newHeight });
+          }}
           priority
         />
       </CardImovelImage>
@@ -135,7 +148,7 @@ const CardImovelContainer = styled("div")`
 const CardImovelImage = styled.div`
   position: relative;
   width: 100%;
-  height: 200px;
+  height: auto;
 `;
 
 const CardDescription = styled.div`
