@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { AiOutlineHome, AiOutlinePaperClip } from "react-icons/ai";
 import { FaBars, FaRegHeart } from "react-icons/fa";
@@ -8,6 +9,7 @@ import colors from "../../../styles/colors";
 
 
 const MenuLateral = () => {
+  const router = useRouter();
   const [isActive, setIsActive] = useState(false);
   const handleClick = () => setIsActive(!isActive);
 
@@ -23,7 +25,7 @@ const MenuLateral = () => {
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -300, y: -300 }}
           >
-            <Item><FaRegHeart size={'1rem'}/><span>Favoritos</span></Item>
+            <Item onClick={() => router.push('/imoveis/my')}><FaRegHeart size={'1rem'}/><span>Favoritos</span></Item>
             <Item><AiOutlinePaperClip size={'1rem'}/><span>Meus Contratos</span></Item>
             <Item><AiOutlineHome size={'1rem'}/><span>Meus Imóveis</span></Item>
           </MenuLateralContainer>
@@ -43,7 +45,7 @@ const FalseBg = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-  z-index: 1;
+  z-index: 9998;
 `;
 
 const MenuLateralContainer = styled(motion.div)`

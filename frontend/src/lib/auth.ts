@@ -4,7 +4,7 @@ import { Credenciais, Pessoa } from "./interfaces";
 
 export async function sigIn({email, password}: Credenciais) {
   try {
-    const response = await api.post<{ token: string; user: any }>("/auth/login", {
+    const response = await api.post<{ token: string; user: Pessoa }>("/auth/login", {
       email,
       password,
     });

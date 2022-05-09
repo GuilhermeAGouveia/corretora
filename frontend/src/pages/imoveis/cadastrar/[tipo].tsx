@@ -1,7 +1,6 @@
 import { GetServerSideProps } from "next";
 import Cadastrar from "../../../components/Cadastrar";
 import FormImovel from "../../../components/page/imoveis/cadastrar/forms/FormImovel";
-import { getCookie } from "../../../lib/cookies";
 import { ImovelType } from "../../../lib/interfaces";
 
 interface CadastrarProps {
@@ -17,7 +16,7 @@ export default function CadastrarImovel({ tipo }: CadastrarProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
+/* export const getServerSideProps: GetServerSideProps = async (context) => {
   const token = getCookie("@corretora:token", context);
   const tipo = context.query.tipo as ImovelType;
 
@@ -28,6 +27,17 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
         permanent: false,
       },
     };
+  return {
+    props: {
+      tipo,
+    },
+  };
+}; */
+
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const tipo = context.query.tipo as ImovelType;
+
   return {
     props: {
       tipo,

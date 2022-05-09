@@ -14,17 +14,14 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHover, setIsHover] = useState(false);
   const [imageDimensions, setImageDimensions] = useState({
-    width: 0,
-    height: 0,
+    width: 450,
+    height: 450,
   });
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
   };
 
-  const handleHover = () => {
-    setIsHover(!isHover);
-  };
   const getPlural = (num: number, word: string) => {
     return (
       <>
@@ -46,14 +43,14 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
       >
         <AnimatePresence>
           {(isFavorite || isHover) && (
-              <IconHeart
-                initial={{ width: 0, height: 0 }}
-                animate={{ width: 20, height: 20 }}
-                exit={{ width: 0, height: 0 }}
-              >
-                <FaHeart size={15} color={colors.primary} />
-              </IconHeart>
-            )}
+            <IconHeart
+              initial={{ width: 0, height: 0 }}
+              animate={{ width: 20, height: 20 }}
+              exit={{ width: 0, height: 0 }}
+            >
+              <FaHeart size={15} color={colors.primary} />
+            </IconHeart>
+          )}
           <FaRegHeart
             style={{ position: "absolute" }}
             size={15}
@@ -71,16 +68,18 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
           alt={imovel.images[0] ? imovel.images[0].originalname : "Imagem"}
           {...imageDimensions}
           objectFit="cover"
-          
-          blurDataURL="https://picsum.photos/200/300"
-          onLoadingComplete={({naturalHeight: height, naturalWidth: width}) => {
-            let newWidth = 250 / width;
+          onLoadingComplete={({
+            naturalHeight: height,
+            naturalWidth: width,
+          }) => {
+            let newWidth = 400 / width;
             let newHeight = height * newWidth;
             if (newHeight < 250) newHeight = 250;
             if (newHeight > 450) newHeight = 450;
-            setImageDimensions({ width: 250, height: newHeight });
+            setImageDimensions({ width: 400, height: newHeight });
           }}
           priority
+          quality={100}
         />
       </CardImovelImage>
 
@@ -124,8 +123,8 @@ export default CardImovel;
 
 const CardImovelContainer = styled("div")`
   position: relative;
-  float: left;
   width: 250px;
+  float: left;
   min-height: 200px;
   background: white;
   margin: 5px;

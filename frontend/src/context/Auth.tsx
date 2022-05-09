@@ -45,6 +45,11 @@ export function AuthProvider({ children }: any) {
     setCookieWithOptions("@corretora:token", token, {
       maxAge: 3600, // 1 hour, mesmo tempo do token jwt assinado no backend
     });
+
+    setCookieWithOptions("@corretora:userid", user?.id as string, {
+      maxAge: 3600 // 1 hour
+    });
+
     setUser(user);
   };
 

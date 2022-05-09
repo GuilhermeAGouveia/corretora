@@ -102,6 +102,7 @@ export default {
         orderBy?: string;
         sort?: string;
         cod_lcd?: string
+        limit?: string;
       };
 
       const page = parseInt((req.params.page as string) || "1");

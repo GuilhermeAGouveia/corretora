@@ -5,7 +5,7 @@ import CardImovel from "../../CardImovel";
 
 interface ListCardsProps {
   imoveis: IImovel[];
-  isLoadingItems: boolean;
+  isLoadingItems?: boolean;
 }
 
 const ListCards = ({ isLoadingItems, imoveis }: ListCardsProps) => {
@@ -29,6 +29,7 @@ export default ListCards;
 
 const CardsContainer = styled.div`
   position: relative;
+  
   max-width: 1200px;
   width: 90%;
   margin: 0 5%;

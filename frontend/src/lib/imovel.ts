@@ -26,6 +26,12 @@ export async function getByCodImovel(cod: string, ctx?: any): Promise<IImovel> {
   return imovel;
 }
 
+export async function getByLocador(cod: string, ctx?: any): Promise<Page<IImovel>> {
+  const api = getAPIHTTPClient(ctx);
+  const { data: pageImovel } = await api.get<Page<IImovel>>(`/imovel/filter/1?cod_lcd=${cod}&limit=99999`);
+  return pageImovel;
+}
+
 export async function getImoveisByFilterWithPage(
   filterValues: FilterOrderQuery,
   page: number,
