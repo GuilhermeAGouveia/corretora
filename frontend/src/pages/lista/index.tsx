@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
 import { FiFilter, FiSearch } from "react-icons/fi";
+import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/page/lista/Actions/Filter";
 import OrderBy from "../../components/page/lista/Actions/OrderBy";
 import ContentControlBySelectionFloatLine from "../../components/page/lista/ContentControlBySelectionFloatLine";
@@ -147,7 +148,7 @@ export default function Marketplace({
               <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
             </ModalResponsive>
           </LeftSection>
-          <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} />
+          <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} cardComponent={CardImovel}/>
         </SearchSection>
       ),
     },

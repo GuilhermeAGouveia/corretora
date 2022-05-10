@@ -1,20 +1,20 @@
 import styled from "styled-components";
 import { IImovel } from "../../../lib/interfaces";
 import colors from "../../../styles/colors";
-import CardImovel from "../../CardImovel";
 
 interface ListCardsProps {
   imoveis: IImovel[];
   isLoadingItems?: boolean;
+  cardComponent: React.ComponentType<{ imovel: IImovel; key: string }>;
 }
 
-const ListCards = ({ isLoadingItems, imoveis }: ListCardsProps) => {
+const ListCards = ({ cardComponent: Card ,isLoadingItems, imoveis }: ListCardsProps) => {
   return (
     <CardsContainerRoot>
       <CardsContainer>
         {imoveis.length ? (
           imoveis.map((imovel: IImovel) => (
-            <CardImovel key={imovel.cod_imv} imovel={imovel} />
+            <Card key={imovel.cod_imv} imovel={imovel} />
           ))
         ) : (
           <NoneImoveis>Nenhum imóvel encontrado</NoneImoveis>

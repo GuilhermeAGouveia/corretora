@@ -10,11 +10,13 @@
   },
   "dependencies": {
     "@szhsin/react-menu": "^3.0.0",
+    "@types/date-fns": "^2.6.0",
     "@types/filesize": "^5.0.0",
     "@types/lodash": "^4.14.182",
     "@types/react-circular-progressbar": "^1.1.0",
     "@types/react-dropzone": "^5.1.0",
     "axios": "^0.26.1",
+    "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "filesize": "^8.0.7",
     "framer-motion": "^6.3.0",
