@@ -25,9 +25,9 @@ const MenuLateral = () => {
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -300, y: -300 }}
           >
-            <Item onClick={() => router.push('/imoveis/my')}><FaRegHeart size={'1rem'}/><span>Favoritos</span></Item>
+            <Item><FaRegHeart size={'1rem'}/><span>Favoritos</span></Item>
             <Item><AiOutlinePaperClip size={'1rem'}/><span>Meus Contratos</span></Item>
-            <Item><AiOutlineHome size={'1rem'}/><span>Meus Imóveis</span></Item>
+            <Item onClick={() => router.push('/imoveis/my')}><AiOutlineHome size={'1rem'}/><span>Meus Imóveis</span></Item>
           </MenuLateralContainer>
           <FalseBg onClick={() => setIsActive(false)}></FalseBg>
         </>

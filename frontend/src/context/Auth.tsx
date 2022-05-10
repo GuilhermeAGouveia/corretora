@@ -56,6 +56,7 @@ export function AuthProvider({ children }: any) {
   const logout = useCallback(() => {
     setUser(null);
     deleteCookie("@corretora:token");
+    deleteCookie("@corretora:userid");
   }, []);
 
   const isAuthenticated = !!user;
