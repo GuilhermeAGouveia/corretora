@@ -8,9 +8,12 @@ interface CadastrarProps {
 }
 
 export default function CadastrarImovel({ tipo }: CadastrarProps) {
+  function captalize(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
   return (
     <Cadastrar
-      title="Cadastrar Comércio"
+      title={`Cadastrar ${captalize(tipo)}`}
       form={<FormImovel imovelType={tipo} />}
     />
   );
