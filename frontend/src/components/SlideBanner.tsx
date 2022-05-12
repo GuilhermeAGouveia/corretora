@@ -65,10 +65,9 @@ const SlideBanner = ({
                     alt={"image"}
                     layout="fill"
                     objectFit="cover"
+                    loading="lazy"
                     quality={100}
-                    
-                    priority
-                  />
+                                      />
                 </ImageContainer>
               )}
               <SlideBannerTitle hasImage={contentCard.image}>
