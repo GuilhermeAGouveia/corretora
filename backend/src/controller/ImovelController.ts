@@ -67,13 +67,17 @@ export default {
     }
   },
   delete: async (req: Request, res: Response) => {
-    const cod: string = req.params.cod;
-    const imovel = await prisma.imovel.delete({
-      where: {
-        cod_imv: cod,
-      },
-    });
-    res.json(imovel);
+    try {
+      const cod: string = req.params.cod;
+      const imovel = await prisma.imovel.delete({
+        where: {
+          cod_imv: cod,
+        },
+      });
+      res.json(imovel);
+    } catch (error: any) {
+      res.status(400).json(error);
+    }
   },
 
   filter: async (req: Request, res: Response) => {
@@ -89,7 +93,7 @@ export default {
         offerType,
         orderBy,
         sort,
-        cod_lcd
+        cod_lcd,
       } = req.query as {
         city?: string;
         state?: string;
@@ -101,7 +105,7 @@ export default {
         offerType?: OfferType; // Indica se é aluguel ou venda
         orderBy?: string;
         sort?: string;
-        cod_lcd?: string
+        cod_lcd?: string;
         limit?: string;
       };
 
