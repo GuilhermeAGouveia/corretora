@@ -68,13 +68,17 @@ export const DivisionLine = styled.div`
   align-items: center;
   margin: 20px 0;
 
-  p {
+  & * {
     font-family: "Montserrat", sans-serif;
     font-size: 14px;
     font-weight: 500;
     color: rgba(0, 0, 0, 0.6);
-    background-color: white;
+    background: white !important;
     padding: 0 10px;
+  }
+
+  & button {
+    padding-left: 0;
   }
 `;
 export const LoginForm = styled.form`

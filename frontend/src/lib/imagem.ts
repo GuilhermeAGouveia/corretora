@@ -1,5 +1,6 @@
 import { UploadedFile } from "../components/ImageUploader";
 import { getAPIHTTPClient } from "../services/api";
+import { ImovelType } from "./interfaces";
 
 export async function insertImage(
   image: UploadedFile,
@@ -30,4 +31,19 @@ export async function insertManyImages(
   for (const image of images) {
     await insertImage(image, cod_imv, progressState, ctx);
   }
+}
+
+//TODO: Obter imagens aleatórias de certos tipos de imóveis cadastrados no banco de dados
+
+export function getRandomImageByImovelType(imovelType: ImovelType) {
+  const imagesByType = {
+    [ImovelType.CASA]:
+      "https://corretora-storage.s3.sa-east-1.amazonaws.com/banner-images/casa.jpg",
+    [ImovelType.APTO]:
+      "https://corretora-storage.s3.sa-east-1.amazonaws.com/banner-images/apto.jpeg",
+    [ImovelType.COMERCIO]:
+      "https://corretora-storage.s3.sa-east-1.amazonaws.com/banner-images/comercio.jpg",
+  };
+
+  return imagesByType[imovelType];
 }

@@ -4,17 +4,52 @@ import { useForm } from "react-hook-form";
 import BannerInfo from "../../components/BannerInfo";
 import Input from "../../components/Input";
 import LogoComponent from "../../components/Logo";
+import SlideBanner from "../../components/SlideBanner";
 import { useAuth } from "../../context/Auth";
-import { DivisionLine, LoginContainer, LoginContainerTitle, LoginForm, LoginFormButton, LoginLeft, LoginLeftContent, LoginRight, LogoCompany, SignInGoogleButton, SignUpButton } from "../../styles/pages/login";
+import { getRandomImageByImovelType } from "../../lib/imagem";
+import { ImovelType } from "../../lib/interfaces";
+import {
+  DivisionLine,
+  LoginContainer,
+  LoginContainerTitle,
+  LoginForm,
+  LoginFormButton,
+  LoginLeft,
+  LoginLeftContent,
+  LoginRight,
+  LogoCompany,
+  SignInGoogleButton,
+  SignUpButton
+} from "../../styles/pages/login";
 
 export default function Login() {
-
   const router = useRouter();
   const [error, setError] = useState(false);
   const [sucess, setSucess] = useState(false);
   const [loading, setLoading] = useState(false);
   const { register, handleSubmit } = useForm();
   const { login } = useAuth();
+
+  const contentHorizontalCards = [
+    {
+      text: "O que você procura?",
+    },
+    {
+      text: "Casa?",
+      image: getRandomImageByImovelType(ImovelType.CASA),
+    },
+    {
+      text: "Apto?",
+      image: getRandomImageByImovelType(ImovelType.APTO),
+    },
+    {
+      text: "Comércio?",
+      image: getRandomImageByImovelType(ImovelType.COMERCIO),
+    },
+    {
+      text: "Temos tudo!",
+    },
+  ];
 
   const setErrorOrSucess = (state: "sucess" | "error" | "reset") => {
     switch (state) {
@@ -41,7 +76,6 @@ export default function Login() {
     try {
       await login(data);
       router.push("/lista");
-
     } catch (error) {
       console.log(error);
       setErrorOrSucess("error");
@@ -94,16 +128,22 @@ export default function Login() {
             </LoginFormButton>
           </LoginForm>
           <DivisionLine>
-            <p>
-              Novo aqui? {"\t"}
-              <SignUpButton type="button" onClick={() => router.push("/register")}>Cadastrar</SignUpButton>
-            </p>
+            <p>Novo aqui? {"\t"}</p>
+            <SignUpButton
+              type="button"
+              onClick={() => router.push("/register")}
+            >
+              Cadastrar
+            </SignUpButton>
           </DivisionLine>
         </LoginLeftContent>
       </LoginLeft>
-      <LoginRight></LoginRight>
+      <LoginRight>
+        <SlideBanner style={{
+          height: "300px",
+          width: "calc(100% - 50px)",
+        }} contentCards={contentHorizontalCards}/>
+      </LoginRight>
     </LoginContainer>
   );
 }
-
-
