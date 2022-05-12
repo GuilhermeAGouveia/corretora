@@ -49,17 +49,17 @@ const Header = () => {
       </HeaderTop>
       <CompanyName>BlueHome</CompanyName>
       <HeaderContent>
-        <CompanyBanner>
+        <CompanyBannerContainer>
           <CompanyBannerText>Aqui vc</CompanyBannerText>
           <CompanySlideVerticalBanner
             contentCards={["vende", "aluga", "compra"]}
           ></CompanySlideVerticalBanner>
-        </CompanyBanner>
-        <CompanyBanner2>
+        </CompanyBannerContainer>
+        <CompanyBannerContainer>
           <CompanySlideHorizontalBanner
             contentCards={contentHorizontalCards}
           ></CompanySlideHorizontalBanner>
-        </CompanyBanner2>
+        </CompanyBannerContainer>
       </HeaderContent>
       <HeaderBottom>
         <HeaderBottomButton onClick={() => router.push("lista")}>Anunciar</HeaderBottomButton>
@@ -96,7 +96,7 @@ const HeaderContent = styled.div`
   width: 100%;
   display: block;
 
-  @media screen and (max-height: 600px) {
+  @media screen and (min-width: 768px) {
     display: flex;
   }
 `;
@@ -114,33 +114,20 @@ const CompanyName = styled.div`
   font-size: 30px;
 `;
 
-const CompanyBanner = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-
-const CompanyBanner2 = styled.div`
+const CompanyBannerContainer = styled.div`
   position: relative;
   width: 100%;
   height: 150px;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
-  @media screen and (max-height: 400px) {
-    height: 100px;
-  }
 `;
+
 
 const CompanyBannerText = styled.div`
   position: relative;
-  width: 40%;
   height: 100%;
+  margin-right: 20px;
   font-family: "Montserrat", sans-serif;
   color: #a9a9a9;
   font-weight: 300;
