@@ -28,16 +28,19 @@ const ModalResponsive = ({
           </ActionButton>
         )}
         {(!isMobile || isActive) && (
-          <FilterContainer
-            positionindicator={
-              buttonActionRef.current?.getBoundingClientRect().left
-            }
-            initial={{ opacity: 0, y: -100 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -100 }}
-          >
-            {children}
-          </FilterContainer>
+          <>
+            <ModalContent
+              positionindicator={
+                buttonActionRef.current?.getBoundingClientRect().left
+              }
+              initial={{ opacity: 0, y: -100 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -100 }}
+            >
+              {children}
+            </ModalContent>
+            <FalseBg onClick={() => setIsActive(false)}/>
+          </>
         )}
       </>
     </AnimatePresence>
@@ -46,7 +49,7 @@ const ModalResponsive = ({
 
 export default ModalResponsive;
 
-const FilterContainer = styled(motion.div)<any>`
+const ModalContent = styled(motion.div) <any>`
   position: relative;
   width: 100%;
   @media (max-width: 768px) {
@@ -76,8 +79,18 @@ const FilterContainer = styled(motion.div)<any>`
 const ActionButton = styled.button`
   position: relative;
   color: #fff;
+  background-color: transparent;
   width: 30px;
   height: 30px;
   margin: 0 5px;
   border: none;
+
 `;
+
+const FalseBg = styled.div`
+    position: absolute;
+    width: 100vw;
+    height: 100vh;
+    background: red;
+    z-index: 999;
+`
