@@ -9,7 +9,7 @@
 
 <img src="https://user-images.githubusercontent.com/81968354/172062799-07e692c5-ca8e-4cb8-ad68-2c38f3e080b8.png" alt="exemplo imagem">
 
-> Web Application em desenvolvimento para gerenciamento de clientes por parte do Hostel Sparkling Water
+> Marketplace para imobiliárias
 
 ## 🚀 Get started
 
