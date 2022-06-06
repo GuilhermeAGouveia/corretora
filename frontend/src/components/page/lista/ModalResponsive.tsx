@@ -39,7 +39,7 @@ const ModalResponsive = ({
             >
               {children}
             </ModalContent>
-            <FalseBg onClick={() => setIsActive(false)}/>
+            {isActive && <FalseBg onClick={() => setIsActive(false)} />}
           </>
         )}
       </>
@@ -57,7 +57,7 @@ const ModalContent = styled(motion.div) <any>`
     width: 95%;
     top: 45px; // 30px do button mais 15 px de distancia
     left: 2.5%;
-    z-index: 2;
+    z-index: 3;
     border-radius: 5px;
     background: white;
     box-shadow: 0px 3px 10px rgba(0, 0, 0, 0.2);
@@ -88,9 +88,11 @@ const ActionButton = styled.button`
 `;
 
 const FalseBg = styled.div`
-    position: absolute;
+    position: fixed;
     width: 100vw;
     height: 100vh;
-    background: red;
-    z-index: 999;
+    top: 0;
+    left: 0;
+    background: rgba(0, 0, 0, 0.1);
+    z-index: 2;
 `
