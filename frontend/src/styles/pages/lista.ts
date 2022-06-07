@@ -18,8 +18,7 @@ export const ListRoot = styled.div`
 export const SearchSection = styled.section`
   position: relative;
   width: 100%;
-  min-height: 100%;
-  height: auto;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: flex-start;

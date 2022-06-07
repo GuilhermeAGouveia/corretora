@@ -12,7 +12,6 @@ export const LoginContainer = styled.div`
 export const LoginLeft = styled.div`
   position: relative;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
@@ -29,7 +28,8 @@ export const LoginLeftContent = styled.div`
 
   min-width: 250px;
   max-width: 350px;
-  height: 80%;
+  height: auto;
+
 `;
 export const LoginContainerTitle = styled.div`
   position: relative;
