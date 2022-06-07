@@ -39,7 +39,7 @@ const ModalResponsive = ({
             >
               {children}
             </ModalContent>
-            {isActive && <FalseBg onClick={() => setIsActive(false)} />}
+            {isActive && <FalseBgClickable onClick={() => setIsActive(false)} />}
           </>
         )}
       </>
@@ -87,7 +87,7 @@ const ActionButton = styled.button`
 
 `;
 
-const FalseBg = styled.div`
+const FalseBgClickable = styled.div`
     position: fixed;
     width: 100vw;
     height: 100vh;
