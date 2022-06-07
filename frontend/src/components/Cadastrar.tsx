@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
-import MenuUserOptions from "./page/lista/MenuUserOptions";
+import MenuUserOptions from "./Page/lista/MenuUserOptions";
 
 interface CadastrarProps {
   title: string;

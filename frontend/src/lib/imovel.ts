@@ -1,4 +1,4 @@
-import { FormImovel } from "../components/page/imoveis/cadastrar/forms/FormImovel";
+import { FormImovel } from "../components/Page/imoveis/cadastrar/forms/FormImovel";
 import { getAPIHTTPClient } from "../services/api";
 import { FilterOrderQuery, IImovel, Page } from "./interfaces";
 import { FilterQueryBuilder } from "./queryBuilder";

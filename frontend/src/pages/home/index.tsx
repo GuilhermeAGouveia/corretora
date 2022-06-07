@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import styled from "styled-components";
-import Header from "../../components/page/home/Header";
+import Header from "../../components/Page/home/Header";
 
 export default function Home() {
   const router = useRouter();

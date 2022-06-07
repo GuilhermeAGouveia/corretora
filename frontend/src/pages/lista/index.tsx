@@ -3,30 +3,30 @@ import { useEffect, useState } from "react";
 import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
 import { FiFilter, FiSearch } from "react-icons/fi";
 import CardImovel from "../../components/CardImovel";
-import Filter from "../../components/page/lista/Actions/Filter";
-import OrderBy from "../../components/page/lista/Actions/OrderBy";
-import ContentControlBySelectionFloatLine from "../../components/page/lista/ContentControlBySelectionFloatLine";
-import HeaderLista from "../../components/page/lista/Header";
-import ListCards from "../../components/page/lista/ListCards";
-import ModalResponsive from "../../components/page/lista/ModalResponsive";
+import Filter from "../../components/Page/lista/Actions/Filter";
+import OrderBy from "../../components/Page/lista/Actions/OrderBy";
+import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
+import HeaderLista from "../../components/Page/lista/Header";
+import ListCards from "../../components/Page/lista/ListCards";
+import ModalResponsive from "../../components/Page/lista/ModalResponsive";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
 import {
-  FilterValues,
-  IImovel, OrderByValues,
-  Page
+    FilterValues,
+    IImovel, OrderByValues,
+    Page
 } from "../../lib/interfaces";
 import {
-  AnnounceLineDivision,
-  AnounceButton,
-  AnounceContent,
-  AnounceSection,
-  AnounceTitle,
-  LeftSection,
-  ListRoot,
-  SearchInfo,
-  SearchSection,
-  SearchTotal
+    AnnounceLineDivision,
+    AnounceButton,
+    AnounceContent,
+    AnounceSection,
+    AnounceTitle,
+    LeftSection,
+    ListRoot,
+    SearchInfo,
+    SearchSection,
+    SearchTotal
 } from "../../styles/pages/lista";
 
 interface MarketplaceProps {

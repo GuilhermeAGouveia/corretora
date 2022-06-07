@@ -1,7 +1,7 @@
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
 import { CardMyImovel } from "../../../components/CardMyImovel";
-import ListCards from "../../../components/page/lista/ListCards";
+import ListCards from "../../../components/Page/lista/ListCards";
 import { getCookie } from "../../../lib/cookies";
 import { getByLocador } from "../../../lib/imovel";
 import { IImovel } from "../../../lib/interfaces";
