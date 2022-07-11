@@ -7,13 +7,7 @@ export const Form = styled.form`
   width: 100%;
   height: 100%;
 `;
-export const SectionInputContainer = styled.div`
-  position: relative;
-  width: 100%;
-  background: blue;
-  height: 100%;
 
-`;
 export const SectionLabel = styled.div`
   position: relative;
   width: 100%;
@@ -29,7 +23,16 @@ export const SectionInputContent = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  margin: 10px auto;
+  
+  overflow-x: auto;
+  & > * {
+    margin: 10px auto;
+  }
+  
+  padding: 10px;
+
+  
+
 
 `;
 export const ButtonSubmit = styled.button`
@@ -63,15 +66,17 @@ export const FormContentWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
-  overflow: scroll;
+  overflow: hidden;
 `;
 export const FormContent = styled(motion.div)<any>`
   position: relative;
-  background: red;
   width: calc(4 * 100%);
-  left: 0px; //${props => props.left}%;
   height: 100%;
   display: flex;
+
+  & div:nth-child(2) {
+    background-color: blue;
+  }
 
 `;
 

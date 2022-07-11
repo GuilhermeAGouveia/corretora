@@ -13,7 +13,7 @@ export default function ShowTrail({ trails, style, trailState : [trailNumber, se
     <ShowTrailContainer style={style}>
       {trails.map((trail, index) =>
           <>
-            <ShowTrailItem key={"trail-item-" + index} values={{index, trailNumber}}/>
+            <ShowTrailItem key={"trail-item-" + index} values={{index, trailNumber}} onClick={() => setTrailNumber(index)}/>
             {!(index === trails.length - 1) && <InterLineDivision key={"trail-line-" + index} />}
           </>
       )}
