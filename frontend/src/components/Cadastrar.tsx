@@ -25,8 +25,8 @@ export default Cadastrar;
 const RegisterContainer = styled.div`
   position: relative;
   width: 100%;
-  background: ${colors.secondary};
   min-height: 100vh;
+
 `;
 
 const RegisterTitle = styled.div`
@@ -41,19 +41,21 @@ const RegisterTitle = styled.div`
 const RegisterHeader = styled.div`
   position: relative;
   width: 100%;
-  height: 100px;
+  height: 50vh;
+  background: ${colors.secondary};
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
   padding: 30px;
 `;
 
 const RegisterContent = styled.div`
   position: relative;
   width: 100%;
-  min-height: calc(100vh - 100px);
+  top: -100px;
+  max-width: 800px;
+  min-height: calc(10vh - 100px);
+  margin: 0px auto;
   background: white;
-  border-radius: 30px 30px 0 0;
-  padding: 20px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
 `;

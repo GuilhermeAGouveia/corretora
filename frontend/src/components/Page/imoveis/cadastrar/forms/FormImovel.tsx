@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
@@ -11,17 +11,19 @@ import {
 import { ImovelType } from "../../../../../lib/interfaces";
 import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
-import ProgressUpload from "../../../../ProgressUpload";
 import SelectReactHookForm, {
   SelectOption
 } from "../../../../SelectReactHookForm";
+import ShowTrail from "./component/ShowTrail";
 import {
-  ButtonSubmit,
-  Form,
-  LineDivision,
+  ActionsForm,
+  AreaShow, Form,
+  FormContent,
+  FormContentWrapper,
+  FormHeader,
+  ReturnButton,
   SectionInputContainer,
-  SectionInputContent,
-  SectionLabel
+  SectionInputContent
 } from "./styles";
 
 export interface FormImovel {
@@ -43,6 +45,7 @@ interface FormImovelProps {
 }
 
 const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
+  const formRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const { register, handleSubmit, control } = useForm();
   const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
@@ -51,6 +54,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   const [imagens, setImagens] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
   const [totalProgress, setTotalProgress] = useState(0);
+  const [trail, setTrail] = useState(0);
 
   const setProgressUploadFile = (fileId: string, progress: number) => {
     setImagens(
@@ -119,120 +123,155 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
     setEstadosFromExternalData();
   }, []);
 
+  useEffect(() => {
+    console.log(trail)
+  }, [trail])
+  const trailsObject = [
+    {
+      icon: "imagens",
+      content: (
+        <SectionInputContainer>
+          <SectionInputContent>
+            <ImageUploader uploaded={[imagens, setImagens]} />
+          </SectionInputContent>
+        </SectionInputContainer>
+      ),
+    },
+    {
+      icon: "detalhes",
+      content: (
+        <SectionInputContainer>
+          <SectionInputContent>
+            <Input
+              name="street"
+              register={register}
+              placeholder="Rua"
+              required
+            />
+            <Input
+              name="number"
+              type="number"
+              register={register}
+              placeholder="Número"
+              required
+            />
+            <Input
+              name="district"
+              register={register}
+              placeholder="Bairro"
+              required
+            />
+            {"\n"}
+            <SelectReactHookForm
+              style={{
+                maxWidth: "400px",
+              }}
+              name="state"
+              placeholder="Estado"
+              options={estados}
+              controlReactHookForm={control}
+              onChange={(value) => setEstado(value)}
+              required
+            ></SelectReactHookForm>
+            <SelectReactHookForm
+              style={{
+                maxWidth: "400px",
+                opacity: cidades.length ? 1 : 0.5,
+              }}
+              name="city"
+              placeholder="Cidade"
+              options={cidades}
+              controlReactHookForm={control}
+              required
+            ></SelectReactHookForm>
+          </SectionInputContent>
+        </SectionInputContainer>
+      ),
+    },
+    {
+      icon: "especifico",
+      content: (
+        <SectionInputContainer>
+          <SectionInputContent>
+            <Input
+              name="area"
+              type="number"
+              register={register}
+              placeholder="Área (m²)"
+              defaultValue={0}
+            />
+            {getAditionalFields(imovelType).map((field) => {
+              return (
+                <Input
+                  key={field.name}
+                  name={field.name}
+                  type={field.type}
+                  register={register}
+                  placeholder={field.placeholder}
+                  defaultValue={field.defaultValue}
+                />
+              );
+            })}
+          </SectionInputContent>
+        </SectionInputContainer>
+      ),
+    },
+    {
+      icon: "valor",
+      content: (
+        <SectionInputContainer>
+          <SectionInputContent>
+            <Input
+              name="mensalidade"
+              type="number"
+              register={register}
+              placeholder="Mensalidade (R$)"
+              defaultValue={0}
+            />
+            <Input
+              name="price"
+              type="number"
+              register={register}
+              placeholder="Preço de venda (R$)"
+              defaultValue={0}
+            />
+          </SectionInputContent>
+        </SectionInputContainer>
+      ),
+    },
+  ];
+
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <SectionInputContainer>
-        <SectionLabel>
-          Insira imagens de seu imóvel <LineDivision />
-        </SectionLabel>
-
-        <SectionInputContent>
-          <ImageUploader uploaded={[imagens, setImagens]} />
-        </SectionInputContent>
-      </SectionInputContainer>
-      <SectionInputContainer>
-        <SectionLabel>
-          Endereço <LineDivision />
-        </SectionLabel>
-
-        <SectionInputContent>
-          <Input name="street" register={register} placeholder="Rua" required />
-          <Input
-            name="number"
-            type="number"
-            register={register}
-            placeholder="Número"
-            required
-          />
-          <Input
-            name="district"
-            register={register}
-            placeholder="Bairro"
-            required
-          />
-          {"\n"}
-          <SelectReactHookForm
-            style={{
-              maxWidth: "400px",
-            }}
-            name="state"
-            placeholder="Estado"
-            options={estados}
-            controlReactHookForm={control}
-            onChange={(value) => setEstado(value)}
-            required
-          ></SelectReactHookForm>
-          <SelectReactHookForm
-            style={{
-              maxWidth: "400px",
-              opacity: cidades.length ? 1 : 0.5,
-            }}
-            name="city"
-            placeholder="Cidade"
-            options={cidades}
-            controlReactHookForm={control}
-            required
-          ></SelectReactHookForm>
-        </SectionInputContent>
-      </SectionInputContainer>
-
-      <SectionInputContainer>
-        <SectionLabel>
-          Caracteristicas <LineDivision />
-        </SectionLabel>
-        <SectionInputContent>
-          <Input
-            name="area"
-            type="number"
-            register={register}
-            placeholder="Área (m²)"
-            defaultValue={0}
-          />
-          {getAditionalFields(imovelType).map((field) => {
-            return (
-              <Input
-                key={field.name}
-                name={field.name}
-                type={field.type}
-                register={register}
-                placeholder={field.placeholder}
-                defaultValue={field.defaultValue}
-              />
-            );
-          })}
-        </SectionInputContent>
-      </SectionInputContainer>
-      <SectionInputContainer>
-        <SectionLabel>
-          Valores <LineDivision />
-        </SectionLabel>
-
-        <SectionInputContent>
-          <Input
-            name="mensalidade"
-            type="number"
-            register={register}
-            placeholder="Mensalidade (R$)"
-            defaultValue={0}
-          />
-          <Input
-            name="price"
-            type="number"
-            register={register}
-            placeholder="Preço de venda (R$)"
-            defaultValue={0}
-          />
-        </SectionInputContent>
-      </SectionInputContainer>
-      <ButtonSubmit type="submit">
-        {!loading ? (
-          "Anunciar"
-        ) : (
-          <ProgressUpload progress={totalProgress}></ProgressUpload>
-        )}
-      </ButtonSubmit>
+      <FormHeader>
+        <ActionsForm>
+          <ReturnButton onClick={() => setTrail(old => old - 1)}></ReturnButton>
+          <AreaShow>Insira suas imagens aqui</AreaShow>
+          <ReturnButton onClick={() => setTrail(old => old + 1)}></ReturnButton>
+        </ActionsForm>
+        <ShowTrail trailState={[trail, setTrail]} trails={trailsObject.map((field) => field.icon)}></ShowTrail>
+      </FormHeader>
+      <FormContentWrapper ref={formRef}>
+      <FormContent
+          animate={{
+            left: (-trail * 100) + '%'
+          }
+          }
+      >
+        {trailsObject.map((trail) => trail.content)}
+        
+  
+      </FormContent>
+      </FormContentWrapper>
     </Form>
   );
 };
 
+     {/* <ButtonSubmit type="submit">
+          {!loading ? (
+            "Anunciar"
+          ) : (
+            <ProgressUpload progress={totalProgress}></ProgressUpload>
+          )}
+        </ButtonSubmit> */}
 export default FormImovel;

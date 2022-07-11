@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 import colors from "../../../../../styles/colors";
 
@@ -9,7 +10,9 @@ export const Form = styled.form`
 export const SectionInputContainer = styled.div`
   position: relative;
   width: 100%;
-  height: auto;
+  background: blue;
+  height: 100%;
+
 `;
 export const SectionLabel = styled.div`
   position: relative;
@@ -24,24 +27,10 @@ export const SectionLabel = styled.div`
 `;
 export const SectionInputContent = styled.div`
   position: relative;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
   width: 100%;
   height: 100%;
+  margin: 10px auto;
 
-  & > * {
-    margin: 10px;
-  }
-
-  @media (max-width: 768px) {
-    & > * {
-      margin: 10px 0;
-    }
-
-    justify-content: center;
-  }
 `;
 export const ButtonSubmit = styled.button`
   position: relative;
@@ -62,4 +51,50 @@ export const LineDivision = styled.div`
   margin: 0 10px;
   height: 1px;
   background-color: rgba(0, 0, 0, 0.1);
+`;
+
+export const FormHeader = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100px;
+  background-color: #0d1720;
+`;
+export const FormContentWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+`;
+export const FormContent = styled(motion.div)<any>`
+  position: relative;
+  background: red;
+  width: calc(4 * 100%);
+  left: 0px; //${props => props.left}%;
+  height: 100%;
+  display: flex;
+
+`;
+
+export const ActionsForm = styled.div`
+  position: relative;
+  width: 100%;
+  height: 35px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5px;
+`;
+export const ReturnButton = styled.button`
+  position: relative;
+  width: 31px;
+  height: 31px;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+  border: none;
+`;
+
+export const AreaShow = styled.div`
+  position: relative;
+  color: ${colors.primary};
+  font-size: 14px;
 `;
