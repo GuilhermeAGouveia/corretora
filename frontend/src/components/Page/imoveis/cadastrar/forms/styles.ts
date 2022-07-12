@@ -101,5 +101,6 @@ export const ReturnButton = styled.button`
 export const AreaShow = styled.div`
   position: relative;
   color: ${colors.primary};
-  font-size: 14px;
+  font-size: 16px;
+  font-weight: bold;
 `;

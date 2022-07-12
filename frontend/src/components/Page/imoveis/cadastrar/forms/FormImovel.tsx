@@ -138,6 +138,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   }, [trail]);
   const trailsObject = [
     {
+      description: "Informações básicas",
       icon: FiAlignLeft,
       content: (
         <SectionInputContent>
@@ -182,6 +183,8 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       ),
     },
     {
+      description: "Insira suas imagens",
+
       icon: FiImage,
       content: (
         <SectionInputContent>
@@ -190,6 +193,8 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       ),
     },
     {
+      description: "Informações adicionais",
+
       icon: FiAlignLeft,
       content: (
         <SectionInputContent>
@@ -216,6 +221,8 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       ),
     },
     {
+      description: "Quanto vai custar?",
+
       icon: FiDollarSign,
       content: (
         <SectionInputContent>
@@ -245,7 +252,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           <ReturnButton onClick={() => setTrail((old) => old - 1)}>
             <FiChevronLeft size={20} color={colors.primary} />
           </ReturnButton>
-          <AreaShow>Insira suas imagens aqui</AreaShow>
+          <AreaShow>{trailsObject.map(trail => trail.description)[trail]}</AreaShow>
           <ReturnButton onClick={() => setTrail((old) => old + 1)}>
             <FiCheck size={20} color={colors.primary} />
           </ReturnButton>
