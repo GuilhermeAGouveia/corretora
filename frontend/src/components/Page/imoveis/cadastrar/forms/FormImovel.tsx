@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
+import { FiAlignLeft, FiCheck, FiChevronLeft, FiDollarSign, FiImage } from "react-icons/fi";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
@@ -9,6 +10,7 @@ import {
   parseFormImovelToIImovel
 } from "../../../../../lib/imovel";
 import { ImovelType } from "../../../../../lib/interfaces";
+import colors from "../../../../../styles/colors";
 import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
 import SelectReactHookForm, {
@@ -128,7 +130,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   }, [trail]);
   const trailsObject = [
     {
-      icon: "detalhes",
+      icon: FiAlignLeft,
       content: (
         <SectionInputContent>
           <Input name="street" register={register} placeholder="Rua" required />
@@ -172,7 +174,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       ),
     },
     {
-      icon: "imagens",
+      icon: FiImage,
       content: (
         <SectionInputContent>
           <ImageUploader uploaded={[imagens, setImagens]} />
@@ -180,7 +182,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       ),
     },
     {
-      icon: "especifico",
+      icon: FiAlignLeft,
       content: (
         <SectionInputContent>
           <Input
@@ -206,7 +208,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       ),
     },
     {
-      icon: "valor",
+      icon: FiDollarSign,
       content: (
         <SectionInputContent>
           <Input
@@ -234,11 +236,15 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
         <ActionsForm>
           <ReturnButton
             onClick={() => setTrail((old) => old - 1)}
-          ></ReturnButton>
+          >
+            <FiChevronLeft size={20} color={colors.primary}/>
+          </ReturnButton>
           <AreaShow>Insira suas imagens aqui</AreaShow>
           <ReturnButton
             onClick={() => setTrail((old) => old + 1)}
-          ></ReturnButton>
+          >
+            <FiCheck size={20} color={colors.primary}/>
+          </ReturnButton>
         </ActionsForm>
         <ShowTrail
           trailState={[trail, setTrail]}

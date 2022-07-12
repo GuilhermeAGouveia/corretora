@@ -83,7 +83,6 @@ const InputContainer = styled(motion.div)`
   background: none;
   justify-content: flex-start;
   align-items: center;
-  margin: 10px;
   font-weight: 500;
 `;
 

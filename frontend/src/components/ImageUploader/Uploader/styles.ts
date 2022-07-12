@@ -14,7 +14,7 @@ export const DropContainer = styled("div").attrs({
   position: relative;
   min-width: 250px;
   min-height: 250px;
-  border: 1px dashed #ddd;
+  border: 1px dashed #aaa;
   display: flex;
   justify-content: center;
   align-items: center;

@@ -1,9 +1,10 @@
 import React from "react";
+import { IconType } from "react-icons";
 import styled from "styled-components";
 import colors from "../../../../../../styles/colors";
 
 interface ShowTrailProps {
-  trails: string[];
+  trails: IconType[];
   style?: React.CSSProperties;
   trailState: [number, (number: number) => void];
 }
@@ -11,9 +12,11 @@ interface ShowTrailProps {
 export default function ShowTrail({ trails, style, trailState : [trailNumber, setTrailNumber] }: ShowTrailProps) {
   return (
     <ShowTrailContainer style={style}>
-      {trails.map((trail, index) =>
+      {trails.map((Icon, index) =>
           <>
-            <ShowTrailItem key={"trail-item-" + index} values={{index, trailNumber}} onClick={() => setTrailNumber(index)}/>
+            <ShowTrailItem key={"trail-item-" + index} values={{index, trailNumber}} onClick={() => setTrailNumber(index)}>
+              <Icon size={15} color={'white'}/>
+            </ShowTrailItem>
             {!(index === trails.length - 1) && <InterLineDivision key={"trail-line-" + index} />}
           </>
       )}
@@ -46,6 +49,9 @@ const ShowTrailItem = styled.div<any>`
   position: relative;
   min-width: 30px;
   min-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: ${({values}) => getColorBg(values)};
   border-radius: 50%;
 `;

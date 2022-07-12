@@ -4,8 +4,11 @@ import colors from "../../../../../styles/colors";
 
 export const Form = styled.form`
   position: relative;
+
   width: 100%;
   height: 100%;
+  top: -100px;
+
 `;
 
 export const SectionLabel = styled.div`
@@ -26,7 +29,7 @@ export const SectionInputContent = styled.div`
   
   overflow-x: auto;
   & > * {
-    margin: 10px auto;
+    margin: 15px auto;
   }
   
   padding: 10px;
@@ -57,42 +60,39 @@ export const LineDivision = styled.div`
 `;
 
 export const FormHeader = styled.div`
+
   position: relative;
   width: 100%;
   height: 100px;
   background-color: #0d1720;
+
+
 `;
 export const FormContentWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
   overflow: hidden;
 `;
 export const FormContent = styled(motion.div)<any>`
   position: relative;
   width: calc(4 * 100%);
-  height: 100%;
   display: flex;
-
-  & div:nth-child(2) {
-    background-color: blue;
-  }
 
 `;
 
 export const ActionsForm = styled.div`
   position: relative;
   width: 100%;
-  height: 35px;
+  height: 44px;
+  padding: 8px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0 5px;
 `;
 export const ReturnButton = styled.button`
   position: relative;
-  width: 31px;
-  height: 31px;
+  width: 36px;
+  height: 36px;
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 3px;
   border: none;
