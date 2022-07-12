@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
   FiAlignLeft,
@@ -133,10 +133,8 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
     setEstadosFromExternalData();
   }, []);
 
-  useEffect(() => {
-    console.log(trail);
-  }, [trail]);
-  const trailsObject = [
+
+  const trailsObject = useMemo(() => [
     {
       description: "Informações básicas",
       icon: FiAlignLeft,
@@ -243,7 +241,17 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
         </SectionInputContent>
       ),
     },
-  ];
+  ], [cidades, estados, imagens, imovelType, control]);
+
+  useEffect(() => {
+    if (trail < 0) {
+      setTrail(0);
+    }
+
+    if (trail > trailsObject.length) {
+      setTrail(trail - 1);
+    }
+  }, [trail, trailsObject]);
 
   return (
     <Form>
