@@ -40,7 +40,7 @@ export const SectionInputContent = styled.div`
 `;
 export const ButtonSubmit = styled.button`
   position: relative;
-  width: 100%;
+  width: 200px;
   height: 50px;
   background-color: ${colors.secondary};
   color: #fff;

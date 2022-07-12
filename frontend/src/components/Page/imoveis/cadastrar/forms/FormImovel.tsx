@@ -55,7 +55,7 @@ interface FormImovelProps {
 }
 
 const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
-  const formRef = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
   const { user } = useAuth();
   const { handleSubmit, control } = useForm();
   const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
@@ -255,21 +255,24 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           trails={trailsObject.map((field) => field.icon)}
         ></ShowTrail>
       </FormHeader>
-      <FormContentWrapper ref={formRef}>
+      <FormContentWrapper>
         <FormContent
+          ref={formRef}
           onSubmit={handleSubmit(onSubmit)}
           animate={{
-            left: -trail * (formRef.current?.clientWidth || 0),
+            left: -trail * 100 + "%",
           }}
         >
           {trailsObject.map((trail) => trail.content)}
-          <ButtonSubmit type="submit">
-            {!loading ? (
-              "Anunciar"
-            ) : (
-              <ProgressUpload progress={totalProgress}></ProgressUpload>
-            )}
-          </ButtonSubmit>
+          <SectionInputContent>
+            <ButtonSubmit type="submit" onClick={formRef.current?.submitForm}>
+              {!loading ? (
+                "Anunciar"
+              ) : (
+                <ProgressUpload progress={totalProgress}></ProgressUpload>
+              )}
+            </ButtonSubmit>
+          </SectionInputContent>
         </FormContent>
       </FormContentWrapper>
     </Form>
