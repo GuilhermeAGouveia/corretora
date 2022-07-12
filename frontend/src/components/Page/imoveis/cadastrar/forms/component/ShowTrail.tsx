@@ -54,6 +54,7 @@ const ShowTrailItem = styled.div<any>`
   align-items: center;
   background-color: ${({values}) => getColorBg(values)};
   border-radius: 50%;
+  cursor: pointer;
 `;
 
 const InterLineDivision = styled.div`

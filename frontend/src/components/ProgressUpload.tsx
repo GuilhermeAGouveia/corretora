@@ -1,15 +1,27 @@
 import { CircularProgressbar } from "react-circular-progressbar";
 
-export default function ProgressUpload({ progress }: { progress: number }) {
+interface ProgressUploadProps {
+  progress: number;
+  strokeColor?: string;
+  textColor?: string;
+  circleSize?: number;
+}
+
+export default function ProgressUpload({
+  progress,
+  strokeColor = "white",
+  textColor = "white",
+  circleSize = 30,
+}: ProgressUploadProps) {
   return (
     <CircularProgressbar
       styles={{
         root: {
-          width: 30,
+          width: circleSize,
           margin: "0 10px",
         },
         path: {
-          stroke: "white",
+          stroke: strokeColor,
           transition: "stroke-dashoffset 0.3s ease",
         },
         trail: {
@@ -17,7 +29,7 @@ export default function ProgressUpload({ progress }: { progress: number }) {
           opacity: 0.3,
         },
         text: {
-          fill: "white",
+          fill: textColor,
           fontSize: "25px",
           textAnchor: "middle",
           dominantBaseline: "central",

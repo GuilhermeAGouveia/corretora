@@ -25,8 +25,7 @@ export const SectionLabel = styled.div`
 export const SectionInputContent = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
-  
+  overflow: hidden;
   overflow-x: auto;
   & > * {
     margin: 15px auto;
@@ -104,3 +103,12 @@ export const AreaShow = styled.div`
   font-size: 16px;
   font-weight: bold;
 `;
+
+export const SubmitContainer = styled.div `
+  position: relative;
+  width: 100%;
+  min-height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`

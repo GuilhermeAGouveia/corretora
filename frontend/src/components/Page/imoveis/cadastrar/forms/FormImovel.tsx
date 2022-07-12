@@ -5,7 +5,8 @@ import {
   FiCheck,
   FiChevronLeft,
   FiDollarSign,
-  FiImage
+  FiImage,
+  FiCheckCircle,
 } from "react-icons/fi";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
@@ -13,7 +14,7 @@ import { getCidades, getEstados } from "../../../../../lib/externalData";
 import { insertManyImages } from "../../../../../lib/imagem";
 import {
   insertImovel,
-  parseFormImovelToIImovel
+  parseFormImovelToIImovel,
 } from "../../../../../lib/imovel";
 import { ImovelType } from "../../../../../lib/interfaces";
 import colors from "../../../../../styles/colors";
@@ -21,7 +22,7 @@ import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
 import ProgressUpload from "../../../../ProgressUpload";
 import SelectReactHookForm, {
-  SelectOption
+  SelectOption,
 } from "../../../../SelectReactHookForm";
 import ShowTrail from "./component/ShowTrail";
 import {
@@ -33,7 +34,8 @@ import {
   FormContentWrapper,
   FormHeader,
   ReturnButton,
-  SectionInputContent
+  SectionInputContent,
+  SubmitContainer,
 } from "./styles";
 
 export interface FormImovel {
@@ -133,115 +135,122 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
     setEstadosFromExternalData();
   }, []);
 
+  const trailsObject = useMemo(
+    () => [
+      {
+        description: "Informações básicas",
+        icon: FiAlignLeft,
+        content: (
+          <SectionInputContent>
+            <Input name="street" control={control} placeholder="Rua" required />
+            <Input
+              name="number"
+              type="number"
+              control={control}
+              placeholder="Número"
+              required
+            />
+            <Input
+              name="district"
+              control={control}
+              placeholder="Bairro"
+              required
+            />
+            {"\n"}
+            <SelectReactHookForm
+              style={{
+                maxWidth: "400px",
+              }}
+              name="state"
+              placeholder="Estado"
+              options={estados}
+              controlReactHookForm={control}
+              onChange={(value) => setEstado(value)}
+              required
+            ></SelectReactHookForm>
+            <SelectReactHookForm
+              style={{
+                maxWidth: "400px",
+                opacity: cidades.length ? 1 : 0.5,
+              }}
+              name="city"
+              placeholder="Cidade"
+              options={cidades}
+              controlReactHookForm={control}
+              required
+            ></SelectReactHookForm>
+          </SectionInputContent>
+        ),
+      },
+      {
+        description: "Insira suas imagens",
+        icon: FiImage,
+        content: (
+          <SectionInputContent>
+            <ImageUploader uploaded={[imagens, setImagens]} />
+          </SectionInputContent>
+        ),
+      },
+      {
+        description: "Informações adicionais",
+        icon: FiAlignLeft,
+        content: (
+          <SectionInputContent>
+            <Input
+              name="area"
+              type="number"
+              control={control}
+              placeholder="Área (m²)"
+              defaultValue={0}
+            />
+            {getAditionalFields(imovelType).map((field) => {
+              return (
+                <Input
+                  key={field.name}
+                  name={field.name}
+                  type={field.type}
+                  control={control}
+                  placeholder={field.placeholder}
+                  defaultValue={field.defaultValue}
+                />
+              );
+            })}
+          </SectionInputContent>
+        ),
+      },
+      {
+        description: "Quanto vai custar?",
 
-  const trailsObject = useMemo(() => [
-    {
-      description: "Informações básicas",
-      icon: FiAlignLeft,
-      content: (
-        <SectionInputContent>
-          <Input name="street" control={control} placeholder="Rua" required />
-          <Input
-            name="number"
-            type="number"
-            control={control}
-            placeholder="Número"
-            required
-          />
-          <Input
-            name="district"
-            control={control}
-            placeholder="Bairro"
-            required
-          />
-          {"\n"}
-          <SelectReactHookForm
-            style={{
-              maxWidth: "400px",
-            }}
-            name="state"
-            placeholder="Estado"
-            options={estados}
-            controlReactHookForm={control}
-            onChange={(value) => setEstado(value)}
-            required
-          ></SelectReactHookForm>
-          <SelectReactHookForm
-            style={{
-              maxWidth: "400px",
-              opacity: cidades.length ? 1 : 0.5,
-            }}
-            name="city"
-            placeholder="Cidade"
-            options={cidades}
-            controlReactHookForm={control}
-            required
-          ></SelectReactHookForm>
-        </SectionInputContent>
-      ),
-    },
-    {
-      description: "Insira suas imagens",
+        icon: FiDollarSign,
+        content: (
+          <SectionInputContent>
+            <Input
+              name="mensalidade"
+              type="number"
+              control={control}
+              placeholder="Mensalidade (R$)"
+              defaultValue={0}
+            />
+            <Input
+              name="price"
+              type="number"
+              control={control}
+              placeholder="Preço de venda (R$)"
+              defaultValue={0}
+            />
+          </SectionInputContent>
+        ),
+      },
+    ],
+    [
+      cidades,
+      estados,
+      imagens,
+      imovelType,
+      control,
 
-      icon: FiImage,
-      content: (
-        <SectionInputContent>
-          <ImageUploader uploaded={[imagens, setImagens]} />
-        </SectionInputContent>
-      ),
-    },
-    {
-      description: "Informações adicionais",
-
-      icon: FiAlignLeft,
-      content: (
-        <SectionInputContent>
-          <Input
-            name="area"
-            type="number"
-            control={control}
-            placeholder="Área (m²)"
-            defaultValue={0}
-          />
-          {getAditionalFields(imovelType).map((field) => {
-            return (
-              <Input
-                key={field.name}
-                name={field.name}
-                type={field.type}
-                control={control}
-                placeholder={field.placeholder}
-                defaultValue={field.defaultValue}
-              />
-            );
-          })}
-        </SectionInputContent>
-      ),
-    },
-    {
-      description: "Quanto vai custar?",
-
-      icon: FiDollarSign,
-      content: (
-        <SectionInputContent>
-          <Input
-            name="mensalidade"
-            type="number"
-            control={control}
-            placeholder="Mensalidade (R$)"
-            defaultValue={0}
-          />
-          <Input
-            name="price"
-            type="number"
-            control={control}
-            placeholder="Preço de venda (R$)"
-            defaultValue={0}
-          />
-        </SectionInputContent>
-      ),
-    },
-  ], [cidades, estados, imagens, imovelType, control]);
+    ]
+  );
 
   useEffect(() => {
     if (trail < 0) {
@@ -260,7 +269,9 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           <ReturnButton onClick={() => setTrail((old) => old - 1)}>
             <FiChevronLeft size={20} color={colors.primary} />
           </ReturnButton>
-          <AreaShow>{trailsObject.map(trail => trail.description)[trail]}</AreaShow>
+          <AreaShow>
+            {trailsObject.map((trail) => trail.description)[trail]}
+          </AreaShow>
           <ReturnButton onClick={() => setTrail((old) => old + 1)}>
             <FiCheck size={20} color={colors.primary} />
           </ReturnButton>
@@ -280,13 +291,27 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
         >
           {trailsObject.map((trail) => trail.content)}
           <SectionInputContent>
-            <ButtonSubmit type="submit" onClick={formRef.current?.submitForm}>
-              {!loading ? (
-                "Anunciar"
+            <SubmitContainer>
+              {totalProgress !== 100 ? (
+                !loading ? (
+                  <ButtonSubmit
+                    type="submit"
+                    onClick={formRef.current?.submitForm}
+                  >
+                    Anunciar
+                  </ButtonSubmit>
+                ) : (
+                  <ProgressUpload
+                    circleSize={60}
+                    progress={totalProgress}
+                    strokeColor={colors.primary}
+                    textColor={colors.primary}
+                  ></ProgressUpload>
+                )
               ) : (
-                <ProgressUpload progress={totalProgress}></ProgressUpload>
+                "Pronto"
               )}
-            </ButtonSubmit>
+            </SubmitContainer>
           </SectionInputContent>
         </FormContent>
       </FormContentWrapper>
@@ -294,13 +319,4 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   );
 };
 
-{
-  /* <ButtonSubmit type="submit">
-          {!loading ? (
-            "Anunciar"
-          ) : (
-            <ProgressUpload progress={totalProgress}></ProgressUpload>
-          )}
-        </ButtonSubmit> */
-}
 export default FormImovel;
