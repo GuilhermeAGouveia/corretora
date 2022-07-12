@@ -3,4 +3,5 @@ node_modules
 build
 target
 
-storage/image
+storage/image/*
+!/storage/image/null

@@ -27,7 +27,7 @@ export default function Login() {
   const [error, setError] = useState(false);
   const [sucess, setSucess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { register, handleSubmit } = useForm();
+  const { control, handleSubmit } = useForm();
   const { login } = useAuth();
 
   const contentHorizontalCards = [
@@ -113,13 +113,13 @@ export default function Login() {
               type="email"
               placeholder="Email"
               name="email"
-              register={register}
+              control={control}
             ></Input>
 
             <Input
               type="password"
               placeholder="Password"
-              register={register}
+              control={control}
               name="password"
             ></Input>
 

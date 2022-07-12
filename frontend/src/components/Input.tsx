@@ -1,17 +1,24 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
+import {
+  Controller,
+  ControllerRenderProps,
+  FieldValues
+} from "react-hook-form";
 import styled from "styled-components";
 import colors from "../styles/colors";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
-  register: any;
+  control: any;
+  name: string;
 }
 
 const InputComponent = ({
   placeholder,
   name,
-  register,
+  control,
   defaultValue,
+  type,
   ...inputProps
 }: InputProps) => {
   const [isChanging, setIsChanging] = useState(false);
@@ -26,6 +33,7 @@ const InputComponent = ({
 
     setIsChanging(stateValue);
   };
+
   return (
     <InputContainer
       animate={{
@@ -33,24 +41,44 @@ const InputComponent = ({
       }}
     >
       <InputPlaceholder
-        animate={{
-          y: isChanging ? -21 : 0,
-          scale: isChanging ? 0.9 : 1,
-          color: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.7)`,
-        }}
+        animate={
+          isChanging || defaultValue !== undefined
+            ? {
+                y: -21,
+                scale: 0.9,
+                color: `${colors.secondary}`,
+              }
+            : {
+                y: 0,
+                scale: 1,
+                color: `rgba(0, 0, 0, 0.7)`,
+              }
+        }
       >
         {inputProps.required ? placeholder + " *" : placeholder}
       </InputPlaceholder>
-      <Input
-        {...inputProps}
-        placeholder={isChanging ? defaultValue : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
-        // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
-        {...register(name)}
-        onFocus={(e: any) => handleIsChanging(e, true)}
-        onBlur={(e: any) => {
-          handleIsChanging(e, false);
-        }}
-        autoComplete="off"
+      <Controller
+        render={({
+          field: { onChange, ...inputProps },
+        }: {
+          field: ControllerRenderProps<FieldValues>;
+        }) => (
+          <Input
+            {...inputProps}
+            type={type}
+            placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
+            // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
+            onFocus={(e: any) => handleIsChanging(e, true)}
+            onBlur={(e: any) => {
+              handleIsChanging(e, false);
+            }}
+            autoComplete="off"
+            onChange={(e) => onChange(e.target.value)}
+          />
+        )}
+        name={name}
+        defaultValue={defaultValue}
+        control={control}
       />
     </InputContainer>
   );
@@ -84,6 +112,7 @@ const InputContainer = styled(motion.div)`
   justify-content: flex-start;
   align-items: center;
   font-weight: 500;
+  margin: 10px auto;
 `;
 
 const InputPlaceholder = styled(motion.div)`

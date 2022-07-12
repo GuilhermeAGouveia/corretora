@@ -1,6 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiAlignLeft, FiCheck, FiChevronLeft, FiDollarSign, FiImage } from "react-icons/fi";
+import {
+  FiAlignLeft,
+  FiCheck,
+  FiChevronLeft,
+  FiDollarSign,
+  FiImage
+} from "react-icons/fi";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
@@ -13,6 +19,7 @@ import { ImovelType } from "../../../../../lib/interfaces";
 import colors from "../../../../../styles/colors";
 import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
+import ProgressUpload from "../../../../ProgressUpload";
 import SelectReactHookForm, {
   SelectOption
 } from "../../../../SelectReactHookForm";
@@ -20,6 +27,7 @@ import ShowTrail from "./component/ShowTrail";
 import {
   ActionsForm,
   AreaShow,
+  ButtonSubmit,
   Form,
   FormContent,
   FormContentWrapper,
@@ -49,7 +57,7 @@ interface FormImovelProps {
 const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   const formRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
-  const { register, handleSubmit, control } = useForm();
+  const { handleSubmit, control } = useForm();
   const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
   const [estado, setEstado] = useState<string>(); //  //usado pelo select de cidades para determinar de qual estado buscar cidades
   const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
@@ -133,17 +141,17 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
       icon: FiAlignLeft,
       content: (
         <SectionInputContent>
-          <Input name="street" register={register} placeholder="Rua" required />
+          <Input name="street" control={control} placeholder="Rua" required />
           <Input
             name="number"
             type="number"
-            register={register}
+            control={control}
             placeholder="Número"
             required
           />
           <Input
             name="district"
-            register={register}
+            control={control}
             placeholder="Bairro"
             required
           />
@@ -188,7 +196,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           <Input
             name="area"
             type="number"
-            register={register}
+            control={control}
             placeholder="Área (m²)"
             defaultValue={0}
           />
@@ -198,7 +206,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
                 key={field.name}
                 name={field.name}
                 type={field.type}
-                register={register}
+                control={control}
                 placeholder={field.placeholder}
                 defaultValue={field.defaultValue}
               />
@@ -214,14 +222,14 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           <Input
             name="mensalidade"
             type="number"
-            register={register}
+            control={control}
             placeholder="Mensalidade (R$)"
             defaultValue={0}
           />
           <Input
             name="price"
             type="number"
-            register={register}
+            control={control}
             placeholder="Preço de venda (R$)"
             defaultValue={0}
           />
@@ -231,19 +239,15 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   ];
 
   return (
-    <Form onSubmit={handleSubmit(onSubmit)}>
+    <Form>
       <FormHeader>
         <ActionsForm>
-          <ReturnButton
-            onClick={() => setTrail((old) => old - 1)}
-          >
-            <FiChevronLeft size={20} color={colors.primary}/>
+          <ReturnButton onClick={() => setTrail((old) => old - 1)}>
+            <FiChevronLeft size={20} color={colors.primary} />
           </ReturnButton>
           <AreaShow>Insira suas imagens aqui</AreaShow>
-          <ReturnButton
-            onClick={() => setTrail((old) => old + 1)}
-          >
-            <FiCheck size={20} color={colors.primary}/>
+          <ReturnButton onClick={() => setTrail((old) => old + 1)}>
+            <FiCheck size={20} color={colors.primary} />
           </ReturnButton>
         </ActionsForm>
         <ShowTrail
@@ -252,9 +256,20 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
         ></ShowTrail>
       </FormHeader>
       <FormContentWrapper ref={formRef}>
-        <FormContent animate={{
-          left: -trail * (formRef.current?.clientWidth || 0)}}>
+        <FormContent
+          onSubmit={handleSubmit(onSubmit)}
+          animate={{
+            left: -trail * (formRef.current?.clientWidth || 0),
+          }}
+        >
           {trailsObject.map((trail) => trail.content)}
+          <ButtonSubmit type="submit">
+            {!loading ? (
+              "Anunciar"
+            ) : (
+              <ProgressUpload progress={totalProgress}></ProgressUpload>
+            )}
+          </ButtonSubmit>
         </FormContent>
       </FormContentWrapper>
     </Form>

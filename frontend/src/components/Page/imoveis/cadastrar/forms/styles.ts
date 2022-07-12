@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 import colors from "../../../../../styles/colors";
 
-export const Form = styled.form`
+export const Form = styled.div`
   position: relative;
 
   width: 100%;
@@ -73,9 +73,9 @@ export const FormContentWrapper = styled.div`
   width: 100%;
   overflow: hidden;
 `;
-export const FormContent = styled(motion.div)<any>`
+export const FormContent = styled(motion.form)<any>`
   position: relative;
-  width: calc(4 * 100%);
+  width: calc(5 * 100%);
   display: flex;
 
 `;
