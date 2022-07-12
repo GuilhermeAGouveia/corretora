@@ -6,12 +6,13 @@ import {
   FiChevronLeft,
   FiDollarSign,
   FiImage,
-  FiCheckCircle,
 } from "react-icons/fi";
+import animationData from "../../../../../assets/lotties/checked.json";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
 import { insertManyImages } from "../../../../../lib/imagem";
+import Lottie from "react-lottie";
 import {
   insertImovel,
   parseFormImovelToIImovel,
@@ -37,6 +38,7 @@ import {
   SectionInputContent,
   SubmitContainer,
 } from "./styles";
+import Link from "next/link";
 
 export interface FormImovel {
   street?: string;
@@ -65,6 +67,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
   const [imagens, setImagens] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
+  const [completeRegister, setCompleteRegister] = useState(false);
   const [totalProgress, setTotalProgress] = useState(0);
   const [trail, setTrail] = useState(0);
 
@@ -242,14 +245,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
         ),
       },
     ],
-    [
-      cidades,
-      estados,
-      imagens,
-      imovelType,
-      control,
-
-    ]
+    [cidades, estados, imagens, imovelType, control]
   );
 
   useEffect(() => {
@@ -308,9 +304,28 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
                     textColor={colors.primary}
                   ></ProgressUpload>
                 )
-              ) : (
-                "Pronto"
+              ) : !completeRegister && (
+                <Lottie
+                  options={{
+                    loop: false,
+                    autoplay: true,
+
+                    animationData: animationData,
+                    rendererSettings: {
+                      preserveAspectRatio: "xMidYMid slice",
+                    },
+                  }}
+                  width={200}
+                  height={200}
+                  eventListeners={[
+                    {
+                      eventName: "complete",
+                      callback: () => setCompleteRegister(true),
+                    },
+                  ]}
+                />
               )}
+              {completeRegister && <Link href={"/lista"}>Voltar a pagina inicial</Link>}
             </SubmitContainer>
           </SectionInputContent>
         </FormContent>
