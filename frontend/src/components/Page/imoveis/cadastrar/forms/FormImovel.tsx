@@ -18,7 +18,7 @@ import {
   insertImovel,
   parseFormImovelToIImovel
 } from "../../../../../lib/imovel";
-import { ImovelType } from "../../../../../lib/interfaces";
+import { ImovelType, LevelFurnished } from "../../../../../lib/interfaces";
 import colors from "../../../../../styles/colors";
 import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
@@ -51,6 +51,7 @@ export interface FormImovel {
   mensalidade?: string;
   price?: string;
   area?: string;
+  furnished?: LevelFurnished;
 }
 
 interface FormImovelProps {
@@ -207,6 +208,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
               defaultValue={0}
             />
             {getAditionalFields(imovelType).map((field) => {
+              if (field.componentType === "input")
               return (
                 <Input
                   key={field.name}
@@ -215,6 +217,20 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
                   control={control}
                   placeholder={field.placeholder}
                   defaultValue={field.defaultValue}
+                />
+              );
+              if (field.componentType === "select")
+              return (
+                <SelectReactHookForm
+                  style={{
+                    maxWidth: "400px"
+                  }}
+                  key={field.name}
+                  name={field.name}
+                  options={field.options as []}
+                  controlReactHookForm={control}
+                  placeholder={field.placeholder}
+                  value={field.defaultValue as string | undefined}
                 />
               );
             })}

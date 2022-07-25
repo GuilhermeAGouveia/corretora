@@ -93,6 +93,7 @@ export function parseFormImovelToIImovel(
     mensalidade,
     price,
     type,
+    furnished,
     idOwner: id
   } = formImovel;
 
@@ -107,6 +108,7 @@ export function parseFormImovelToIImovel(
     mensalidade: mensalidade ? parseFloat(mensalidade) : 0,
     price: price ? parseFloat(price) : 0,
     type,
+    isFurnished: furnished
   } as IImovel;
 
   return imovel;

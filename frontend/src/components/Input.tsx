@@ -42,7 +42,7 @@ const InputComponent = ({
     >
       <InputPlaceholder
         animate={
-          isChanging || defaultValue !== undefined
+          isChanging
             ? {
                 y: -21,
                 scale: 0.9,
@@ -65,6 +65,7 @@ const InputComponent = ({
         }) => (
           <Input
             {...inputProps}
+            value={undefined}
             type={type}
             placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
             // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
@@ -76,8 +77,8 @@ const InputComponent = ({
             onChange={(e) => onChange(e.target.value)}
           />
         )}
-        name={name}
         defaultValue={defaultValue}
+        name={name}
         control={control}
       />
     </InputContainer>
