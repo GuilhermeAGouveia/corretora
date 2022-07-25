@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import {
@@ -5,17 +6,17 @@ import {
   FiCheck,
   FiChevronLeft,
   FiDollarSign,
-  FiImage,
+  FiImage
 } from "react-icons/fi";
+import Lottie from "react-lottie";
 import animationData from "../../../../../assets/lotties/checked.json";
 import { useAuth } from "../../../../../context/Auth";
 import { Field, getAditionalFields } from "../../../../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../../../../lib/externalData";
 import { insertManyImages } from "../../../../../lib/imagem";
-import Lottie from "react-lottie";
 import {
   insertImovel,
-  parseFormImovelToIImovel,
+  parseFormImovelToIImovel
 } from "../../../../../lib/imovel";
 import { ImovelType } from "../../../../../lib/interfaces";
 import colors from "../../../../../styles/colors";
@@ -23,7 +24,7 @@ import ImageUploader, { UploadedFile } from "../../../../ImageUploader";
 import Input from "../../../../Input";
 import ProgressUpload from "../../../../ProgressUpload";
 import SelectReactHookForm, {
-  SelectOption,
+  SelectOption
 } from "../../../../SelectReactHookForm";
 import ShowTrail from "./component/ShowTrail";
 import {
@@ -36,9 +37,8 @@ import {
   FormHeader,
   ReturnButton,
   SectionInputContent,
-  SubmitContainer,
+  SubmitContainer
 } from "./styles";
-import Link from "next/link";
 
 export interface FormImovel {
   street?: string;
@@ -67,7 +67,7 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
   const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
   const [imagens, setImagens] = useState<UploadedFile[]>([]);
   const [loading, setLoading] = useState(false);
-  const [completeRegister, setCompleteRegister] = useState(false);
+  const [finalAnimationConfirm, setfinalAnimationConfirm] = useState(false);
   const [totalProgress, setTotalProgress] = useState(0);
   const [trail, setTrail] = useState(0);
 
@@ -288,23 +288,25 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
           {trailsObject.map((trail) => trail.content)}
           <SectionInputContent>
             <SubmitContainer>
-              {totalProgress !== 100 ? (
-                !loading ? (
-                  <ButtonSubmit
-                    type="submit"
-                    onClick={formRef.current?.submitForm}
-                  >
-                    Anunciar
-                  </ButtonSubmit>
-                ) : (
+              {totalProgress !== 100 && !loading && (
+                <ButtonSubmit
+                  type="submit"
+                  onClick={formRef.current?.submitForm}
+                >
+                  Anunciar
+                </ButtonSubmit>
+              )}
+              {totalProgress !== 100 &&
+                loading && ( //Exibe este componente enquanto o a imagem nã
                   <ProgressUpload
                     circleSize={60}
                     progress={totalProgress}
                     strokeColor={colors.primary}
                     textColor={colors.primary}
                   ></ProgressUpload>
-                )
-              ) : !completeRegister && (
+                )}
+
+              {totalProgress === 100 && !finalAnimationConfirm && ( //Exibe esta animação lottie apenas quando load completar
                 <Lottie
                   options={{
                     loop: false,
@@ -320,12 +322,15 @@ const FormImovel = ({ imovelType, aditionalFields }: FormImovelProps) => {
                   eventListeners={[
                     {
                       eventName: "complete",
-                      callback: () => setCompleteRegister(true),
+                      callback: () => setfinalAnimationConfirm(true),
                     },
                   ]}
                 />
               )}
-              {completeRegister && <Link href={"/lista"}>Voltar a pagina inicial</Link>}
+
+              {finalAnimationConfirm && ( //Exibe este componente apenas quando o cadastro estiver totalmente completo
+                <Link href={"/lista"}>Voltar a pagina inicial</Link>
+              )}
             </SubmitContainer>
           </SectionInputContent>
         </FormContent>

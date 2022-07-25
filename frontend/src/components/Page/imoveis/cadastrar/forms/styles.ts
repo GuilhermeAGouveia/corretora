@@ -25,7 +25,6 @@ export const SectionLabel = styled.div`
 export const SectionInputContent = styled.div`
   position: relative;
   width: 100%;
-  overflow: hidden;
   overflow-x: auto;
   & > * {
     margin: 15px auto;
