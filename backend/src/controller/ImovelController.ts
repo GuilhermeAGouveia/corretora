@@ -63,6 +63,7 @@ export default {
       });
       res.json(imovelInsert.cod_imv);
     } catch (error: any) {
+      console.log(error);
       res.status(400).json(error);
     }
   },
