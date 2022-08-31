@@ -5,6 +5,11 @@ const colors = {
     white: '#F1F1F1',
     gray: '#6C6D6F',
     danger: '#de3b3b',
+    info: {
+        error: '#de3b3b',
+        success: '#2ba800',
+        warning: '#938307',
+    }
 }
 
 export default colors

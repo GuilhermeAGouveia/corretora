@@ -2,6 +2,11 @@ export interface IButton {
   label: string;
 }
 
+export interface CardImovelProps {
+  imovel: IImovel;
+  onDelete?: (imovelId: string) => void;
+}
+
 export interface Image {
   url: string;
   originalname?: string;

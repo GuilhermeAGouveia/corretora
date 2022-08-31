@@ -1,35 +1,62 @@
 import styled from "styled-components";
-import { IImovel } from "../../../lib/interfaces";
+import {CardImovelProps, IImovel} from "../../../lib/interfaces";
 import colors from "../../../styles/colors";
+import {useState} from "react";
+import api from "../../../services/api";
+import BannerInfo from "../../BannerInfo";
 
 interface ListCardsProps {
-  imoveis: IImovel[];
-  isLoadingItems?: boolean;
-  cardComponent: React.ComponentType<{ imovel: IImovel; key: string }>;
+    imoveis: IImovel[];
+    isLoadingItems?: boolean;
+    cardComponent: React.ComponentType<CardImovelProps>;
 }
 
-const ListCards = ({ cardComponent: Card ,isLoadingItems, imoveis }: ListCardsProps) => {
-  return (
-    <CardsContainerRoot>
-      <CardsContainer>
-        {imoveis.length ? (
-          imoveis.map((imovel: IImovel) => (
-            <Card key={imovel.cod_imv} imovel={imovel} />
-          ))
-        ) : (
-          <NoneImoveis>Nenhum imóvel encontrado</NoneImoveis>
-        )}
-      </CardsContainer>
 
-      {isLoadingItems && <LoadingBottom>Loading More ...</LoadingBottom>}
-    </CardsContainerRoot>
-  );
+const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProps) => {
+    const [imovelUpdate, setImovelUpdate] = useState<IImovel[]>(imoveis);
+    const [error, setError] = useState<boolean>();
+    const [success, setSuccess] = useState<boolean>();
+
+
+    const handleDelete = async (id: string) => {
+        setError(false);
+        setSuccess(false);
+
+        const response = await api.delete(`/imovel/${id}`)
+        if (response.status !== 200)
+            setError(true);
+
+        setSuccess(true);
+        setImovelUpdate(oldImoveis => oldImoveis.filter(imovel => imovel.cod_imv !== id));
+
+    }
+
+
+    return (
+        <CardsContainerRoot>
+            <CardsContainer>
+                {imovelUpdate.length ? (
+                    imovelUpdate.map((imovel: IImovel) => (
+
+                        <Card key={imovel.cod_imv} imovel={imovel} onDelete={handleDelete}/>
+                    ))
+                ) : (
+                    <NoneImoveis>Nenhum imóvel encontrado</NoneImoveis>
+                )}
+            </CardsContainer>
+
+            {isLoadingItems && <LoadingBottom>Loading More ...</LoadingBottom>}
+            {error && <BannerInfo type={"error"}>Erro ao deletar imóvel!</BannerInfo>}
+            {success && <BannerInfo type={"success"}>Imóvel deletado com sucesso!</BannerInfo>}
+
+        </CardsContainerRoot>
+    );
 };
 export default ListCards;
 
 const CardsContainer = styled.div`
   position: relative;
-  
+
   max-width: 1200px;
   width: 90%;
   margin: 0 5%;

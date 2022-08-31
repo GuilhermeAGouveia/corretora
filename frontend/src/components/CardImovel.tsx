@@ -3,12 +3,9 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
-import { IImovel, LevelFurnished } from "../lib/interfaces";
+import {CardImovelProps, IImovel, LevelFurnished} from "../lib/interfaces";
 import colors from "../styles/colors";
 
-interface CardImovelProps {
-  imovel: IImovel;
-}
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);

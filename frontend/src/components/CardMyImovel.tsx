@@ -1,57 +1,69 @@
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import Image from "next/image";
+import {format} from "date-fns";
+import {ptBR} from "date-fns/locale";
 import styled from "styled-components";
-import { IImovel } from "../lib/interfaces";
+import {CardImovelProps, IImovel} from "../lib/interfaces";
 import colors from "../styles/colors";
+import {FiCalendar, FiMapPin} from "react-icons/fi"
+import {CardImage} from "./Page/imoveis/my/CardImage";
+import MenuImovelActions from "./MenuImovelActions";
 
-export function CardMyImovel({ imovel }: { imovel: IImovel }) {
-  const getStringDateFormat = (date: Date) => {
-    return format(date, "dd 'de' MMMM', às ' HH:mm'h'", {
-        locale: ptBR,
-    });
-  };
+export default function CardMyImovel({imovel, onDelete}: CardImovelProps) {
+    const getStringDateFormat = (date: Date) => {
+        return format(date, "dd 'de' MMMM', às ' HH:mm'h'", {
+            locale: ptBR,
+        });
+    };
 
-  return (
-    <Card>
-      <CardImage
-        src={
-          imovel.images[0]
-            ? imovel.images[0].url
-            : "https://picsum.photos/200/300"
-        }
-        alt={imovel.images[0] ? imovel.images[0].originalname : "Imagem"}
-        width={300}
-        height={300}
-        objectFit="cover"
-        priority
-        quality={100}
-      />
-      <LineDivider />
-      <CardDescription>
-        {`criado em ${getStringDateFormat(new Date(imovel.createdAt))}`}
-      </CardDescription>
-    </Card>
-  );
+    function captalize(str: string) {
+        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+    }
+
+    return (
+        <Card>
+            <CardImage imagesUrl={imovel.images}/>
+            <LineDivider/>
+            <CardDescription>
+                <CardDescriptionHeader>
+                    <CardTitle><h4>{captalize(imovel.type)} em {imovel.city}, {imovel.state}</h4></CardTitle>
+                    <CardCreatedAt>
+                        <time dateTime={new Date(imovel.createdAt).toDateString()}>
+
+                            {`${getStringDateFormat(new Date(imovel.createdAt))}`}
+                        </time>
+                    </CardCreatedAt>
+                    <MenuImovelActions onDelete={onDelete} imovelId={imovel.cod_imv}/>
+
+                </CardDescriptionHeader>
+                <address><FiMapPin size={14} color={colors.primary}/> {imovel.address}, {imovel.district}</address>
+                <div>{imovel.area}</div>
+                <div>{imovel.hasGarage}</div>
+                <div>{imovel.hasSuite}</div>
+                <div>{imovel.hasGarden}</div>
+                <div>{imovel.nBathrooms}</div>
+                <div>{imovel.nRooms}</div>
+                <div>{imovel.mensalidade}</div>
+                <div>{imovel.price}</div>
+
+            </CardDescription>
+        </Card>
+    );
 }
 
 const Card = styled.div`
   position: relative;
-  width: 100%;
+  margin: .8rem .5rem;
   height: 300px;
-  background: ${colors.white};
+  background: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 20px;
-  margin: 20px;
-  background: red;
-`;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 
-const CardImage = styled(Image)`
-  position: relative;
-  width: 100%;
-  height: 100%;
+  @media (max-width: 768px) {
+    height: 150px;
+  }
 `;
 
 const LineDivider = styled.div`
@@ -59,7 +71,7 @@ const LineDivider = styled.div`
   width: 1px;
   height: 100%;
   background: ${colors.primary};
-  margin: 0 10px;
+
   @media (max-width: 768px) {
     display: none;
   }
@@ -67,11 +79,45 @@ const LineDivider = styled.div`
 
 const CardDescription = styled.div`
   position: relative;
-  width: 100%;
-  background: blue;
+  width: 70%;
   height: 100%;
+  padding: 5px;
+
+`;
+
+const CardTitle = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
   align-items: center;
+  justify-content: flex-start;
+`;
+
+const CardDescriptionHeader = styled.div`
+  position: relative;
+  width: 100%;
+  height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem;
+  
+    @media (max-width: 768px) {
+    display: block;
+    }
+`;
+
+const CardCreatedAt = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  font-size: 14px;
+  padding-right: 10px;
+  
+  @media (max-width: 768px) {
+    justify-content: flex-start;
+    font-size: 12px;
+  }
 `;

@@ -17,7 +17,7 @@ export default {
       return res.status(400).json({ error: "Usuário não encontrado" });
     }
 
-    const isMatch = await encrypt.compare(password, user.password);
+    const isMatch = await encrypt.compare(password as string, user.password);
 
     user.password = ""; // delete password from response and jwt payload
 

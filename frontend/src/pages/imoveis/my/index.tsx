@@ -1,15 +1,18 @@
 import { GetServerSideProps } from "next";
 import styled from "styled-components";
-import { CardMyImovel } from "../../../components/CardMyImovel";
+import CardMyImovel from "../../../components/CardMyImovel";
 import ListCards from "../../../components/Page/lista/ListCards";
 import { getCookie } from "../../../lib/cookies";
 import { getByLocador } from "../../../lib/imovel";
 import { IImovel } from "../../../lib/interfaces";
 import colors from "../../../styles/colors";
+import HeaderLista from "../../../components/Page/lista/Header";
 
 export default function MyImoveis({ imoveis }: { imoveis: IImovel[] }) {
+
   return (
     <Container>
+      <HeaderLista></HeaderLista>
       <ListCards imoveis={imoveis} cardComponent={CardMyImovel}></ListCards>
     </Container>
   );

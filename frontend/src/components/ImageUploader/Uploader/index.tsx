@@ -25,7 +25,8 @@ export default class Upload extends React.Component<UploadProps> {
     return (
       <Dropzone
         accept={{
-          "image/*": [".jpeg", ".png"],
+          "image/png": [".png"],
+          "image/jpeg": [".jpeg", ".jpg"],
         }}
         onDropAccepted={onUpload}
       >
