@@ -38,11 +38,11 @@ export async function insertManyImages(
 export function getRandomImageByImovelType(imovelType: ImovelType) {
   const imagesByType = {
     [ImovelType.CASA]:
-      "https://corretora-storage.s3.sa-east-1.amazonaws.com/banner-images/casa.jpg",
+      "https://corretora-storage.s3.sa-east-1.amazonaws.com/imagens_background/casa.jpg",
     [ImovelType.APTO]:
-      "https://corretora-storage.s3.sa-east-1.amazonaws.com/banner-images/apto.jpeg",
+      "https://corretora-storage.s3.sa-east-1.amazonaws.com/imagens_background/apartamentos",
     [ImovelType.COMERCIO]:
-      "https://corretora-storage.s3.sa-east-1.amazonaws.com/banner-images/comercio.jpg",
+      "https://corretora-storage.s3.sa-east-1.amazonaws.com/imagens_background/comercio.jpg",
   };
 
   return imagesByType[imovelType];
