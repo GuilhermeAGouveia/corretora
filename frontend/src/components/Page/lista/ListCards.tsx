@@ -1,9 +1,9 @@
 import styled from "styled-components";
-import {CardImovelProps, IImovel} from "../../../lib/interfaces";
+import {AlertType, CardImovelProps, IImovel} from "../../../lib/interfaces";
 import colors from "../../../styles/colors";
 import {useState} from "react";
 import api from "../../../services/api";
-import BannerInfo from "../../BannerInfo";
+import BannerInfo, {useBannerInfo} from "../../BannerInfo";
 
 interface ListCardsProps {
     imoveis: IImovel[];
@@ -14,23 +14,24 @@ interface ListCardsProps {
 
 const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProps) => {
     const [imovelUpdate, setImovelUpdate] = useState<IImovel[]>(imoveis);
-    const [error, setError] = useState<boolean>();
-    const [success, setSuccess] = useState<boolean>();
-
+    const {control, "alertState": [alert, setAlert]} = useBannerInfo();
 
     const handleDelete = async (id: string) => {
-        setError(false);
-        setSuccess(false);
+        setAlert(undefined);
 
         const response = await api.delete(`/imovel/${id}`)
         if (response.status !== 200)
-            setError(true);
-
-        setSuccess(true);
+            setAlert({
+                type: AlertType.ERROR,
+                message: "Erro ao deletar imóvel",
+            })
+        setAlert({
+            type: AlertType.SUCCESS,
+            message: "Imóvel deletado com sucesso",
+        })
         setImovelUpdate(oldImoveis => oldImoveis.filter(imovel => imovel.cod_imv !== id));
 
     }
-
 
     return (
         <CardsContainerRoot>
@@ -46,8 +47,8 @@ const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProp
             </CardsContainer>
 
             {isLoadingItems && <LoadingBottom>Loading More ...</LoadingBottom>}
-            {error && <BannerInfo type={"error"}>Erro ao deletar imóvel!</BannerInfo>}
-            {success && <BannerInfo type={"success"}>Imóvel deletado com sucesso!</BannerInfo>}
+            {alert && <BannerInfo control={control} type={alert.type}>{alert.message}</BannerInfo>}
+
 
         </CardsContainerRoot>
     );

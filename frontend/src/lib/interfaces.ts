@@ -2,6 +2,12 @@ export interface IButton {
   label: string;
 }
 
+export enum AlertType {
+    ERROR = "error",
+    SUCCESS = "success",
+    WARNING = "warning",
+}
+
 export interface CardImovelProps {
   imovel: IImovel;
   onDelete?: (imovelId: string) => void;

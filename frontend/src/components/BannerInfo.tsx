@@ -3,24 +3,41 @@ import {useEffect, useState} from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
 import {FiAlertCircle, FiCheckCircle, FiXCircle} from "react-icons/fi";
+import {AlertType} from "../lib/interfaces";
+
+export interface BannerInfoControl {
+    state: boolean; // true = show, false = hide
+    desactive: () => void; // hide banner
+}
 
 interface BannerInfoProps {
     children: any;
-    type: "success" | "error" | "warning";
+    type: AlertType;
+    control: BannerInfoControl;
 }
 
-const BannerInfo = ({type, children}: BannerInfoProps) => {
-    const [isVisible, setIsVisible] = useState(true);
+const BannerInfo = ({type, children, control}: BannerInfoProps) => {
+
+    type = type || AlertType.SUCCESS;
+    children = children || "Sem mensagem";
 
     useEffect(() => {
         setTimeout(() => {
-            setIsVisible(false);
+            control.desactive();
         }, 3000);
     }, []);
 
+    const AlertIcons = {
+        [AlertType.SUCCESS]: FiCheckCircle,
+        [AlertType.ERROR]: FiXCircle,
+        [AlertType.WARNING]: FiAlertCircle,
+    }
+
+    const AlertIcon = AlertIcons[type];
+
     return (
         <AnimatePresence>
-            {isVisible && (
+            {control.state && (
                 <BannerInfoContainer
                     type={type}
                     initial={{opacity: 0, x: 300}}
@@ -28,16 +45,7 @@ const BannerInfo = ({type, children}: BannerInfoProps) => {
                     exit={{opacity: 0, x: 300}}
                 >
                     <IconeBanner>
-                        {type === "success" && (
-                            <FiCheckCircle color={"white"} size={20}/>
-                        )}
-                        {type === "error" && (
-                            <FiXCircle color={"white"} size={20}/>
-                        )}
-                        {type === "warning" && (
-                            <FiAlertCircle color={"white"} size={20}/>
-                        )}
-
+                        <AlertIcon color={"white"} size={20}/>
                     </IconeBanner>
                     {children}
                 </BannerInfoContainer>
@@ -48,6 +56,22 @@ const BannerInfo = ({type, children}: BannerInfoProps) => {
 
 export default BannerInfo;
 
+export const useBannerInfo = () => {
+    const alertState = useState<{
+        type: AlertType;
+        message: string;
+    }>();
+
+    const [alert, setAlert] = alertState;
+
+    return {
+        alertState,
+        control: {
+            state: !!alert,
+            desactive: () => setAlert(undefined),
+        }
+    }
+}
 
 const BannerInfoContainer = styled(motion.div)<{ type: "success" | "error" | "warning"; } & MotionAdvancedProps>`
   position: fixed;

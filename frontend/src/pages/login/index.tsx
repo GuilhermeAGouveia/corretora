@@ -1,13 +1,13 @@
 import {useRouter} from "next/router";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
-import BannerInfo from "../../components/BannerInfo";
+import BannerInfo, {useBannerInfo} from "../../components/BannerInfo";
 import Input from "../../components/Input";
 import LogoComponent from "../../components/Logo";
 import SlideBanner from "../../components/SlideBanner";
 import {useAuth} from "../../context/Auth";
 import {getRandomImageByImovelType} from "../../lib/imagem";
-import {ImovelType} from "../../lib/interfaces";
+import {AlertType, ImovelType} from "../../lib/interfaces";
 import {
     DivisionLine,
     LoginContainer,
@@ -24,10 +24,9 @@ import {
 
 export default function Login() {
     const router = useRouter();
-    const [error, setError] = useState("");
-    const [sucess, setSucess] = useState("");
+    const {control: controlBannerInfo, "alertState": [alert, setAlert]} = useBannerInfo();
+
     const [loading, setLoading] = useState(false);
-    const [warning, setWarning] = useState("");
     const {control, handleSubmit} = useForm();
     const {login} = useAuth();
 
@@ -52,34 +51,20 @@ export default function Login() {
         },
     ];
 
-    const setErrorOrSucess = (state: "sucess" | "error" | "reset") => {
-        switch (state) {
-            case "sucess":
-                setSucess("Login efetuado com sucesso!");
-                setError("");
-                break;
-            case "error":
-                setError("Usuário ou senha inválidos!");
-                setSucess("");
-                break;
-            case "reset":
-                setError("");
-                setSucess("");
-                setWarning("");
-                break;
-            default:
-                break;
-        }
-    };
-
-    const validate = (data: any) => {
+    const preValidate = (data: any) => {
         if (!data.email || !data.password) {
-            setErrorOrSucess("error");
+            setAlert({
+                type: AlertType.ERROR,
+                message: "Preencha todos os campos",
+            })
             return false;
         }
 
         if (data.password.length < 6) {
-            setWarning("A senha deve ter no mínimo 6 caracteres");
+            setAlert({
+                type: AlertType.WARNING,
+                message: "A senha deve ter no mínimo 6 caracteres",
+            })
             return false;
         }
 
@@ -87,30 +72,26 @@ export default function Login() {
     }
 
     const onSubmit = async (data: any) => {
-        if (!validate(data)) return;
-
-        setLoading(true);
-        try {
-            await login(data);
-            router.push("/lista");
-        } catch (error) {
-            console.log(error);
-            setErrorOrSucess("error");
+        if (preValidate(data)) {
+            setLoading(true);
+            try {
+                await login(data);
+                router.push("/lista");
+            } catch (error) {
+                setAlert({
+                    type: AlertType.ERROR,
+                    message: "Erro ao fazer login",
+                })
+            }
+            setLoading(false);
         }
-        setLoading(false);
-        const timeout = setTimeout(() => {
-            setErrorOrSucess("reset");
-        }, 3100);
-        return () => clearTimeout(timeout);
     };
 
     return (
         <LoginContainer>
-            {!!error && (
-                <BannerInfo type={"error"}>{error}</BannerInfo>
-            )}
-            {!!sucess && <BannerInfo type={"success"}>{sucess}</BannerInfo>}
-            {!!warning && <BannerInfo type={"warning"}>{warning}</BannerInfo>}
+
+            {alert && <BannerInfo control={controlBannerInfo} type={alert.type}>{alert.message}</BannerInfo>}
+
             <LoginLeft>
                 <LogoCompany>
                     <LogoComponent/>
