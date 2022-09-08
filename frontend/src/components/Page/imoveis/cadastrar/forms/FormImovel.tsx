@@ -1,33 +1,23 @@
-import Link from "next/link";
 import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
-import {FiAlignLeft, FiCheck, FiChevronLeft, FiDollarSign, FiImage} from "react-icons/fi";
-import Lottie from "react-lottie";
-import animationData from "../../../../../assets/lotties/checked.json";
+import Link from "next/link";
+import {FiAlignLeft, FiCheck, FiDollarSign, FiImage} from "react-icons/fi";
 import {useAuth} from "../../../../../context/Auth";
 import {Field, getAditionalFields} from "../../../../../lib/aditionalFields";
 import {getCidades, getEstados} from "../../../../../lib/externalData";
 import {insertManyImages} from "../../../../../lib/imagem";
 import {insertImovel, parseFormImovelToIImovel} from "../../../../../lib/imovel";
 import {ImovelType, LevelFurnished} from "../../../../../lib/interfaces";
-import colors from "../../../../../styles/colors";
 import ImageUploader, {UploadedFile} from "../../../../ImageUploader";
 import Input from "../../../../Input";
-import ProgressUpload from "../../../../ProgressUpload";
 import SelectReactHookForm, {SelectOption} from "../../../../SelectReactHookForm";
-import ShowTrail from "./component/ShowTrail";
-import {
-    ActionsForm,
-    AreaShow,
-    ButtonSubmit,
-    Form,
-    FormContent,
-    FormContentWrapper,
-    FormHeader,
-    ReturnButton,
-    SectionInputContent,
-    SubmitContainer
-} from "./styles";
+import {ButtonSubmit, SubmitContainer} from "./styles";
+import FormComponent from "./FormComponent";
+import Lottie from "react-lottie";
+import {uuid} from "uuidv4";
+import animationData from "../../../../../assets/lotties/checked.json";
+import ProgressUpload from "../../../../ProgressUpload";
+import colors from "../../../../../styles/colors";
 
 export interface FormImovel {
     street?: string;
@@ -48,10 +38,10 @@ interface FormImovelProps {
     imovelType: ImovelType;
 }
 
-const FormImovel = ({imovelType, aditionalFields}: FormImovelProps) => {
+const FormImovel = ({imovelType}: FormImovelProps) => {
     const formRef = useRef<HTMLFormElement>(null);
     const {user} = useAuth();
-    const {handleSubmit, control} = useForm();
+    const {control, handleSubmit} = useForm();
     const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
     const [estado, setEstado] = useState<string>(); //  //usado pelo select de cidades para determinar de qual estado buscar cidades
     const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
@@ -59,7 +49,6 @@ const FormImovel = ({imovelType, aditionalFields}: FormImovelProps) => {
     const [loading, setLoading] = useState(false);
     const [finalAnimationConfirm, setfinalAnimationConfirm] = useState(false);
     const [totalProgress, setTotalProgress] = useState(0);
-    const [trail, setTrail] = useState(0);
 
     const setProgressUploadFile = (fileId: string, progress: number) => {
         setImagens(
@@ -91,6 +80,7 @@ const FormImovel = ({imovelType, aditionalFields}: FormImovelProps) => {
     }, []);
 
     const onSubmit = async (formValues: FormImovel) => {
+        console.log(formValues);
         if (!user || loading) return; //se o usuário não estiver logado ou o form estiver carregando, não faz nada
 
         setLoading(true);
@@ -116,7 +106,7 @@ const FormImovel = ({imovelType, aditionalFields}: FormImovelProps) => {
             setCidades(cidades);
         };
 
-        setCidadesFromExternalData();
+        setCidadesFromExternalData().then((_) => console.log("cidades caregadas"));
     }, [estado]);
 
     useEffect(() => {
@@ -125,223 +115,189 @@ const FormImovel = ({imovelType, aditionalFields}: FormImovelProps) => {
             setEstados(estados);
         };
 
-        setEstadosFromExternalData();
+        setEstadosFromExternalData().then((_) => console.log("estados carregados"));
     }, []);
 
-    const trailsObject = useMemo(
+    const sections = useMemo(
         () => [
             {
                 description: "Informações básicas",
                 icon: FiAlignLeft,
-                content: (
-                    <SectionInputContent>
-                        <Input name="street" control={control} placeholder="Rua" required/>
-                        <Input
-                            name="number"
-                            type="number"
-                            control={control}
-                            placeholder="Número"
-                            required
-                        />
-                        <Input
-                            name="district"
-                            control={control}
-                            placeholder="Bairro"
-                            required
-                        />
-                        {"\n"}
-                        <SelectReactHookForm
-                            style={{
-                                maxWidth: "400px",
-                            }}
-                            name="state"
-                            placeholder="Estado"
-                            options={estados}
-                            controlReactHookForm={control}
-                            onChange={(value) => setEstado(value)}
-                            required
-                        ></SelectReactHookForm>
-                        <SelectReactHookForm
-                            style={{
-                                maxWidth: "400px",
-                                opacity: cidades.length ? 1 : 0.5,
-                            }}
-                            name="city"
-                            placeholder="Cidade"
-                            options={cidades}
-                            controlReactHookForm={control}
-                            required
-                        ></SelectReactHookForm>
-                    </SectionInputContent>
-                ),
+                inputs: [
+                    <Input key={uuid()} name="street" control={control} placeholder="Rua" required/>,
+                    <Input
+                        key={uuid()}
+                        name="number"
+                        type="number"
+                        control={control}
+                        placeholder="Número"
+                        required
+                    />,
+                    <Input
+                        key={uuid()}
+                        name="district"
+                        control={control}
+                        placeholder="Bairro"
+                        required
+                    />,
+                    <SelectReactHookForm
+                        key={uuid()}
+                        style={{
+                            maxWidth: "400px",
+                        }}
+                        name="state"
+                        placeholder="Estado"
+                        options={estados}
+                        controlReactHookForm={control}
+                        onChange={(value) => setEstado(value)}
+                        required
+                    ></SelectReactHookForm>,
+                    <SelectReactHookForm
+                        key={uuid()}
+                        style={{
+                            maxWidth: "400px",
+                            opacity: cidades.length ? 1 : 0.5,
+                        }}
+                        name="city"
+                        placeholder="Cidade"
+                        options={cidades}
+                        controlReactHookForm={control}
+                        required
+                    ></SelectReactHookForm>
+                ],
             },
             {
                 description: "Insira suas imagens",
                 icon: FiImage,
-                content: (
-                    <SectionInputContent>
-                        <ImageUploader uploaded={[imagens, setImagens]}/>
-                    </SectionInputContent>
-                ),
+                inputs: [
+                    <ImageUploader key={uuid()} uploaded={[imagens, setImagens]}/>
+                ]
             },
             {
                 description: "Informações adicionais",
                 icon: FiAlignLeft,
-                content: (
-                    <SectionInputContent>
-                        <Input
-                            name="area"
-                            type="number"
-                            control={control}
-                            placeholder="Área (m²)"
-                            defaultValue={0}
-                        />
-                        {getAditionalFields(imovelType).map((field) => {
-                            if (field.componentType === "input")
-                                return (
-                                    <Input
-                                        key={field.name}
-                                        name={field.name}
-                                        type={field.type}
-                                        control={control}
-                                        placeholder={field.placeholder}
-                                        defaultValue={field.defaultValue}
-                                    />
-                                );
-                            if (field.componentType === "select")
-                                return (
-                                    <SelectReactHookForm
-                                        style={{
-                                            maxWidth: "400px"
-                                        }}
-                                        key={field.name}
-                                        name={field.name}
-                                        options={field.options as []}
-                                        controlReactHookForm={control}
-                                        placeholder={field.placeholder}
-                                        value={field.defaultValue as string | undefined}
-                                    />
-                                );
-                        })}
-                    </SectionInputContent>
-                ),
+                inputs: [
+                    <Input
+                        key={uuid()}
+                        name="area"
+                        type="number"
+                        control={control}
+                        placeholder="Área (m²)"
+                        defaultValue={0}
+                    />,
+                    ...getAditionalFields(imovelType).map((field) => {
+                        if (field.componentType === "input")
+                            return (
+                                <Input
+                                    key={field.name}
+                                    name={field.name}
+                                    type={field.type}
+                                    control={control}
+                                    placeholder={field.placeholder}
+                                    defaultValue={field.defaultValue}
+                                />
+                            );
+                        if (field.componentType === "select")
+                            return (
+                                <SelectReactHookForm
+                                    style={{
+                                        maxWidth: "400px"
+                                    }}
+                                    key={field.name}
+                                    name={field.name}
+                                    options={field.options as []}
+                                    controlReactHookForm={control}
+                                    placeholder={field.placeholder}
+                                    value={field.defaultValue as string | undefined}
+                                />
+                            );
+                    })
+                ]
             },
+
+
             {
                 description: "Quanto vai custar?",
 
                 icon: FiDollarSign,
-                content: (
-                    <SectionInputContent>
-                        <Input
-                            name="mensalidade"
-                            type="number"
-                            control={control}
-                            placeholder="Mensalidade (R$)"
-                            defaultValue={0}
-                        />
-                        <Input
-                            name="price"
-                            type="number"
-                            control={control}
-                            placeholder="Preço de venda (R$)"
-                            defaultValue={0}
-                        />
-                    </SectionInputContent>
-                ),
+                inputs: [
+
+                    <Input
+                        key={uuid()}
+                        name="mensalidade"
+                        type="number"
+                        control={control}
+                        placeholder="Mensalidade (R$)"
+                        defaultValue={0}
+                    />,
+                    <Input
+                        key={uuid()}
+                        name="price"
+                        type="number"
+                        control={control}
+                        placeholder="Preço de venda (R$)"
+                        defaultValue={0}
+                    />,
+                ],
             },
+            {
+                description: "Finalizar",
+                icon: FiCheck,
+                inputs: [
+                    <SubmitContainer
+                        key={uuid()}
+                    >
+                        {totalProgress !== 100 && !loading && (
+                            <ButtonSubmit
+                                type="submit"
+                                onClick={formRef.current?.submitForm}
+                            >
+                                Anunciar
+                            </ButtonSubmit>
+                        )}
+                        {totalProgress !== 100 &&
+                            loading && ( //Exibe este componente enquanto o a imagem nã
+                                <ProgressUpload
+                                    circleSize={60}
+                                    progress={totalProgress}
+                                    strokeColor={colors.primary}
+                                    textColor={colors.primary}
+                                ></ProgressUpload>
+                            )}
+
+                        {totalProgress === 100 && !finalAnimationConfirm && ( //Exibe esta animação lottie apenas quando load completar
+                            <Lottie
+                                options={{
+                                    loop: false,
+                                    autoplay: true,
+
+                                    animationData: animationData,
+                                    rendererSettings: {
+                                        preserveAspectRatio: "xMidYMid slice",
+                                    },
+                                }}
+                                width={200}
+                                height={200}
+                                eventListeners={[
+                                    {
+                                        eventName: "complete",
+                                        callback: () => setfinalAnimationConfirm(true),
+                                    },
+                                ]}
+                            />
+                        )}
+
+                        {finalAnimationConfirm && ( //Exibe este componente apenas quando o cadastro estiver totalmente completo
+                            <Link href={"/lista"}>Voltar a pagina inicial</Link>
+                        )}
+                    </SubmitContainer>
+                ]
+            }
         ],
-        [cidades, estados, imagens, imovelType, control]
+        [cidades, estados, imagens, imovelType, control, finalAnimationConfirm, loading, totalProgress]
     );
 
-    useEffect(() => {
-        if (trail < 0) {
-            setTrail(0);
-        }
-
-        if (trail > trailsObject.length) {
-            setTrail(trail - 1);
-        }
-    }, [trail, trailsObject]);
-
-    return (
-        <Form>
-            <FormHeader>
-                <ActionsForm>
-                    <ReturnButton onClick={() => setTrail((old) => old - 1)}>
-                        <FiChevronLeft size={20} color={colors.primary}/>
-                    </ReturnButton>
-                    <AreaShow>
-                        {trailsObject.map((trail) => trail.description)[trail]}
-                    </AreaShow>
-                    <ReturnButton onClick={() => setTrail((old) => old + 1)}>
-                        <FiCheck size={20} color={colors.primary}/>
-                    </ReturnButton>
-                </ActionsForm>
-                <ShowTrail
-                    trailState={[trail, setTrail]}
-                    trails={trailsObject.map((field) => field.icon)}
-                ></ShowTrail>
-            </FormHeader>
-            <FormContentWrapper>
-                <FormContent
-                    ref={formRef}
-                    onSubmit={handleSubmit(onSubmit)}
-                    animate={{
-                        left: -trail * 100 + "%",
-                    }}
-                >
-                    {trailsObject.map((trail) => trail.content)}
-                    <SectionInputContent>
-                        <SubmitContainer>
-                            {totalProgress !== 100 && !loading && (
-                                <ButtonSubmit
-                                    type="submit"
-                                    onClick={formRef.current?.submitForm}
-                                >
-                                    Anunciar
-                                </ButtonSubmit>
-                            )}
-                            {totalProgress !== 100 &&
-                                loading && ( //Exibe este componente enquanto o a imagem nã
-                                    <ProgressUpload
-                                        circleSize={60}
-                                        progress={totalProgress}
-                                        strokeColor={colors.primary}
-                                        textColor={colors.primary}
-                                    ></ProgressUpload>
-                                )}
-
-                            {totalProgress === 100 && !finalAnimationConfirm && ( //Exibe esta animação lottie apenas quando load completar
-                                <Lottie
-                                    options={{
-                                        loop: false,
-                                        autoplay: true,
-
-                                        animationData: animationData,
-                                        rendererSettings: {
-                                            preserveAspectRatio: "xMidYMid slice",
-                                        },
-                                    }}
-                                    width={200}
-                                    height={200}
-                                    eventListeners={[
-                                        {
-                                            eventName: "complete",
-                                            callback: () => setfinalAnimationConfirm(true),
-                                        },
-                                    ]}
-                                />
-                            )}
-
-                            {finalAnimationConfirm && ( //Exibe este componente apenas quando o cadastro estiver totalmente completo
-                                <Link href={"/lista"}>Voltar a pagina inicial</Link>
-                            )}
-                        </SubmitContainer>
-                    </SectionInputContent>
-                </FormContent>
-            </FormContentWrapper>
-        </Form>
-    );
+    return <FormComponent sections={sections} onSubmit={handleSubmit(onSubmit)}/>
 };
 
 export default FormImovel;

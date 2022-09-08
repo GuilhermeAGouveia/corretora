@@ -40,9 +40,9 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
             {control.state && (
                 <BannerInfoContainer
                     type={type}
-                    initial={{opacity: 0, x: 300}}
+                    initial={{opacity: 0, x: -300}}
                     animate={{opacity: 1, x: 0}}
-                    exit={{opacity: 0, x: 300}}
+                    exit={{opacity: 0, x: -300}}
                 >
                     <IconeBanner>
                         <AlertIcon color={"white"} size={20}/>
@@ -56,11 +56,13 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
 
 export default BannerInfo;
 
+export interface AlertProps {
+    type: AlertType;
+    message: string;
+}
+
 export const useBannerInfo = () => {
-    const alertState = useState<{
-        type: AlertType;
-        message: string;
-    }>();
+    const alertState = useState<AlertProps>();
 
     const [alert, setAlert] = alertState;
 
@@ -78,8 +80,8 @@ const BannerInfoContainer = styled(motion.div)<{ type: "success" | "error" | "wa
   z-index: 999;
   display: flex;
   align-items: center;
-  top: 5px;
-  right: 5px;
+  bottom: 5px;
+  left: 5px;
   padding: 10px 5px;
   border-radius: 3px;
   max-width: 250px;

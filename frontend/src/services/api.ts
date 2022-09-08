@@ -11,11 +11,6 @@ export const getAPIHTTPClient = (ctx?: any) => {
     api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }
 
-  api.interceptors.request.use((config) => {
-    //console.log("config", config);
-    return config;
-  });
-
   return api;
 };
 

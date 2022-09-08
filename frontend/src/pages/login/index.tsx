@@ -77,11 +77,19 @@ export default function Login() {
             try {
                 await login(data);
                 router.push("/lista");
-            } catch (error) {
-                setAlert({
-                    type: AlertType.ERROR,
-                    message: "Erro ao fazer login",
-                })
+            } catch (error: any) {
+                console.log(error);
+                if (error.toJSON().status === 400) {
+                    setAlert({
+                        type: AlertType.ERROR,
+                        message: "As credenciais estão incorretas",
+                    })
+                } else {
+                    setAlert({
+                        type: AlertType.ERROR,
+                        message: "Ocorreu um erro ao fazer login",
+                    })
+                }
             }
             setLoading(false);
         }
