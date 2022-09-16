@@ -1,35 +1,38 @@
 import React from "react";
-import { IconType } from "react-icons";
+import {IconType} from "react-icons";
 import styled from "styled-components";
 import colors from "../../../../../../styles/colors";
 
 interface ShowTrailProps {
-  trails: IconType[];
-  style?: React.CSSProperties;
-  trailState: [number, (number: number) => void];
+    trails: IconType[];
+    style?: React.CSSProperties;
+    trail: number;
+    handleSetTrailNumber: (number: number) => void;
 }
 
-export default function ShowTrail({ trails, style, trailState : [trailNumber, setTrailNumber] }: ShowTrailProps) {
-  return (
-    <ShowTrailContainer style={style}>
-      {trails.map((Icon, index) =>
-          <>
-            <ShowTrailItem key={"trail-item-" + index} values={{index, trailNumber}} onClick={() => setTrailNumber(index)}>
-              <Icon size={15} color={'white'}/>
-            </ShowTrailItem>
-            {!(index === trails.length - 1) && <InterLineDivision key={"trail-line-" + index} />}
-          </>
-      )}
-    </ShowTrailContainer>
-  );
+export default function ShowTrail({trails, style, trail, handleSetTrailNumber}: ShowTrailProps) {
+    return (
+        <ShowTrailContainer style={style}>
+            {trails.map((Icon, index) =>
+                <>
+                    <ShowTrailItem key={"trail-item-" + index} values={{index, trail}} onClick={() =>
+                        handleSetTrailNumber(index)
+                    }>
+                        <Icon size={15} color={'white'}/>
+                    </ShowTrailItem>
+                    {!(index === trails.length - 1) && <InterLineDivision key={"trail-line-" + index}/>}
+                </>
+            )}
+        </ShowTrailContainer>
+    );
 }
 
-const getColorBg = ({index, trailNumber}: any) => {
-    if (index === trailNumber) {
+const getColorBg = ({index, trail}: any) => {
+    if (index === trail) {
         return colors.primary;
     }
 
-    if (index < trailNumber) {
+    if (index < trail) {
         return "green";
     }
 

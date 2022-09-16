@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import {useForm} from "react-hook-form";
 import Link from "next/link";
 import {FiAlignLeft, FiCheck, FiDollarSign, FiImage} from "react-icons/fi";
@@ -14,7 +14,6 @@ import SelectReactHookForm, {SelectOption} from "../../../../SelectReactHookForm
 import {ButtonSubmit, SubmitContainer} from "./styles";
 import FormComponent from "./FormComponent";
 import Lottie from "react-lottie";
-import {uuid} from "uuidv4";
 import animationData from "../../../../../assets/lotties/checked.json";
 import ProgressUpload from "../../../../ProgressUpload";
 import colors from "../../../../../styles/colors";
@@ -34,7 +33,6 @@ export interface FormImovel {
 }
 
 interface FormImovelProps {
-    aditionalFields?: Field[];
     imovelType: ImovelType;
 }
 
@@ -81,6 +79,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
 
     const onSubmit = async (formValues: FormImovel) => {
         console.log(formValues);
+
         if (!user || loading) return; //se o usuário não estiver logado ou o form estiver carregando, não faz nada
 
         setLoading(true);
@@ -106,7 +105,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
             setCidades(cidades);
         };
 
-        setCidadesFromExternalData().then((_) => console.log("cidades caregadas"));
+        setCidadesFromExternalData();
     }, [estado]);
 
     useEffect(() => {
@@ -114,19 +113,19 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
             const estados = await getEstados();
             setEstados(estados);
         };
-
-        setEstadosFromExternalData().then((_) => console.log("estados carregados"));
+        console.log("FormImovel - Render");
+        setEstadosFromExternalData()
     }, []);
 
-    const sections = useMemo(
+    const sections = useCallback(
         () => [
             {
                 description: "Informações básicas",
                 icon: FiAlignLeft,
                 inputs: [
-                    <Input key={uuid()} name="street" control={control} placeholder="Rua" required/>,
+                    <Input key={"streetInput"} name="street" control={control} placeholder="Rua" required/>,
                     <Input
-                        key={uuid()}
+                        key={"numberInput"}
                         name="number"
                         type="number"
                         control={control}
@@ -134,14 +133,14 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                         required
                     />,
                     <Input
-                        key={uuid()}
+                        key={"districtInput"}
                         name="district"
                         control={control}
                         placeholder="Bairro"
                         required
                     />,
                     <SelectReactHookForm
-                        key={uuid()}
+                        key={"stateSelect"}
                         style={{
                             maxWidth: "400px",
                         }}
@@ -153,7 +152,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                         required
                     ></SelectReactHookForm>,
                     <SelectReactHookForm
-                        key={uuid()}
+                        key={"citySelect"}
                         style={{
                             maxWidth: "400px",
                             opacity: cidades.length ? 1 : 0.5,
@@ -170,7 +169,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                 description: "Insira suas imagens",
                 icon: FiImage,
                 inputs: [
-                    <ImageUploader key={uuid()} uploaded={[imagens, setImagens]}/>
+                    <ImageUploader key={"imageUpload"} uploaded={[imagens, setImagens]}/>
                 ]
             },
             {
@@ -178,7 +177,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                 icon: FiAlignLeft,
                 inputs: [
                     <Input
-                        key={uuid()}
+                        key={"aptoInput"}
                         name="area"
                         type="number"
                         control={control}
@@ -223,7 +222,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                 inputs: [
 
                     <Input
-                        key={uuid()}
+                        key={"mensalidadeInput"}
                         name="mensalidade"
                         type="number"
                         control={control}
@@ -231,7 +230,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                         defaultValue={0}
                     />,
                     <Input
-                        key={uuid()}
+                        key={"priceInput"}
                         name="price"
                         type="number"
                         control={control}
@@ -245,7 +244,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                 icon: FiCheck,
                 inputs: [
                     <SubmitContainer
-                        key={uuid()}
+                        key={"submitContainer"}
                     >
                         {totalProgress !== 100 && !loading && (
                             <ButtonSubmit
@@ -294,10 +293,10 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                 ]
             }
         ],
-        [cidades, estados, imagens, imovelType, control, finalAnimationConfirm, loading, totalProgress]
+        [cidades, estados, imagens, imovelType, control, loading, totalProgress, finalAnimationConfirm]
     );
 
-    return <FormComponent sections={sections} onSubmit={handleSubmit(onSubmit)}/>
+    return <FormComponent sections={sections()} onSubmit={handleSubmit(onSubmit)}/>
 };
 
 export default FormImovel;
