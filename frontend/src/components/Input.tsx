@@ -25,9 +25,6 @@ const InputComponent = ({
         setIsChanging(stateValue);
     };
 
-    useEffect(() =>     console.log(placeholder)
-        , []);
-
     return (
         <InputContainer
             animate={{

@@ -1,6 +1,7 @@
 import {useEffect} from "react";
 import {Controller, ControllerRenderProps, FieldValues} from "react-hook-form";
 import InputComponent from "./Input";
+import MultiInput from "./MultiInput";
 
 interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
     control: any;
@@ -20,9 +21,9 @@ const InputReactHookForm = ({
                      }: {
                 field: ControllerRenderProps<FieldValues>;
             }) => (
-                <InputComponent
+                <MultiInput
                     {...inputProps}
-                    onChange={(e) => onChange(e.target.value)}
+                    onChange={onChange}
                 />
             )}
             defaultValue={inputProps.defaultValue}

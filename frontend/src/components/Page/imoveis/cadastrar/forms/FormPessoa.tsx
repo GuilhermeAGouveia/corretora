@@ -1,5 +1,6 @@
 import FormComponent from "./FormComponent";
 import Input from "../../../../InputReactHookForm";
+import MultiInput from "../../../../MultiInputReactHookForm";
 import {useForm} from "react-hook-form";
 import SelectReactHookForm, {SelectOption} from "../../../../SelectReactHookForm";
 import {useEffect, useState} from "react";
@@ -70,7 +71,7 @@ const FormPessoa = () => {
             description: "Telefones",
             icon: FiPhone,
             inputs: [
-                <Input
+                <MultiInput
                     name="phone"
                     control={control}
                     key="phone"
