@@ -81,6 +81,7 @@ export interface Pessoa {
   city: string;
   state: string;
   cep: string;
+  telefones: string[];
 }
 
 export interface FilterValues {

@@ -3,20 +3,57 @@ import Input from "../../../../InputReactHookForm";
 import MultiInput from "../../../../MultiInputReactHookForm";
 import {useForm} from "react-hook-form";
 import SelectReactHookForm, {SelectOption} from "../../../../SelectReactHookForm";
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 import {getCidades, getEstados} from "../../../../../lib/externalData";
 import {FiCheckCircle, FiLock, FiMapPin, FiPhone, FiUser} from "react-icons/fi";
+import {AlertType} from "../../../../../lib/interfaces";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {formPessoaSchema} from "../../../../../lib/validations";
+import BannerInfo, {useBannerInfo} from "../../../../BannerInfo";
+import {insertPessoa, parseFormPessoaToPessoa} from "../../../../../lib/pessoa";
 
+
+export interface IFormPessoa {
+    email: string;
+    firstName: string;
+    lastName: string;
+    password: string;
+    confirmPassword: string;
+    birthdate: Date;
+    street: string;
+    number: string;
+    city: string;
+    state: string;
+    district: string;
+    telefones: string[];
+    cep: string;
+}
 
 const FormPessoa = () => {
-    const {handleSubmit, control} = useForm();
+    const {alertState: [alert, setAlert], control: controlBannerInfo} = useBannerInfo()
+
+    const {handleSubmit, control} = useForm({resolver: yupResolver(formPessoaSchema)});
     const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
     const [estado, setEstado] = useState<string>(); //  //usado pelo select de cidades para determinar de qual estado buscar cidades
     const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
 
-    const onSubmit = (data: any) => {
-        console.log(data);
+
+    const onSubmit = async (data: any) => {
+        data = data as IFormPessoa;
+        let pessoa = parseFormPessoaToPessoa(data);
+        await insertPessoa(pessoa);
+        setAlert({type: AlertType.SUCCESS, message: "Pessoa cadastrada com sucesso!"})
     }
+
+    const onError = (errors: any) => {
+        let keys = Object.keys(errors);
+        let firstError = errors[keys[0]];
+        setAlert({
+            type: AlertType.ERROR,
+            message: firstError?.message
+        })
+    }
+
 
     useEffect(() => {
         const setCidadesFromExternalData = async () => {
@@ -47,7 +84,7 @@ const FormPessoa = () => {
                     key="firstName"
                     placeholder="Nome"
                     type="text"
-                    required
+
                 />,
                 <Input
                     name="lastName"
@@ -55,7 +92,7 @@ const FormPessoa = () => {
                     key="lastName"
                     placeholder="Sobrenome"
                     type="text"
-                    required
+
                 />,
                 <Input
                     name="email"
@@ -63,16 +100,16 @@ const FormPessoa = () => {
                     key="email"
                     placeholder="Email"
                     type="email"
-                    required
+
                 />,
                 ,
                 <Input
-                    name={"birthDate"}
+                    name={"birthdate"}
                     control={control}
-                    key="birthDate"
+                    key="birthdate"
                     placeholder="Data de nascimento"
                     type="date"
-                    required
+
                 />,
             ]
         },
@@ -87,7 +124,7 @@ const FormPessoa = () => {
                     placeholder="Telefone"
                     type="tel"
                     mask={"(99) 99999-9999"}
-                    required
+
                 />
             ]
         },
@@ -101,24 +138,24 @@ const FormPessoa = () => {
                     key="cep"
                     placeholder="CEP"
                     type="text"
-                    required
+
                 />,
 
-                <Input key={"streetInput"} name="street" control={control} placeholder="Rua" required/>,
+                <Input key={"streetInput"} name="street" control={control} placeholder="Rua"/>,
                 <Input
                     key={"numberInput"}
                     name="number"
                     type="number"
                     control={control}
                     placeholder="Número"
-                    required
+
                 />,
                 <Input
                     key={"districtInput"}
                     name="district"
                     control={control}
                     placeholder="Bairro"
-                    required
+
                 />,
                 <SelectReactHookForm
                     key={"stateSelect"}
@@ -130,7 +167,7 @@ const FormPessoa = () => {
                     options={estados}
                     controlReactHookForm={control}
                     onChange={(value) => setEstado(value)}
-                    required
+
                 ></SelectReactHookForm>,
                 <SelectReactHookForm
                     key={"citySelect"}
@@ -142,7 +179,7 @@ const FormPessoa = () => {
                     placeholder="Cidade"
                     options={cidades}
                     controlReactHookForm={control}
-                    required
+
                 ></SelectReactHookForm>
             ]
 
@@ -157,7 +194,7 @@ const FormPessoa = () => {
                     control={control}
                     placeholder="Senha"
                     type="password"
-                    required
+
                 />,
                 <Input
                     key={"passwordConfirmationInput"}
@@ -165,7 +202,7 @@ const FormPessoa = () => {
                     control={control}
                     placeholder="Confirmação de senha"
                     type="password"
-                    required
+
                 />
             ]
         },
@@ -181,7 +218,10 @@ const FormPessoa = () => {
     ];
 
 
-    return <FormComponent sections={sections} onSubmit={handleSubmit(onSubmit)}/>;
+    return <>
+        <FormComponent sections={sections} onSubmit={handleSubmit(onSubmit, onError)}/>
+        {alert && <BannerInfo type={alert.type} control={controlBannerInfo}>{alert.message}</BannerInfo>}
+    </>;
 }
 
 export default FormPessoa;

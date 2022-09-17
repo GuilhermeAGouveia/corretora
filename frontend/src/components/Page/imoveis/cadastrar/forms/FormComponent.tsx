@@ -14,6 +14,8 @@ import {
     SectionInputContent
 } from "./styles";
 import {IconType} from "react-icons";
+import BannerInfo, {useBannerInfo} from "../../../../BannerInfo";
+import {AlertType} from "../../../../../lib/interfaces";
 
 export interface IFormSection {
     description: string;
@@ -24,9 +26,10 @@ export interface IFormSection {
 interface FormImovelProps {
     sections: IFormSection[];
     onSubmit: any
+    error?: string;
 }
 
-const FormComponent = ({sections, onSubmit}: FormImovelProps) => {
+const FormComponent = ({sections, onSubmit, error}: FormImovelProps) => {
     const [trail, setTrail] = useState(0);
 
     const handleSetTrailNumber = (num: number) => {
