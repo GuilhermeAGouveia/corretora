@@ -2,7 +2,7 @@ import {useRouter} from "next/router";
 import {useState} from "react";
 import {useForm} from "react-hook-form";
 import BannerInfo, {useBannerInfo} from "../../components/BannerInfo";
-import Input from "../../components/Input";
+import Input from "../../components/InputReactHookForm";
 import LogoComponent from "../../components/Logo";
 import SlideBanner from "../../components/SlideBanner";
 import {useAuth} from "../../context/Auth";

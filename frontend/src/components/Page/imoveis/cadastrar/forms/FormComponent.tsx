@@ -71,6 +71,7 @@ const FormComponent = ({sections, onSubmit}: FormImovelProps) => {
                     animate={{
                         left: -trail * 100 + "%",
                     }}
+                    nSections={sections.length}
                 >
                     {sections.map((section, index) => (
                         <SectionInputContent key={"SectionInputContent-" + index}>

@@ -1,15 +1,15 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useState} from "react";
 import {useForm} from "react-hook-form";
 import Link from "next/link";
 import {FiAlignLeft, FiCheck, FiDollarSign, FiImage} from "react-icons/fi";
 import {useAuth} from "../../../../../context/Auth";
-import {Field, getAditionalFields} from "../../../../../lib/aditionalFields";
+import {getAditionalFields} from "../../../../../lib/aditionalFields";
 import {getCidades, getEstados} from "../../../../../lib/externalData";
 import {insertManyImages} from "../../../../../lib/imagem";
 import {insertImovel, parseFormImovelToIImovel} from "../../../../../lib/imovel";
 import {ImovelType, LevelFurnished} from "../../../../../lib/interfaces";
 import ImageUploader, {UploadedFile} from "../../../../ImageUploader";
-import Input from "../../../../Input";
+import Input from "../../../../InputReactHookForm";
 import SelectReactHookForm, {SelectOption} from "../../../../SelectReactHookForm";
 import {ButtonSubmit, SubmitContainer} from "./styles";
 import FormComponent from "./FormComponent";
@@ -37,7 +37,7 @@ interface FormImovelProps {
 }
 
 const FormImovel = ({imovelType}: FormImovelProps) => {
-    const formRef = useRef<HTMLFormElement>(null);
+    //const formRef = useRef<HTMLFormElement>(null);
     const {user} = useAuth();
     const {control, handleSubmit} = useForm();
     const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
@@ -249,7 +249,7 @@ const FormImovel = ({imovelType}: FormImovelProps) => {
                         {totalProgress !== 100 && !loading && (
                             <ButtonSubmit
                                 type="submit"
-                                onClick={formRef.current?.submitForm}
+                                //onClick={formRef.current?.submitForm}
                             >
                                 Anunciar
                             </ButtonSubmit>

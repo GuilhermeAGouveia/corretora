@@ -1,4 +1,4 @@
-import {motion} from "framer-motion";
+import {motion, MotionAdvancedProps} from "framer-motion";
 import styled from "styled-components";
 import colors from "../../../../../styles/colors";
 
@@ -54,9 +54,11 @@ export const FormContentWrapper = styled.div`
   overflow-x: hidden;
   
 `;
-export const FormContent = styled(motion.form)<any>`
+export const FormContent = styled(motion.form)<MotionAdvancedProps & {
+    nSections: number;
+}>`
   position: relative;
-  width: calc(5 * 100%);
+  width: ${(props:any) => `calc(${props.nSections} * 100%)`};
   display: flex;
   overflow: hidden;
   height: auto;
