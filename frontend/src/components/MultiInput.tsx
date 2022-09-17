@@ -1,14 +1,14 @@
-import InputComponent from "./Input";
+import InputComponent, {InputProps} from "./Input";
 import styled from "styled-components";
 import {useState} from "react";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type MultiInputProps = InputProps & {
     onChange?: (event: any) => void;
 }
 
 const MultiInputComponent = ({
                                  ...inputProps
-                             }: InputProps) => {
+                             }: MultiInputProps) => {
 
 
     const [values, setValues] = useState<string[]>([]);
@@ -30,8 +30,9 @@ const MultiInputComponent = ({
             <InputsContainer>
             {Array.from(Array(nInputs).keys()).map((i) => (
                 <InputComponent
+                    {...inputProps}
                     key={"InputFromMultiInput" + i}
-                    placeholder={inputProps.placeholder + " " + i}
+                    placeholder={inputProps.placeholder + " " + (i + 1)}
                     onChange={(e) => handleOnChange(i, e.target.value)}
                 />
             ))}

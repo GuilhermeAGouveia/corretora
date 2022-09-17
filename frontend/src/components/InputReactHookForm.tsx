@@ -1,8 +1,7 @@
-import {useEffect} from "react";
 import {Controller, ControllerRenderProps, FieldValues} from "react-hook-form";
-import InputComponent from "./Input";
+import InputComponent, {InputProps} from "./Input";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type InputReactHookFormProps = InputProps & {
     control: any;
     name: string;
 }
@@ -10,7 +9,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const InputReactHookForm = ({
                                 control,
                                 ...inputProps
-                            }: InputProps) => {
+                            }: InputReactHookFormProps) => {
 
 
     return (

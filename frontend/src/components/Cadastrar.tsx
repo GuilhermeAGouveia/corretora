@@ -1,13 +1,16 @@
 import styled from "styled-components";
 import colors from "../styles/colors";
 import MenuUserOptions from "./Page/lista/MenuUserOptions";
+import {useEffect} from "react";
 
 interface CadastrarProps {
   title: string;
   form?: React.ReactNode | string;
 }
 
+
 const Cadastrar = ({ title, form }: CadastrarProps) => {
+    useEffect(() => console.log("Cdastrar - render"), []);
   return (
     <RegisterContainer>
       <RegisterHeader>

@@ -1,9 +1,9 @@
 import {useEffect} from "react";
 import {Controller, ControllerRenderProps, FieldValues} from "react-hook-form";
-import InputComponent from "./Input";
+import InputComponent, {InputProps} from "./Input";
 import MultiInput from "./MultiInput";
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+type MultiInputReactHookFormProps = InputProps & {
     control: any;
     name: string;
 }
@@ -11,7 +11,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 const InputReactHookForm = ({
                                 control,
                                 ...inputProps
-                            }: InputProps) => {
+                            }: MultiInputReactHookFormProps) => {
 
 
     return (

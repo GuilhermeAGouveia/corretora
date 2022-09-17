@@ -1,8 +1,12 @@
 import {motion} from "framer-motion";
 import {useEffect, useState} from "react";
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import colors from "../styles/colors";
+import InputMask, {Props as InputMaskProps} from "react-input-mask";
 
+export type InputProps = InputMaskProps | React.InputHTMLAttributes<HTMLInputElement> & {
+    mask?: string | Array<(string | RegExp)>
+};
 
 const InputComponent = ({
                             placeholder,
@@ -10,7 +14,7 @@ const InputComponent = ({
                             defaultValue,
                             type,
                             ...inputProps
-                        }: React.InputHTMLAttributes<HTMLInputElement>) => {
+                        }: InputProps) => {
 
     const [isChanging, setIsChanging] = useState(false);
     const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
@@ -25,6 +29,9 @@ const InputComponent = ({
         setIsChanging(stateValue);
     };
 
+    useEffect(() => console.log(inputProps.mask), [])
+
+    // @ts-ignore
     return (
         <InputContainer
             animate={{
@@ -49,19 +56,39 @@ const InputComponent = ({
 
                 {inputProps.required ? placeholder + " *" : placeholder}
             </InputPlaceholder>
-
-            <Input
-                {...inputProps}
-                value={undefined}
-                type={type}
-                placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
-                // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
-                onFocus={(e: any) => handleIsChanging(e, true)}
-                onBlur={(e: any) => {
-                    handleIsChanging(e, false);
-                }}
-                autoComplete="off"
-            />
+            {inputProps.mask ? (
+                    <InputWithMask
+                        mask={inputProps.mask}
+                        // O erro abaixo é um bug do typescript, o componente InputMask foi definido com as props incorretas, de modo que a propriedade maskChar não existe
+                        //@ts-ignore:next-line
+                        maskChar={null}
+                        {...inputProps}
+                        value={undefined}
+                        type={type}
+                        placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
+                        // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
+                        onFocus={(e: any) => handleIsChanging(e, true)}
+                        onBlur={(e: any) => {
+                            handleIsChanging(e, false);
+                        }}
+                        autoComplete="off"
+                    />
+                )
+                :
+                (
+                    <InputWithoutMask
+                        {...inputProps}
+                        value={undefined}
+                        type={type}
+                        placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
+                        // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
+                        onFocus={(e: any) => handleIsChanging(e, true)}
+                        onBlur={(e: any) => {
+                            handleIsChanging(e, false);
+                        }}
+                        autoComplete="off"
+                    />)
+            }
 
         </InputContainer>
     );
@@ -69,7 +96,7 @@ const InputComponent = ({
 
 export default InputComponent;
 
-const Input = styled.input`
+const inputCSS = css`
   position: relative;
   height: 95%;
   width: 100%;
@@ -78,6 +105,14 @@ const Input = styled.input`
   border: none;
   background: none;
   color: rgba(0, 0, 0, 0.8);
+`;
+
+const InputWithMask = styled(InputMask)`
+  ${inputCSS}
+`;
+
+const InputWithoutMask = styled.input`
+  ${inputCSS}
 `;
 
 const InputContainer = styled(motion.div)`

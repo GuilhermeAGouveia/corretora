@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import SelectReactHookForm, {SelectOption} from "../../../../SelectReactHookForm";
 import {useEffect, useState} from "react";
 import {getCidades, getEstados} from "../../../../../lib/externalData";
-import {FiCheckCircle, FiMapPin, FiPhone, FiUser} from "react-icons/fi";
+import {FiCheckCircle, FiLock, FiMapPin, FiPhone, FiUser} from "react-icons/fi";
 
 
 const FormPessoa = () => {
@@ -58,6 +58,15 @@ const FormPessoa = () => {
                     required
                 />,
                 <Input
+                    name="email"
+                    control={control}
+                    key="email"
+                    placeholder="Email"
+                    type="email"
+                    required
+                />,
+                ,
+                <Input
                     name={"birthDate"}
                     control={control}
                     key="birthDate"
@@ -72,11 +81,12 @@ const FormPessoa = () => {
             icon: FiPhone,
             inputs: [
                 <MultiInput
-                    name="phone"
+                    name="telefones"
                     control={control}
                     key="phone"
                     placeholder="Telefone"
                     type="tel"
+                    mask={"(99) 99999-9999"}
                     required
                 />
             ]
@@ -85,6 +95,15 @@ const FormPessoa = () => {
             description: "Endereço",
             icon: FiMapPin,
             inputs: [
+                <Input
+                    name="cep"
+                    control={control}
+                    key="cep"
+                    placeholder="CEP"
+                    type="text"
+                    required
+                />,
+
                 <Input key={"streetInput"} name="street" control={control} placeholder="Rua" required/>,
                 <Input
                     key={"numberInput"}
@@ -129,6 +148,28 @@ const FormPessoa = () => {
 
         },
         {
+            description: "Segurança",
+            icon: FiLock,
+            inputs: [
+                <Input
+                    key={"passwordInput"}
+                    name="password"
+                    control={control}
+                    placeholder="Senha"
+                    type="password"
+                    required
+                />,
+                <Input
+                    key={"passwordConfirmationInput"}
+                    name="passwordConfirmation"
+                    control={control}
+                    placeholder="Confirmação de senha"
+                    type="password"
+                    required
+                />
+            ]
+        },
+        {
             description: "Enviar",
             icon: FiCheckCircle,
             inputs: [
@@ -136,7 +177,6 @@ const FormPessoa = () => {
                     Enviar
                 </button>
             ]
-
         }
     ];
 
