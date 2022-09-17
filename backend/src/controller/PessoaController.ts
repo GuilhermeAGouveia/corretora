@@ -82,7 +82,8 @@ export default {
 
       res.json(insertPessoa.id);
     } catch (error: any) {
-      res.json(error);
+      console.log(error)
+        res.status(500).json(error);
     }
   },
   delete: async (req: Request, res: Response) => {

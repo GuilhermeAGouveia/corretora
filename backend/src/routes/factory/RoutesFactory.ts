@@ -20,7 +20,7 @@ class RoutesFactory {
         router.get(`${this.rootPath}/`, this.controller.default);
         router.get(`${this.rootPath}/count`, this.controller.count);
         router.get(`${this.rootPath}/all`, this.controller.getAll);
-        router.post(`${this.rootPath}/`, convertStringToDateMiddleware, this.controller.insert);
+        router.post(`${this.rootPath}/`, this.controller.insert);
         return router;
 
     }
