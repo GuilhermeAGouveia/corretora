@@ -16,7 +16,12 @@ const InputComponent = ({
                             ...inputProps
                         }: InputProps) => {
 
-    const [isChanging, setIsChanging] = useState(false);
+    const [isChanging, setIsChanging] = useState(!!inputProps.value);
+    const [typeInput, setTypeInput] = useState(type);
+
+    const handleShowPassword = () =>
+        setTypeInput(typeInput === "password" ? "text" : "password");
+
     const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
         if (
             event.target instanceof HTMLInputElement &&
@@ -29,16 +34,22 @@ const InputComponent = ({
         setIsChanging(stateValue);
     };
 
-    useEffect(() => console.log(inputProps.mask), [])
+    useEffect(() => {
+        setIsChanging(!!inputProps.value);
+    }, [inputProps.value]);
 
-    // @ts-ignore
     return (
         <InputContainer
             animate={{
                 borderColor: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.2)`,
             }}
+            onClick={(e: any) => handleIsChanging(e, true)}
+
         >
             <InputPlaceholder
+                style={{
+                    width: isChanging ? "auto" : "100%",
+                }}
                 animate={
                     isChanging
                         ? {
@@ -64,7 +75,7 @@ const InputComponent = ({
                         maskChar={null}
                         {...inputProps}
                         value={undefined}
-                        type={type}
+                        type={typeInput}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
                         // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
                         onFocus={(e: any) => handleIsChanging(e, true)}
@@ -79,16 +90,20 @@ const InputComponent = ({
                     <InputWithoutMask
                         {...inputProps}
                         value={undefined}
-                        type={type}
+                        type={typeInput}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
                         // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
-                        onFocus={(e: any) => handleIsChanging(e, true)}
                         onBlur={(e: any) => {
                             handleIsChanging(e, false);
                         }}
                         autoComplete="off"
                     />)
             }
+            {type === "password" && (
+                <ShowPasswordButton onClick={handleShowPassword} type={"button"}>
+                    {typeInput === "password" ? "Mostrar" : "Esconder"}
+                </ShowPasswordButton>
+            )}
 
         </InputContainer>
     );
@@ -138,4 +153,17 @@ const InputPlaceholder = styled(motion.div)`
   background-color: white;
   padding: 0 5px;
   cursor: pointer;
+  z-index: 1;
+`;
+
+const ShowPasswordButton = styled.button`
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    font-weight: 500;
 `;
