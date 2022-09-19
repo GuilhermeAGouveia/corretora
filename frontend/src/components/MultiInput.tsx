@@ -14,6 +14,11 @@ const MultiInputComponent = ({
     const [values, setValues] = useState<string[]>([]);
     const [nInputs, setNInputs] = useState(1);
 
+    const handleAddInput = (num: number) => {
+        if (num < 1) return;
+        setNInputs(num);
+    }
+
     const handleOnChange = (inputIndex: number, value: string) => {
         setValues((prevValues) => {
             let newValues = [...prevValues];
@@ -26,18 +31,18 @@ const MultiInputComponent = ({
 
     return (
         <MultiInput>
-            <AddInputButton type={"button"} onClick={() => setNInputs(old => old - 1)}>-</AddInputButton>
+            <AddInputButton type={"button"} desactive={nInputs == 1} onClick={() => handleAddInput(nInputs - 1)}>-</AddInputButton>
             <InputsContainer>
-            {Array.from(Array(nInputs).keys()).map((i) => (
-                <InputComponent
-                    {...inputProps}
-                    key={"InputFromMultiInput" + i}
-                    placeholder={inputProps.placeholder + " " + (i + 1)}
-                    onChange={(e) => handleOnChange(i, e.target.value)}
-                />
-            ))}
+                {Array.from(Array(nInputs).keys()).map((i) => (
+                    <InputComponent
+                        {...inputProps}
+                        key={"InputFromMultiInput" + i}
+                        placeholder={inputProps.placeholder + " " + (i + 1)}
+                        onChange={(e) => handleOnChange(i, e.target.value)}
+                    />
+                ))}
             </InputsContainer>
-            <AddInputButton type={"button"} onClick={() => setNInputs(old => old + 1)}>+</AddInputButton>
+            <AddInputButton type={"button"} onClick={() => handleAddInput(nInputs + 1)}>+</AddInputButton>
 
         </MultiInput>);
 };
@@ -51,18 +56,20 @@ const MultiInput = styled.div`
 `;
 
 const InputsContainer = styled.div`
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
-const AddInputButton = styled.button`
+const AddInputButton = styled.button<{
+    desactive?: boolean;
+}>`
   position: relative;
   background-color: #fff;
-  border: 1px solid #ccc;
+  border: 1px solid ${props => props.desactive ? "#ddd" : "#ccc"};
   border-radius: 4px;
-  color: #333;
+  color: ${props => props.desactive ? "#ccc" : "#333"};
   cursor: pointer;
   font-size: 14px;
   font-weight: 500;

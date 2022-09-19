@@ -1,5 +1,5 @@
 import {motion} from "framer-motion";
-import {useEffect, useState} from "react";
+import {useEffect, useRef, useState} from "react";
 import styled, {css} from "styled-components";
 import colors from "../styles/colors";
 import InputMask, {Props as InputMaskProps} from "react-input-mask";
@@ -16,8 +16,9 @@ const InputComponent = ({
                             ...inputProps
                         }: InputProps) => {
 
-    const [isChanging, setIsChanging] = useState(!!inputProps.value);
+    const [isChanging, setIsChanging] = useState(false);
     const [typeInput, setTypeInput] = useState(type);
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const handleShowPassword = () =>
         setTypeInput(typeInput === "password" ? "text" : "password");
@@ -43,12 +44,16 @@ const InputComponent = ({
             animate={{
                 borderColor: isChanging ? `${colors.secondary}` : `rgba(0, 0, 0, 0.2)`,
             }}
-            onClick={(e: any) => handleIsChanging(e, true)}
+            onClick={(e: any) => {
+                handleIsChanging(e, true)
+                inputRef?.current?.focus();
+            }}
 
         >
             <InputPlaceholder
                 style={{
                     width: isChanging ? "auto" : "100%",
+                    height: isChanging ? "auto" : "100%",
                 }}
                 animate={
                     isChanging
@@ -74,6 +79,7 @@ const InputComponent = ({
                         //@ts-ignore:next-line
                         maskChar={null}
                         {...inputProps}
+                        inputRef={inputRef}
                         value={undefined}
                         type={typeInput}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
@@ -89,6 +95,7 @@ const InputComponent = ({
                 (
                     <InputWithoutMask
                         {...inputProps}
+                        ref={inputRef}
                         value={undefined}
                         type={typeInput}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
@@ -115,6 +122,7 @@ const inputCSS = css`
   position: relative;
   height: 95%;
   width: 100%;
+  margin: 0 10px;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   border: none;
@@ -137,7 +145,6 @@ const InputContainer = styled(motion.div)`
   max-width: 400px;
   border: 1px solid rgba(0, 0, 0, 0.2);
   border-radius: 21px;
-  padding: 0 10px;
   font-family: "Montserrat", sans-serif;
   font-size: 14px;
   display: flex;
@@ -150,20 +157,24 @@ const InputContainer = styled(motion.div)`
 
 const InputPlaceholder = styled(motion.div)`
   position: absolute;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
   background-color: white;
-  padding: 0 5px;
   cursor: pointer;
+  padding:0 10px;
+  border-radius: 21px; 
   z-index: 1;
 `;
 
 const ShowPasswordButton = styled.button`
-    position: absolute;
-    right: 10px;
-    background: none;
-    border: none;
-    font-family: "Montserrat", sans-serif;
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.5);
-    cursor: pointer;
-    font-weight: 500;
+  position: absolute;
+  right: 10px;
+  background: none;
+  border: none;
+  font-family: "Montserrat", sans-serif;
+  font-size: 12px;
+  color: rgba(0, 0, 0, 0.5);
+  cursor: pointer;
+  font-weight: 500;
 `;
