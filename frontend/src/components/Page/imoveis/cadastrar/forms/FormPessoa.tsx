@@ -11,7 +11,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {formPessoaSchema} from "../../../../../lib/validations";
 import BannerInfo, {useBannerInfo} from "../../../../BannerInfo";
 import {insertPessoa, parseFormPessoaToPessoa} from "../../../../../lib/pessoa";
-
+import {ButtonSubmit, SubmitContainer} from "./styles"
 
 export interface IFormPessoa {
     email: string;
@@ -138,6 +138,7 @@ const FormPessoa = () => {
                     key="cep"
                     placeholder="CEP"
                     type="text"
+                    mask={"99999-999"}
 
                 />,
 
@@ -210,9 +211,11 @@ const FormPessoa = () => {
             description: "Enviar",
             icon: FiCheckCircle,
             inputs: [
-                <button type="submit" key={"submitPessoa"}>
-                    Enviar
-                </button>
+                <SubmitContainer key={"submitPessoa"}>
+                    <ButtonSubmit type="submit">
+                        Enviar
+                    </ButtonSubmit>
+                </SubmitContainer>
             ]
         }
     ];

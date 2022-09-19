@@ -18,12 +18,20 @@ const InputComponent = ({
 
     const [isChanging, setIsChanging] = useState(false);
     const [typeInput, setTypeInput] = useState(type);
-    const inputRef = useRef<HTMLInputElement>(null);
+    const inputRef = useRef<HTMLInputElement | null>(null);
+
+    const setInputRef = (element: HTMLInputElement | null) => {
+        if (!inputRef.current) {
+            inputRef.current = element;
+        }
+    }
+
 
     const handleShowPassword = () =>
         setTypeInput(typeInput === "password" ? "text" : "password");
 
     const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
+        console.log(inputRef)
         if (
             event.target instanceof HTMLInputElement &&
             event.target.value.length > 0
@@ -79,7 +87,8 @@ const InputComponent = ({
                         //@ts-ignore:next-line
                         maskChar={null}
                         {...inputProps}
-                        inputRef={inputRef}
+                        inputRef={el => setInputRef(el)}
+
                         value={undefined}
                         type={typeInput}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
@@ -95,7 +104,7 @@ const InputComponent = ({
                 (
                     <InputWithoutMask
                         {...inputProps}
-                        ref={inputRef}
+                        ref={setInputRef}
                         value={undefined}
                         type={typeInput}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
@@ -162,8 +171,8 @@ const InputPlaceholder = styled(motion.div)`
   align-items: center;
   background-color: white;
   cursor: pointer;
-  padding:0 10px;
-  border-radius: 21px; 
+  padding: 0 10px;
+  border-radius: 21px;
   z-index: 1;
 `;
 
