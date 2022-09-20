@@ -103,4 +103,5 @@ export interface FilterOrderQuery extends FilterValues, OrderByValues {}
 export interface Page<T> {
   data: T[];
   total: number;
+  hasNext: boolean;
 }

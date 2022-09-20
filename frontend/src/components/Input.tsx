@@ -26,12 +26,10 @@ const InputComponent = ({
         }
     }
 
-
     const handleShowPassword = () =>
         setTypeInput(typeInput === "password" ? "text" : "password");
 
     const handleIsChanging = (event: FocusEvent, stateValue: boolean) => {
-        console.log(inputRef)
         if (
             event.target instanceof HTMLInputElement &&
             event.target.value.length > 0
@@ -42,11 +40,7 @@ const InputComponent = ({
 
         setIsChanging(stateValue);
     };
-
-    useEffect(() => {
-        setIsChanging(!!inputProps.value);
-    }, [inputProps.value]);
-
+    
     return (
         <InputContainer
             animate={{

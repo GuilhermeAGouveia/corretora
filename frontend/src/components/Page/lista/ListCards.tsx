@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {AlertType, CardImovelProps, IImovel} from "../../../lib/interfaces";
 import colors from "../../../styles/colors";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import api from "../../../services/api";
 import BannerInfo, {useBannerInfo} from "../../BannerInfo";
 
@@ -13,7 +13,7 @@ interface ListCardsProps {
 
 
 const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProps) => {
-    const [imovelUpdate, setImovelUpdate] = useState<IImovel[]>(imoveis);
+    const [imovelUpdate, setImovelUpdate] = useState<IImovel[] | null>(null);
     const {control, "alertState": [alert, setAlert]} = useBannerInfo();
 
     const handleDelete = async (id: string) => {
@@ -29,15 +29,17 @@ const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProp
             type: AlertType.SUCCESS,
             message: "Imóvel deletado com sucesso",
         })
-        setImovelUpdate(oldImoveis => oldImoveis.filter(imovel => imovel.cod_imv !== id));
+        setImovelUpdate(oldImoveis => (oldImoveis || imoveis).filter(imovel => imovel.cod_imv !== id));
 
     }
+
+    useEffect(() => console.log("imovelUpdate", imovelUpdate), [imovelUpdate])
 
     return (
         <CardsContainerRoot>
             <CardsContainer>
-                {imovelUpdate.length ? (
-                    imovelUpdate.map((imovel: IImovel) => (
+                {imoveis.length ? (
+                    (imovelUpdate || imoveis).map((imovel: IImovel) => (
 
                         <Card key={imovel.cod_imv} imovel={imovel} onDelete={handleDelete}/>
                     ))
