@@ -225,6 +225,7 @@ export default {
       res.json({
         data: imoveisList,
         total,
+        hasNext: total > page * limit,
       });
     } catch (error) {
       res.status(400).json(error);
@@ -259,6 +260,7 @@ export default {
     res.json({
       data: imoveisPage,
       total: totalPage,
+      hasNext: totalPage > page * perPage,
     });
   },
 } as Controller & {
