@@ -12,9 +12,11 @@ interface ListCardsProps {
 }
 
 
-const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProps) => {
+const ListCards = ({cardComponent: Card, isLoadingItems, imoveis: imoveisProps}: ListCardsProps) => {
+    console.log("ListCards - render");
     const [imovelUpdate, setImovelUpdate] = useState<IImovel[] | null>(null);
     const {control, "alertState": [alert, setAlert]} = useBannerInfo();
+    let imoveis = imovelUpdate || imoveisProps; // se tiver imovelUpdate, usa ele, senão usa imoveisProps
 
     const handleDelete = async (id: string) => {
         setAlert(undefined);
@@ -29,17 +31,15 @@ const ListCards = ({cardComponent: Card, isLoadingItems, imoveis}: ListCardsProp
             type: AlertType.SUCCESS,
             message: "Imóvel deletado com sucesso",
         })
-        setImovelUpdate(oldImoveis => (oldImoveis || imoveis).filter(imovel => imovel.cod_imv !== id));
+        setImovelUpdate(imoveis.filter(imovel => imovel.cod_imv !== id));
 
     }
-
-    useEffect(() => console.log("imovelUpdate", imovelUpdate), [imovelUpdate])
 
     return (
         <CardsContainerRoot>
             <CardsContainer>
                 {imoveis.length ? (
-                    (imovelUpdate || imoveis).map((imovel: IImovel) => (
+                    imoveis.map((imovel: IImovel) => (
 
                         <Card key={imovel.cod_imv} imovel={imovel} onDelete={handleDelete}/>
                     ))

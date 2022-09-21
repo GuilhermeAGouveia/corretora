@@ -1,5 +1,5 @@
 import {useRouter} from "next/router";
-import {useEffect, useState} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {FaBullhorn, FaSortNumericDown} from "react-icons/fa";
 import {FiFilter, FiSearch} from "react-icons/fi";
 import CardImovel from "../../components/CardImovel";
@@ -29,17 +29,18 @@ interface MarketplaceProps {
     pageImoveis: Page<IImovel>;
 }
 
+let pageNumber = 1
 export default function Marketplace({
                                         pageImoveis: pageImoveisProp,
                                     }: MarketplaceProps) {
+    console.log("Marketplace - render");
     const router = useRouter();
     const [blockSelect, setBlockSelect] = useState(false);
     const [imoveis, setImoveis] = useState(pageImoveisProp.data);
-    const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
     const [isLoadingItems, setisLoadingItems] = useState(false);
+    const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
     const [filterValues, setFilterValues] = useState({} as FilterValues);
     const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
-    const [page, setPage] = useState(1);
     const [isMobileView, setIsMobileView] = useState(false);
 
     const {user} = useAuth();
@@ -55,13 +56,13 @@ export default function Marketplace({
             1
         );
 
-        setPage(1);
+        pageNumber = 1;
         setImoveis(pageImoveis.data);
         setPageImoveis(pageImoveis);
         setisLoadingItems(false);
     };
 
-    const onFilter = async (filterValues: FilterValues) => {
+    const onFilter = useCallback(async (filterValues: FilterValues) => {
         setisLoadingItems(true);
 
         setFilterValues(filterValues);
@@ -71,11 +72,11 @@ export default function Marketplace({
             1
         );
 
-        setPage(1);
-        setImoveis(pageImoveis.data);
+        pageNumber = 1;
         setPageImoveis(pageImoveis);
+        setImoveis(pageImoveis.data);
         setisLoadingItems(false);
-    };
+    }, [filterValues]);
 
     function onScrollEnd(e: HTMLElement, func: () => any) {
         return () => {
@@ -88,21 +89,18 @@ export default function Marketplace({
     }
 
     const getMoreImoveis = async () => {
-        console.log("getMoreImoveis");
         // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
         // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
         // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
-        if (isLoadingItems || !pageImoveis.data.length) return;
+        if (isLoadingItems || !pageImoveis.hasNext) return;
 
         setisLoadingItems(true);
         const moreImoveis = await getImoveisByFilterWithPage(
             filterValues,
-            page + 1
+            pageNumber + 1
         );
-        console.log("moreImoveis", moreImoveis.data)
+        pageNumber += 1;
         setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
-        setPageImoveis(moreImoveis);
-        setPage(page + 1);
         setisLoadingItems(false);
     };
 
@@ -146,7 +144,12 @@ export default function Marketplace({
                             <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
                         </ModalResponsive>
                     </LeftSection>
-                    <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} cardComponent={CardImovel}/>
+                    {useMemo(
+                        () => (
+                            <ListCards imoveis={imoveis} isLoadingItems={isLoadingItems} cardComponent={CardImovel}/>
+                        ),
+                        [imoveis, isLoadingItems]
+                    )}
                 </SearchSection>
             ),
         },
@@ -194,7 +197,6 @@ export default function Marketplace({
         window.addEventListener("resize", defineMobileScreen);
     }, []);
 
-    useEffect(() => console.log("imoveis", imoveis), [imoveis]);
     return (
         <ListRoot
             onScroll={(e) => {
@@ -214,7 +216,6 @@ export default function Marketplace({
 
 export const getStaticProps = async (ctx: any) => {
     const pageImoveis = await getImovelByPage(1);
-
     return {
         props: {
             pageImoveis,
