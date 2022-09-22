@@ -1,7 +1,7 @@
-import {useRouter} from "next/router";
-import {useCallback, useEffect, useMemo, useState} from "react";
-import {FaBullhorn, FaSortNumericDown} from "react-icons/fa";
-import {FiFilter, FiSearch} from "react-icons/fi";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useMemo, useState } from "react";
+import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
+import { FiFilter, FiSearch } from "react-icons/fi";
 import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
@@ -9,9 +9,9 @@ import ContentControlBySelectionFloatLine from "../../components/Page/lista/Cont
 import HeaderLista from "../../components/Page/lista/Header";
 import ListCards from "../../components/Page/lista/ListCards";
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
-import {useAuth} from "../../context/Auth";
-import {getImoveisByFilterWithPage, getImovelByPage} from "../../lib/imovel";
-import {FilterValues, IImovel, OrderByValues, Page} from "../../lib/interfaces";
+import { useAuth } from "../../context/Auth";
+import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
+import { FilterValues, IImovel, OrderByValues, Page } from "../../lib/interfaces";
 import {
     AnnounceLineDivision,
     AnounceButton,
@@ -76,7 +76,7 @@ export default function Marketplace({
         setPageImoveis(pageImoveis);
         setImoveis(pageImoveis.data);
         setisLoadingItems(false);
-    }, [filterValues]);
+    }, [orderByValues]);
 
     function onScrollEnd(e: HTMLElement, func: () => any) {
         return () => {

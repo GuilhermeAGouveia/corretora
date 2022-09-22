@@ -85,6 +85,7 @@ export interface Pessoa {
 }
 
 export interface FilterValues {
+  local?: string;
   type?: string;
   offerType?: string;
   mensalidadeMin?: number;
