@@ -1,8 +1,8 @@
-import {motion} from "framer-motion";
-import {useEffect, useRef, useState} from "react";
-import styled, {css} from "styled-components";
+import { motion } from "framer-motion";
+import { useRef, useState } from "react";
+import InputMask, { Props as InputMaskProps } from "react-input-mask";
+import styled, { css } from "styled-components";
 import colors from "../styles/colors";
-import InputMask, {Props as InputMaskProps} from "react-input-mask";
 
 export type InputProps = InputMaskProps | React.InputHTMLAttributes<HTMLInputElement> & {
     mask?: string | Array<(string | RegExp)>
@@ -106,6 +106,7 @@ const InputComponent = ({
                         onBlur={(e: any) => {
                             handleIsChanging(e, false);
                         }}
+                        onFocus={(e: any) => handleIsChanging(e, true)}
                         autoComplete="off"
                     />)
             }
