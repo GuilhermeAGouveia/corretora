@@ -51,17 +51,16 @@ export async function getImoveisByFilterWithPage(
     sort,
   } = filterValues;
 
-  let localJSON = (local ? JSON.parse(local) : {}) as {
-    city?: string;
-    state?: string;
-  }; 
+  let localString = local ? JSON.stringify(local.map(l => JSON.parse(l))) : "";
+  
+  console.log(localString);
 
   const queryBuilder = new FilterQueryBuilder(`/imovel/filter/${page}`);
 
   queryBuilder.addStringQuery("type", type);
   queryBuilder.addStringQuery("offerType", offerType);
-  queryBuilder.addStringQuery("city", localJSON.city);
-  queryBuilder.addStringQuery("state", localJSON.state);
+  queryBuilder.addStringQuery("local", localString);
+ 
   queryBuilder.addRangeNumberQuery("mensalidade", {
     min: mensalidadeMin,
     max: mensalidadeMax,

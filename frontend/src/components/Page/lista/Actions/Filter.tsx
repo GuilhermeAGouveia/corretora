@@ -63,9 +63,9 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
                         placeholder="Local"
                         controlReactHookForm={control}
                         name={"local"}
-                        //onSearch={onSearch}
                         options={allCitiesFromBrazil}
                         filterOption={onSearch}
+                        isMulti={true}
                     ></SelectReactHookForm>
                 </ActionItem>
                 <ActionItem>
