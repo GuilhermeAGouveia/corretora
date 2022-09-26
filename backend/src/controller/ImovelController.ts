@@ -84,8 +84,7 @@ export default {
   filter: async (req: Request, res: Response) => {
     try {
       const {
-        city,
-        state,
+        local,
         mensalidade,
         price,
         supDescribe,
@@ -96,8 +95,7 @@ export default {
         sort,
         cod_lcd,
       } = req.query as {
-        city?: string;
-        state?: string;
+        local?: string;
         mensalidade?: string;
         price?: string;
         supDescribe?: string;
@@ -132,9 +130,12 @@ export default {
 
       // cria um objeto com os filtros
       const filter = {
-        city: city ? { city: { contains: city } } : {},
-
-        state: state ? { state: { contains: state } } : {},
+        OR: local && local !== "[]" ? JSON.parse(local).map(
+          ({ city, state }: { city: string; state: string }) => ({
+            city: { contains: city },
+            state: { contains: state },
+          })
+        ) : undefined,
 
         mensalidade: mensalidadeRange
           ? {
@@ -170,8 +171,8 @@ export default {
       // define ordenação
 
       const wherePrisma = {
+        OR: filter.OR,
         ...filter.area,
-        ...filter.state,
         ...filter.mensalidade,
         ...filter.price,
         ...filter.supDescribe,
