@@ -41,6 +41,7 @@ export async function getImoveisByFilterWithPage(
 
   const {
     type,
+    local,
     mensalidadeMax,
     mensalidadeMin,
     offerType,
@@ -50,10 +51,17 @@ export async function getImoveisByFilterWithPage(
     sort,
   } = filterValues;
 
+  let localJSON = (local ? JSON.parse(local) : {}) as {
+    city?: string;
+    state?: string;
+  }; 
+
   const queryBuilder = new FilterQueryBuilder(`/imovel/filter/${page}`);
 
   queryBuilder.addStringQuery("type", type);
   queryBuilder.addStringQuery("offerType", offerType);
+  queryBuilder.addStringQuery("city", localJSON.city);
+  queryBuilder.addStringQuery("state", localJSON.state);
   queryBuilder.addRangeNumberQuery("mensalidade", {
     min: mensalidadeMin,
     max: mensalidadeMax,

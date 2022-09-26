@@ -5,9 +5,9 @@ interface Estado {
   nome: string;
 }
 
-interface Cidade {
-  nome: string;
-  UF: string;
+interface Local {
+  city: string;
+  state: string;
 }
 
 export const getEstados = async () => {
@@ -37,14 +37,14 @@ export const getCidades = async (estado?: string) => {
 };
 
 
-export const getAllCidades = async (): Promise<Cidade[]> => {
+export const getAllCidades = async (): Promise<Local[]> => {
   const response = await axios.get<any>(
     "https://servicodados.ibge.gov.br/api/v1/localidades/municipios"
   );
-  const cidades: Cidade[] = response.data.map((city: any) => {
+  const cidades: Local[] = response.data.map((city: any) => {
     return {
-      nome: city.nome,
-      UF: city.microrregiao.mesorregiao.UF.sigla,
+      city: city.nome,
+      state: city.microrregiao.mesorregiao.UF.sigla,
     };
   });
   return cidades;

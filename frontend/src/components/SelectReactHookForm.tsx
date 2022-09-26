@@ -1,5 +1,6 @@
 import { Control, Controller, ControllerRenderProps, FieldValues } from "react-hook-form";
 import Select from "react-select";
+import { FilterOptionOption } from "react-select/dist/declarations/src/filters";
 import styled, { CSSProperties } from "styled-components";
 
 export interface SelectOption {
@@ -17,6 +18,7 @@ interface SelectReactHookFormProps {
     onChange?: (value: string) => void;
     required?: boolean;
     isOptionDisabled?: any;
+    filterOption?: ((option: FilterOptionOption<SelectOption>, inputValue: string) => boolean)
 }
 
 const SelectReactHookForm = ({
@@ -28,7 +30,8 @@ const SelectReactHookForm = ({
                                  style,
                                  required,
                                  onChange: onChangeProp,
-                                 isOptionDisabled
+                                 isOptionDisabled,
+                                 filterOption
                              }: SelectReactHookFormProps) => (
     <SelectReactHookFormContainer style={style}>
         <Controller
@@ -56,7 +59,9 @@ const SelectReactHookForm = ({
                     onChange={(val) => {
                         onChange(val?.value);
                         onChangeProp && onChangeProp(val?.value || "");
+                        
                     }}
+                    filterOption={filterOption}
                     isOptionDisabled={isOptionDisabled}
 
                 />
