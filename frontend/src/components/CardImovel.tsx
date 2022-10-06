@@ -1,19 +1,15 @@
 import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
 import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
-import {CardImovelProps, IImovel, LevelFurnished} from "../lib/interfaces";
+import { CardImovelProps, LevelFurnished } from "../lib/interfaces";
 import colors from "../styles/colors";
-
+import CardImage from "./CardImage";
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHover, setIsHover] = useState(false);
-  const [imageDimensions, setImageDimensions] = useState({
-    width: 450,
-    height: 450,
-  });
+
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -55,30 +51,14 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
           />
         </AnimatePresence>
       </CardImovelButtonFavorite>
-      <CardImovelImage>
-        <Image
-          src={
-            imovel.images[0]
-              ? imovel.images[0].url
-              : "https://picsum.photos/200/300"
-          }
-          alt={imovel.images[0] ? imovel.images[0].originalname : "Imagem"}
-          {...imageDimensions}
-          objectFit="cover"
-          onLoadingComplete={({
-            naturalHeight: height,
-            naturalWidth: width,
-          }) => {
-            let newWidth = 400 / width;
-            let newHeight = height * newWidth;
-            if (newHeight < 250) newHeight = 250;
-            if (newHeight > 450) newHeight = 450;
-            setImageDimensions({ width: 400, height: newHeight });
-          }}
-          priority
-          quality={100}
-        />
-      </CardImovelImage>
+      <CardImage
+      imageUrl={
+        imovel.images[0]
+          ? imovel.images[0].url
+          : "https://picsum.photos/200/300"
+      }
+      alt={imovel.images?.[0]?.originalname as string && "Imagem"}
+      />
 
       <LineDivider />
       <CardDescription>
@@ -141,11 +121,7 @@ const CardImovelContainer = styled("div")`
   }
 `;
 
-const CardImovelImage = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-`;
+
 
 const CardDescription = styled.div`
   position: relative;
@@ -247,3 +223,4 @@ const IconHeart = styled(motion.div)`
   align-items: center;
   justify-content: center;
 `;
+

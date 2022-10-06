@@ -1,57 +1,68 @@
-import {format} from "date-fns";
-import {ptBR} from "date-fns/locale";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { FiMapPin } from "react-icons/fi";
 import styled from "styled-components";
-import {CardImovelProps, IImovel} from "../lib/interfaces";
+import { CardImovelProps } from "../lib/interfaces";
 import colors from "../styles/colors";
-import {FiCalendar, FiMapPin} from "react-icons/fi"
-import {CardImage} from "./Page/imoveis/my/CardImage";
+import CardImage from "./CardImage";
 import MenuImovelActions from "./MenuImovelActions";
 
-export default function CardMyImovel({imovel, onDelete}: CardImovelProps) {
-    const getStringDateFormat = (date: Date) => {
-        return format(date, "dd 'de' MMMM', às ' HH:mm'h'", {
-            locale: ptBR,
-        });
-    };
+export default function CardMyImovel({ imovel, onDelete }: CardImovelProps) {
+  const getStringDateFormat = (date: Date) => {
+    return format(date, "dd 'de' MMMM', às ' HH:mm'h'", {
+      locale: ptBR,
+    });
+  };
 
-    function captalize(str: string) {
-        return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
-    }
+  function captalize(str: string) {
+    return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+  }
 
-    return (
-        <Card>
-            <CardImage imagesUrl={imovel.images}/>
-            <LineDivider/>
-            <CardDescription>
-                <CardDescriptionHeader>
-                    <CardTitle><h4>{captalize(imovel.type)} em {imovel.city}, {imovel.state}</h4></CardTitle>
-                    <CardCreatedAt>
-                        <time dateTime={new Date(imovel.createdAt).toDateString()}>
-
-                            {`${getStringDateFormat(new Date(imovel.createdAt))}`}
-                        </time>
-                    </CardCreatedAt>
-                    <MenuImovelActions onDelete={onDelete} imovelId={imovel.cod_imv}/>
-
-                </CardDescriptionHeader>
-                <address><FiMapPin size={14} color={colors.primary}/> {imovel.address}, {imovel.district}</address>
-                <div>{imovel.area}</div>
-                <div>{imovel.hasGarage}</div>
-                <div>{imovel.hasSuite}</div>
-                <div>{imovel.hasGarden}</div>
-                <div>{imovel.nBathrooms}</div>
-                <div>{imovel.nRooms}</div>
-                <div>{imovel.mensalidade}</div>
-                <div>{imovel.price}</div>
-
-            </CardDescription>
-        </Card>
-    );
+  return (
+    <Card>
+      <CardImage
+        imageUrl={
+          imovel.images[0]
+            ? imovel.images[0].url
+            : "https://picsum.photos/200/300"
+        }
+        alt={(imovel.images?.[0]?.originalname as string) && "Imagem"}
+      />
+      <LineDivider />
+      <CardDescription>
+        <CardDescriptionHeader>
+          <CardTitle>
+            <h4>
+              {captalize(imovel.type)} em {imovel.city}, {imovel.state}
+            </h4>
+          </CardTitle>
+          <CardCreatedAt>
+            <time dateTime={new Date(imovel.createdAt).toDateString()}>
+              {`${getStringDateFormat(new Date(imovel.createdAt))}`}
+            </time>
+          </CardCreatedAt>
+          <MenuImovelActions onDelete={onDelete} imovelId={imovel.cod_imv} />
+        </CardDescriptionHeader>
+        <address>
+          <FiMapPin size={14} color={colors.primary} /> {imovel.address},{" "}
+          {imovel.district}
+        </address>
+        <div>{imovel.area}</div>
+        <div>{imovel.hasGarage}</div>
+        <div>{imovel.hasSuite}</div>
+        <div>{imovel.hasGarden}</div>
+        <div>{imovel.nBathrooms}</div>
+        <div>{imovel.nRooms}</div>
+        <div>{imovel.mensalidade}</div>
+        <div>{imovel.price}</div>
+      </CardDescription>
+    </Card>
+  );
 }
 
 const Card = styled.div`
   position: relative;
-  margin: .8rem .5rem;
+  margin: 0.8rem 0.5rem;
   height: 300px;
   background: white;
   display: flex;
@@ -82,7 +93,6 @@ const CardDescription = styled.div`
   width: 70%;
   height: 100%;
   padding: 5px;
-
 `;
 
 const CardTitle = styled.div`
@@ -102,10 +112,10 @@ const CardDescriptionHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem;
-  
-    @media (max-width: 768px) {
+
+  @media (max-width: 768px) {
     display: block;
-    }
+  }
 `;
 
 const CardCreatedAt = styled.div`
@@ -115,7 +125,7 @@ const CardCreatedAt = styled.div`
   justify-content: flex-end;
   font-size: 14px;
   padding-right: 10px;
-  
+
   @media (max-width: 768px) {
     justify-content: flex-start;
     font-size: 12px;
