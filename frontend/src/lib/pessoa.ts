@@ -1,6 +1,6 @@
 import {getAPIHTTPClient} from "../services/api";
 import {Pessoa} from "./interfaces";
-import FormPessoa, {IFormPessoa} from "../components/Page/imoveis/cadastrar/forms/FormPessoa";
+import FormPessoa, {IFormPessoa} from "../components/forms/FormPessoa";
 
 
 export async function insertPessoa(

@@ -1,5 +1,5 @@
 import Cadastrar from "../../components/Cadastrar";
-import FormPessoa from "../../components/Page/imoveis/cadastrar/forms/FormPessoa";
+import FormPessoa from "../../components/forms/FormPessoa";
 
 function RegisterUser(){
     return (

@@ -66,6 +66,7 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
                         options={allCitiesFromBrazil}
                         filterOption={onSearch}
                         isMulti={true}
+                        noOptionsMessage={() => "Digite pelo menos 3 caracteres"}
                     ></SelectReactHookForm>
                 </ActionItem>
                 <ActionItem>

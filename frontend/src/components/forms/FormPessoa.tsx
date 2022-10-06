@@ -8,19 +8,19 @@ import {
     FiPhone,
     FiUser
 } from "react-icons/fi";
-import { getCidades, getEstados } from "../../../../../lib/externalData";
-import { AlertType } from "../../../../../lib/interfaces";
+import { getCidades, getEstados } from "../../lib/externalData";
+import { AlertType } from "../../lib/interfaces";
 import {
     insertPessoa,
     parseFormPessoaToPessoa
-} from "../../../../../lib/pessoa";
-import { formPessoaSchema } from "../../../../../lib/validations";
-import BannerInfo, { useBannerInfo } from "../../../../BannerInfo";
-import Input from "../../../../InputReactHookForm";
-import MultiInput from "../../../../MultiInputReactHookForm";
+} from "../../lib/pessoa";
+import { formPessoaSchema } from "../../lib/validations";
+import BannerInfo, { useBannerInfo } from "../BannerInfo";
+import Input from "../InputReactHookForm";
+import MultiInput from "../MultiInputReactHookForm";
 import SelectReactHookForm, {
     SelectOption
-} from "../../../../SelectReactHookForm";
+} from "../SelectReactHookForm";
 import FormComponent from "./FormComponent";
 import { ButtonSubmit, SubmitContainer } from "./styles";
 

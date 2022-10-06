@@ -1,6 +1,6 @@
 import {motion, MotionAdvancedProps} from "framer-motion";
 import styled from "styled-components";
-import colors from "../../../../../styles/colors";
+import colors from "../../styles/colors";
 
 export const Form = styled.div`
   position: relative;

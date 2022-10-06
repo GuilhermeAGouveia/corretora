@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {FiCheck, FiChevronLeft} from "react-icons/fi";
-import colors from "../../../../../styles/colors";
+import colors from "../../styles/colors";
 import ShowTrail from "./component/ShowTrail";
 
 import {
@@ -14,8 +14,8 @@ import {
     SectionInputContent
 } from "./styles";
 import {IconType} from "react-icons";
-import BannerInfo, {useBannerInfo} from "../../../../BannerInfo";
-import {AlertType} from "../../../../../lib/interfaces";
+import BannerInfo, {useBannerInfo} from "../BannerInfo";
+import {AlertType} from "../../lib/interfaces";
 
 export interface IFormSection {
     description: string;

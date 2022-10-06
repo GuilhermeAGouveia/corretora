@@ -20,5 +20,25 @@ export const formPessoaSchema = yup.object().shape({
     city: yup.string().required("Cidade é obrigatório"),
     state: yup.string().required("Estado é obrigatório"),
     district: yup.string().required("Bairro é obrigatório"),
-    
+
+});
+
+export const formImovelSchema = yup.object().shape({
+    street: yup.string().required("Rua é obrigatório"),
+    number: yup.number().required("Número é obrigatório"),
+    district: yup.string().required("Bairro é obrigatório"),
+    state: yup.string().required("Estado é obrigatório"),
+    city: yup.string().required("Cidade é obrigatório"),
+    nApto: yup.number().nullable(),
+    hasGarage: yup.boolean().nullable(),
+    hasGarden: yup.boolean().nullable(),
+    hasSuite: yup.boolean().nullable(),
+    nRooms: yup.number().nullable(),
+    nBathrooms: yup.number().nullable(),
+    area: yup.number().nullable(),
+    isFurnished: yup.string().nullable(),
+    supDescribe: yup.string().nullable(),
+    price: yup.number().moreThan(yup.ref('mensalidade'), "O preço deve ser maior que a mensalidade").nullable(),
+    mensalidade: yup.number().nullable(),
+
 });

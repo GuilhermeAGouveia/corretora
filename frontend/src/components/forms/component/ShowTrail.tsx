@@ -1,7 +1,7 @@
 import React from "react";
 import {IconType} from "react-icons";
 import styled from "styled-components";
-import colors from "../../../../../../styles/colors";
+import colors from "../../../styles/colors";
 
 interface ShowTrailProps {
     trails: IconType[];
