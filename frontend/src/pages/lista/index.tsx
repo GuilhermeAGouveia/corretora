@@ -92,7 +92,7 @@ export default function Marketplace({
     return () => {
       const { scrollTop, clientHeight, scrollHeight } = e;
 
-      if (scrollTop + clientHeight >= scrollHeight - 300) {
+      if (scrollTop + clientHeight >= scrollHeight - 50) {
         func();
       }
     };
