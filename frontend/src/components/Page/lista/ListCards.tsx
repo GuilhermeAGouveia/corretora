@@ -62,7 +62,7 @@ const ListCards = ({
         <LoadingBottom>
           <Lottie
             options={{
-              loop: false,
+              loop: true,
               autoplay: true,
 
               animationData: loadingData,

@@ -41,7 +41,7 @@ const CardImage = ({imageUrl, alt}: CardImageProps) => {
           <ImagePlaceholder>
             <Lottie
               options={{
-                loop: false,
+                loop: true,
                 autoplay: true,
 
                 animationData: loadingData,
