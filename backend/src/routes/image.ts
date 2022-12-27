@@ -10,6 +10,7 @@ router.use('/storage/image', express.static(path.resolve(__dirname, '../../stora
 
 router.post("/image/upload", multerLib.single('file'), ImageController.insert);
 router.get("/image/all", ImageController.getAll);
+router.get("/image/:codImv", ImageController.getByCod)
 router.delete("/image/:cod", ImageController.delete);
 
 export default router;

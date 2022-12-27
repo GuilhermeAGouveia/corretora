@@ -1,4 +1,5 @@
 import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import styled from "styled-components";
@@ -9,7 +10,7 @@ import CardImage from "./CardImage";
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [isHover, setIsHover] = useState(false);
-
+  const router = useRouter();
 
   const handleFavorite = () => {
     setIsFavorite(!isFavorite);
@@ -24,7 +25,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
     );
   };
   return (
-    <CardImovelContainer>
+    <CardImovelContainer onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}>
       <CardImovelButtonFavorite
         onHoverStart={() => setIsHover(true)}
         onHoverEnd={() => setIsHover(false)}

@@ -20,7 +20,7 @@ export async function getImovelByPage(
   return pageImoveis;
 }
 
-export async function getByCodImovel(cod: string, ctx?: any): Promise<IImovel> {
+export async function getImovelByCod(cod: string, ctx?: any): Promise<IImovel> {
   const api = getAPIHTTPClient(ctx);
   const { data: imovel } = await api.get<IImovel>(`/imovel/get/${cod}`);
   return imovel;

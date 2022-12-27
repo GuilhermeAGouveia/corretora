@@ -47,3 +47,8 @@ export function getRandomImageByImovelType(imovelType: ImovelType) {
 
   return imagesByType[imovelType];
 }
+
+export function getImovelImage(cod_imv: string, ctx?: any) {
+  const api = getAPIHTTPClient(ctx);
+  return api.get(`/image/${cod_imv}`);
+}

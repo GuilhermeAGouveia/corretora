@@ -16,25 +16,11 @@ export default {
     res.json(count);
   },
   default: async (req: Request, res: Response) => {
-    res.send("Raiz para image");
-  },
-  getByCod: async (req: Request, res: Response) => {
-    try {
-      const key = req.params.cod;
-      const image = await prisma.image.findUnique({
-        where: {
-          key,
-        },
-      });
-
-      res.json(image);
-    } catch (error: any) {
-      res.status(500).json(error);
-    }
+     res.send("Raiz para image");
   },
   getAll: async (req: Request, res: Response) => {
     const image = await prisma.image.findMany();
-    res.json(image);
+   res.json(image);
   },
   insert: async (req: Request, res: Response) => {
     try {
@@ -65,6 +51,7 @@ export default {
 
       return res.status(401).send("Sem imagem");
     } catch (error: any) {
+      console.log(error);
       return res.status(400).json(error);
     }
   },
@@ -88,8 +75,18 @@ export default {
             error: "Não é possível deletar um image que não está cadastrado",
           });
         default:
-          res.status(500).json(error);
+          return res.status(500).json(error);
       }
     }
+  },
+  getByCod: async (req: Request, res: Response) => {
+    const { codImv } = req.params;
+    const images = await prisma.image.findMany({
+      where: {
+        idOwner: codImv,
+      },
+    });
+
+    return res.json(images);
   },
 } as Controller;
