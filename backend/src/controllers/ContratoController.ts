@@ -1,8 +1,7 @@
-import { Contrato, PrismaClient } from '@prisma/client';
-import { Request, Response } from "express";
-import Controller from "./IController";
-
-const prisma = new PrismaClient();
+import {Contrato} from '@prisma/client';
+import {Request, Response} from "express";
+import {Controller} from "../interfaces"
+import contratoService from "../services/ContratoService";
 
 interface IdContrato {
     cod_cor: string;
@@ -12,7 +11,7 @@ interface IdContrato {
 
 export default {
     count: async (req: Request, res: Response) => {
-        const count = await prisma.contrato.count();
+        const count = await contratoService.count();
         return res.json(count);
     },
     default: async (req: Request, res: Response) => {
@@ -21,11 +20,7 @@ export default {
     getByCod: async (req: Request, res: Response) => {
         try {
             const idContrato = req.query as any as IdContrato;
-            const Contrato = await prisma.contrato.findUnique({
-                where: {
-                    idContrato
-                },
-            });
+            const Contrato = await contratoService.getByCod(idContrato);
 
             return res.json(Contrato);
         } catch (error: any) {
@@ -33,17 +28,13 @@ export default {
         }
     },
     getAll: async (req: Request, res: Response) => {
-        const Contrato = await prisma.contrato.findMany();
-
+        const Contrato = await contratoService.getAll();
         return res.json(Contrato);
     },
     insert: async (req: Request, res: Response) => {
         try {
             const Contrato = req.body as Contrato;
-
-            const ContratoInsert = await prisma.contrato.create({
-                data: Contrato,
-            });
+            const ContratoInsert = await contratoService.insert(Contrato);
 
             return res.json(ContratoInsert.cod_lcd + "|" + ContratoInsert.cod_lct + "|" + ContratoInsert.cod_imv);
         } catch (error: any) {
@@ -53,19 +44,14 @@ export default {
     delete: async (req: Request, res: Response) => {
         try {
 
-        const idContrato = req.query as any as IdContrato;
+            const idContrato = req.query as any as IdContrato;
+            const contrato = await contratoService.delete(idContrato);
 
-        const Contrato = await prisma.contrato.delete({
-            where: {
-                idContrato
-            },
-        });
-
-        return res.json(Contrato);
+            return res.json(contrato);
         } catch (error: any) {
             switch (error.code) {
                 case "P2025":
-                    return res.status(400).json({ error: "Não é possível excluir um contrato que não existe" });
+                    return res.status(400).json({error: "Não é possível excluir um contrato que não existe"});
                 default:
                     return res.status(500).json(error);
             }

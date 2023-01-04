@@ -1,4 +1,4 @@
-import AssociadoController from "../controller/AssociadoController";
+import AssociadoController from "../controllers/AssociadoController";
 import MultiKeyRoutesFactory from "./factory/MultiKeyRoutesFactory";
 
 

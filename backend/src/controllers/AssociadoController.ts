@@ -1,17 +1,16 @@
-import { Associado, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import Controller from "./IController";
+import associadoService from "../services/AssociadoService";
+import {Controller} from "../interfaces"
+import {Associado} from "@prisma/client";
 
 interface IdAssociado {
   cod_lct: string;
   name: string;
 }
 
-const prisma = new PrismaClient();
-
 export default {
   count: async (req: Request, res: Response) => {
-    const count = await prisma.associado.count();
+    const count = await associadoService.count();
     res.json(count);
   },
   default: async (req: Request, res: Response) => {
@@ -20,31 +19,21 @@ export default {
   getByCod: async (req: Request, res: Response) => {
     try {
       const idAssociado = req.query as any as IdAssociado;
-      const associado = await prisma.associado.findUnique({
-        where: {
-          idAssociado,
-        },
-      });
-
+      const associado = await associadoService.getByCod(idAssociado);
       res.json(associado);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   },
   getAll: async (req: Request, res: Response) => {
-    const associado = await prisma.associado.findMany();
-
+    const associado = await associadoService.getAll();
     res.json(associado);
   },
 
   insert: async (req: Request, res: Response) => {
     try {
       const associado = req.body as Associado;
-
-      const associadoInsert = await prisma.associado.create({
-        data: associado,
-      });
-
+      const associadoInsert = await associadoService.insert(associado);
       return res.json(associadoInsert.name);
     } catch (error: any) {
       return res.status(400).json(error);
@@ -52,13 +41,7 @@ export default {
   },
   delete: async (req: Request, res: Response) => {
     const idAssociado = req.query as any as IdAssociado;
-
-    const associado = await prisma.associado.delete({
-      where: {
-        idAssociado,
-      },
-    });
-
+    const associado = await associadoService.delete(idAssociado);
     res.json(associado);
   },
 } as Controller;

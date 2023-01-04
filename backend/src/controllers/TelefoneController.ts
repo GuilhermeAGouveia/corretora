@@ -1,6 +1,6 @@
 import { PrismaClient, Telefone } from "@prisma/client";
 import { Request, Response } from "express";
-import Controller from "./IController";
+import {Controller} from "../interfaces"
 
 const prisma = new PrismaClient();
 

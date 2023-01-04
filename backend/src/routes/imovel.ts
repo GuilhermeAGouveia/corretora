@@ -1,4 +1,4 @@
-import ImovelController from "../controller/ImovelController";
+import ImovelController from "../controllers/ImovelController";
 import UniqueKeyRoutesFactory from "./factory/UniqueKeyRoutesFactory";
 
 const routesFactory = new UniqueKeyRoutesFactory("/imovel", ImovelController);

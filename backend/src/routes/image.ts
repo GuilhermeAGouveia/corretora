@@ -1,7 +1,7 @@
 import express, { Router } from "express";
 import path from "path";
-import ImageController from "../controller/ImageController";
-import multerLib from "../lib/multerImage";
+import ImageController from "../controllers/ImageController";
+import multerLib from "../libs/multerImage";
 
 const router = Router();
 

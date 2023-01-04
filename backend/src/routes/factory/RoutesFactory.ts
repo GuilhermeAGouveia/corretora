@@ -1,6 +1,5 @@
 import { Router } from "express";
-import Controller from "../../controller/IController";
-import { convertStringToDateMiddleware } from "../../middleware";
+import {Controller} from "../../interfaces"
 
 class RoutesFactory {
     protected rootPath: string;

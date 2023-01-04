@@ -1,6 +1,6 @@
 import { Imovel, ImovelType, PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import Controller from "./IController";
+import {Controller} from "../interfaces"
 
 enum OfferType {
   Venda = "VENDA",

@@ -174,6 +174,6 @@ model Image {
   size         Int
   originalname String
   url          String
-  createdAt    DateTime @default(now())
+  createdAt    DateTime? @default(now())
   imovel       Imovel   @relation(fields: [idOwner], references: [cod_imv], onDelete: Cascade)
 }

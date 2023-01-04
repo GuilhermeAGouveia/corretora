@@ -1,4 +1,4 @@
-import Controller from "../../controller/IController";
+import {Controller} from "../../interfaces"
 import RoutesFactory from "./RoutesFactory";
 
 class UniqueKeyRoutesFactory extends RoutesFactory {

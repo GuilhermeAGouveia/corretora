@@ -1,4 +1,4 @@
-import ContratoController from "../controller/ContratoController";
+import ContratoController from "../controllers/ContratoController";
 import MultiKeyRoutesFactory from "./factory/MultiKeyRoutesFactory";
 
 const routesFactory = new MultiKeyRoutesFactory("/contrato", ContratoController);

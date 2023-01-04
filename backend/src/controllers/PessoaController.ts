@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import encrypt from "../utils/encrypt";
 import { PessoaWithTelefone } from "../utils/pessoa/interfaces";
-import Controller from "./IController";
+import {Controller} from "../interfaces"
 
 const prisma = new PrismaClient();
 

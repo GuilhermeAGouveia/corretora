@@ -1,22 +1,22 @@
 import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import Controller from "./IController";
+import {Controller} from "../interfaces"
 
 const prisma = new PrismaClient();
 
 export default {
   count: async (req: Request, res: Response) => {
-    const count = await prisma.locador.count();
+    const count = await prisma.locatario.count();
     res.json(count);
   },
   default: async (req: Request, res: Response) => {
-    res.send("Raiz para locador");
+    res.send("Raiz para locatario");
   },
   getByCod: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
-    const locador = await prisma.locador.findUnique({
+    const locatario = await prisma.locatario.findUnique({
       where: {
-        cod_lcd: cod,
+        cod_lct: cod,
       },
       include: {
         pessoa: {
@@ -26,10 +26,10 @@ export default {
         },
       },
     });
-    res.json(locador);
+    res.json(locatario);
   },
   getAll: async (req: Request, res: Response) => {
-    const locador = await prisma.locador.findMany({
+    const locatario = await prisma.locatario.findMany({
       include: {
         pessoa: {
           include: {
@@ -40,16 +40,19 @@ export default {
             },
           },
         },
-        imovel: {
+        associados: {
           select: {
-            cod_imv: true,
+            name: true,
+            tipo: true,
+            birthdate: true,
           },
         },
       },
     });
 
-    res.json(locador);
+    res.json(locatario);
   },
+
   insert: async (req: Request, res: Response) => {
     res.status(404).send("Not supported");
   },
@@ -57,16 +60,16 @@ export default {
     try {
       const cod = req.params.cod;
 
-      const locador = await prisma.pessoa.deleteMany({
+      const locatario = await prisma.pessoa.deleteMany({
         where: {
           id: cod,
-          Locador: {
-            cod_lcd: cod,
+          Locatario: {
+            cod_lct: cod,
           },
         },
       });
 
-      return res.json(!!locador.count);
+      return res.json(!!locatario.count);
     } catch (error: any) {
       return res.status(400).json(error);
     }

@@ -1,7 +1,7 @@
 import { Router } from "express";
-import LocadorController from "../controller/LocadorController";
-import LocatarioController from "../controller/LocatarioController";
-import PessoaController from "../controller/PessoaController";
+import LocadorController from "../controllers/LocadorController";
+import LocatarioController from "../controllers/LocatarioController";
+import PessoaController from "../controllers/PessoaController";
 import UniqueKeyRoutesFactory from "./factory/UniqueKeyRoutesFactory";
 
 
