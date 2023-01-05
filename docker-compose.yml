@@ -11,7 +11,7 @@ services:
     networks:
       - backend
     volumes:
-      - mysql-corretora-data:/var/lib/mysql
+      - mysql-corretora-data:/var/libs/mysql
  
 volumes:
   mysql-corretora-data:
