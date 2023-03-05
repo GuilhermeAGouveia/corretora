@@ -1,16 +1,13 @@
 import { Imovel, ImovelType, PrismaClient } from "@prisma/client";
+import imovelService from "../services/ImovelService";
 import { Request, Response } from "express";
-import {Controller} from "../interfaces"
-
-enum OfferType {
-  Venda = "VENDA",
-  Aluguel = "ALUGUEL",
-}
+import { Controller, Filter } from "../interfaces";
 
 const prisma = new PrismaClient();
+
 export default {
   count: async (req: Request, res: Response) => {
-    const count = await prisma.imovel.count();
+    const count = await imovelService.count();
     res.json(count);
   },
   default: async (req: Request, res: Response) => {
@@ -19,48 +16,20 @@ export default {
 
   getByCod: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
-    const imovel = await prisma.imovel.findUnique({
-      where: {
-        cod_imv: cod,
-      },
-      include: {
-        locador: true,
-        images: {
-          select: {
-            url: true,
-            originalname: true,
-            size: true,
-          },
-        },
-      },
-    });
+    const imovel = await imovelService.getByCod(cod);
 
     return res.json(imovel);
   },
 
   getAll: async (req: Request, res: Response) => {
-    const imoveis = await prisma.imovel.findMany({
-      include: {
-        images: {
-          select: {
-            url: true,
-            originalname: true,
-            size: true,
-          },
-        },
-      },
-    });
+    const imoveis = await imovelService.getAll();
     res.json(imoveis);
   },
 
   insert: async (req: Request, res: Response) => {
     try {
       const imovel = req.body as Imovel;
-      const imovelInsert = await prisma.imovel.create({
-        data: {
-          ...imovel,
-        },
-      });
+      const imovelInsert = await imovelService.insert(imovel);
       res.json(imovelInsert.cod_imv);
     } catch (error: any) {
       console.log(error);
@@ -70,11 +39,7 @@ export default {
   delete: async (req: Request, res: Response) => {
     try {
       const cod: string = req.params.cod;
-      const imovel = await prisma.imovel.delete({
-        where: {
-          cod_imv: cod,
-        },
-      });
+      const imovel = await imovelService.delete(cod);
       res.json(imovel);
     } catch (error: any) {
       res.status(400).json(error);
@@ -83,153 +48,31 @@ export default {
 
   filter: async (req: Request, res: Response) => {
     try {
-      const {
-        local,
-        mensalidade,
-        price,
-        supDescribe,
-        type,
-        area,
-        offerType,
-        orderBy,
-        sort,
-        cod_lcd,
-      } = req.query as {
-        local?: string;
-        mensalidade?: string;
-        price?: string;
-        supDescribe?: string;
-        type?: ImovelType;
-        area?: string;
-        offerType?: OfferType; // Indica se é aluguel ou venda
-        orderBy?: string;
-        sort?: string;
-        cod_lcd?: string;
-        limit?: string;
-      };
+      let filterProps = req.query as Filter;
 
-      const page = parseInt((req.params.page as string) || "1");
+      //Get page attributes
+      const pageNumber = parseInt((req.params.page as string) || "1");
       const limit = parseInt((req.query.limit as string) || "10");
 
-      function getRangeObject(range?: string) {
-        if (!range) {
-          return {};
-        }
-        const [min, max] = range.split("-");
+      //Get sort attributes
+      const orderBy = req.query.orderBy as string | undefined;
+      const sort = req.query.sort as string | undefined;
 
-        return {
-          min: parseInt(min),
-          max: max === "Infinity" ? undefined : parseInt(max),
-        };
-      }
-
-      // mensalidade, price e area chega no formato min-max
-      const mensalidadeRange = getRangeObject(mensalidade);
-      const priceRange = getRangeObject(price);
-      const areaRange = getRangeObject(area);
-
-      // cria um objeto com os filtros
-      const filter = {
-        OR: local && local !== "[]" ? JSON.parse(local).map(
-          ({ city, state }: { city: string; state: string }) => ({
-            city: { contains: city },
-            state: { contains: state },
-          })
-        ) : undefined,
-
-        mensalidade: mensalidadeRange
-          ? {
-              mensalidade: {
-                gte: mensalidadeRange.min,
-                lte: mensalidadeRange.max,
-              },
-            }
-          : {},
-        price: priceRange
-          ? { price: { gte: priceRange.min, lte: priceRange.max } }
-          : {},
-        area: areaRange
-          ? { area: { gte: areaRange.min, lte: areaRange.max } }
-          : {},
-        supDescribe: supDescribe
-          ? { supDescribe: { contains: supDescribe } }
-          : {},
-        cod_lcd: cod_lcd ? { cod_lcd: { equals: cod_lcd } } : {},
-        type: type ? { type: { equals: type } } : {},
-        offerType: (offerType?: string) => {
-          switch (offerType) {
-            case OfferType.Venda:
-              return { price: { not: { equals: 0 } } };
-            case OfferType.Aluguel:
-              return { mensalidade: { not: { equals: 0 } } };
-            default:
-              return {};
-          }
+      const result = await imovelService.filter(
+        filterProps,
+        {
+          pageNumber,
+          limit,
         },
-      };
-
-      // define ordenação
-
-      const wherePrisma = {
-        OR: filter.OR,
-        ...filter.area,
-        ...filter.mensalidade,
-        ...filter.price,
-        ...filter.supDescribe,
-        ...filter.offerType(offerType),
-        ...filter.area,
-        ...filter.type,
-        ...filter.cod_lcd,
-      };
-
-      // Se o campo em orderBy não existir, um error será lançado
-      function defineOrderBy(orderBy?: string, sort?: string) {
-        if (!orderBy) {
-          return {};
+        {
+          orderBy,
+          sort,
         }
-
-        if (Object.keys({} as Imovel).includes(orderBy)) {
-          throw new Error(`Field ${orderBy} not found`);
-        }
-
-        if (!["asc", "desc"].includes((sort as string).toLowerCase())) {
-          throw new Error(`Sort ${sort} not found`);
-        }
-
-        return {
-          [orderBy]: sort?.toLowerCase() || "asc",
-        };
-      }
-
-      const imoveis = prisma.imovel.findMany({
-        skip: (page - 1) * limit,
-        take: limit,
-        where: wherePrisma,
-        orderBy: defineOrderBy(orderBy, sort),
-        include: {
-          images: {
-            select: {
-              url: true,
-              originalname: true,
-              size: true,
-            },
-          },
-        },
-      });
-
-      const count = prisma.imovel.count({
-        where: wherePrisma,
-      });
-
-      const [imoveisList, total] = await prisma.$transaction([imoveis, count]);
-
-      res.json({
-        data: imoveisList,
-        total,
-        hasNext: total > page * limit,
-      });
+      );
+      return res.json(result)
     } catch (error) {
-      res.status(400).json(error);
+      console.log(error)
+      res.status(400).send("Erro ao buscar informações de filtro, consulte os logs da API");
     }
   },
 
