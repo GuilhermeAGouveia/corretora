@@ -1,7 +1,6 @@
 require('dotenv').config();
 import express from "express";
 import morgan from "morgan";
-import { AddressInfo } from "net";
 import associadoRouter from "./routes/associado";
 import contratoRouter from "./routes/contrato";
 import imageRouter from "./routes/image";
@@ -31,10 +30,7 @@ app.use([
 ]);
 
 app.get("/", (req, res) => {
-  res.send("Hello, Heroku!");
+  res.json({"message": "Hello!"});
 });
 
-const server = app.listen(process.env.PORT || 3333, () => {
-  var { port, address } = server.address() as AddressInfo;
-  console.log(`App listening at ${address} on port ${port}!`);
-});
+export default app

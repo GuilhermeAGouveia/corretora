@@ -1,0 +1,1670 @@
+{
+    "info": {
+      "name": "corretora",
+      "_postman_id": "409a8e30-0548-4623-8660-36a5945d432a",
+      "description": "",
+      "schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "session",
+        "description": "",
+        "item": [
+          {
+            "id": "ac0062b9-d313-4576-a172-8876f7ba1791",
+            "name": "getUserByToken",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "auth/user/token"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t\"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoiY2wyYXVwaXdpMDAwMnhybHk1eWRvYWlxcSIsImVtYWlsIjoiZ3VpQGdvdS52ZWlhIiwiZmlyc3ROYW1lIjoiR3VpbGhlcm1lIiwibGFzdE5hbWUiOiJHb3V2ZWlhIiwicGFzc3dvcmQiOiIiLCJiaXJ0aGRhdGUiOiIyMDAxLTEyLTI2VDAyOjAwOjAwLjAwMFoiLCJhZGRyZXNzIjoic3RyaW5nIiwiY2l0eSI6InN0cmluZyIsInN0YXRlIjoic3RyaW5nIiwiY2VwIjoic3RyaW5nIiwiY3JlYXRlZEF0IjoiMjAyMi0wNC0yMlQxOTo1NDoxMS44MjZaIn0sImlhdCI6MTY1MDY1ODI2MiwiZXhwIjoxNjUwNjYxODYyfQ.qEHJEhviVoudBTVkryKmplWn1FLW3LTwaAnhrbupjJ8\"\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "b1adb287-7975-467d-badc-ccab1fe759d8"
+              }
+            ]
+          },
+          {
+            "id": "f0e14b44-8ed3-434f-8f41-448d26f25dd8",
+            "name": "login",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "auth/login"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t\"email\": \"teste@gmail.com\",\n\t\"password\": \"gui123\" \n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "a241e3a2-795c-46c3-8026-30023c96aa1e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "locador",
+        "description": "",
+        "item": [
+          {
+            "id": "0f1cc1ed-d6f6-4b5f-a8d1-b4ded45d7254",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locador/"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t\"firstName\": \"Guilherme\",\n\t\"lastName\": \"Gouveia\",\n\t\"email\": \"gui@gou.veia\",\n\t\"address\": \"string\",\n\t\"city\": \"string\",\n\t\"state\": \"string\",\n\t\"cep\": \"string\",\n\t\"telefones\": [\n\t\t\"(35) 997232378\"\n\t],\n\t\"is_partner\": true\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "68fcb95b-00ad-407e-98e3-9580e11f1246"
+              }
+            ]
+          },
+          {
+            "id": "88f1bc7f-be1b-47a6-a0e2-6c3a3f4bc01e",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locador/cl24te73500006wly1p2banbk"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "1d47b964-e6eb-488a-849e-b4bd175d8e7a"
+              }
+            ]
+          },
+          {
+            "id": "250f8030-b350-47d6-a077-2f4609805726",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locador/get/pospos"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "879d897c-f3e5-4930-ac12-797d4eb32cc6"
+              }
+            ]
+          },
+          {
+            "id": "87e4288a-d958-4010-a13f-48fb1fdfd6de",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locador/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "3745f544-d298-4787-9973-92bda1ca882d"
+              }
+            ]
+          },
+          {
+            "id": "3b874b32-29d6-4958-8f56-8c6fa538d22d",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locador/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "a34d3343-b0f9-42a7-b081-286b51ee0589"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "pessoa",
+        "description": "",
+        "item": [
+          {
+            "id": "a7e2db3d-86bd-45be-8a5b-c20dba16ac3b",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "ee7fe5ef-29e1-40a6-a6f9-8c640b2a4e5d"
+              }
+            ]
+          },
+          {
+            "id": "0da9dbde-2b25-49f3-81d0-d5be13f09dd3",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "0d8f22b0-1a5e-4a00-8358-7fdce3474d32"
+              }
+            ]
+          },
+          {
+            "id": "2e6804b8-d94f-4008-9114-c4b533466012",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/cl24te73500006wly1p2banbk"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "ac075cd9-80b7-4b71-8340-046b5bda8147"
+              }
+            ]
+          },
+          {
+            "id": "f811d781-c970-4332-9ab4-5ee411cc91ea",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/get/cl2aupiwi0002xrly5ydoaiqq"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "46f4b0d9-cea2-4594-a99f-b6751e65f653"
+              }
+            ]
+          },
+          {
+            "id": "ce705f3c-1552-4b83-a836-48b270f80805",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t\"firstName\": \"Guilherme\",\n\t\"lastName\": \"Gouveia\",\n\t\"email\": \"teste@gmail.com\",\n\t\"password\": \"gui123\",\n\t\"address\": \"string\",\n\t\"city\": \"string\",\n\t\"state\": \"string\",\n\t\"cep\": \"string\",\n\t\"telefones\": [\n\t\t\"(35) 997232378\"\n\t],\n\t\"birthdate\": \"26/12/2001\"\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "409c7c81-8ca1-467d-8f9f-c83c7b3286c9"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "imovel",
+        "description": "",
+        "item": [
+          {
+            "id": "aca44b1d-8d90-4a12-976d-822d7a59d672",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "2a99e9b8-c92c-41e4-b067-59a913d7628b"
+              }
+            ]
+          },
+          {
+            "id": "76e37e1b-a2aa-498a-a6fd-f7212fe25bc5",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/get/cl26qzxuu0006ooly20ysybho"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "f1a4d99a-f37a-47c6-bab0-92287548c799"
+              }
+            ]
+          },
+          {
+            "id": "6730f9db-772e-4993-9266-1568eaaea521",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "\n\n{\n\t\"address\": \"900, 90\",\n\t\"area\":100,\n\t\"cep\": \"ola\",\n\t\"city\": \"Congonhal\",\n\t\"cod_lcd\": \"cl2i1cdt2002819lynuffvq92\",\n\t\"district\": \"sms\",\n\t\"mensalidade\": 10,\n\t\"nApto\": \"aa\",\n\t\"state\": \"MG\",\n\t\"type\": \"CASA\"\n}\n\n\n",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "5d80427f-4a57-41d2-9e62-6aa6e21df46c"
+              }
+            ]
+          },
+          {
+            "id": "7c64853c-3be3-4dd3-bd34-b9b9b10d45d3",
+            "name": "filter",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/filter/1"
+                ],
+                "query": [
+                  {
+                    "key": "cod_lcd",
+                    "value": "cl2un7j9r00523xlyes0bl53z",
+                    "description": "",
+                    "disabled": false
+                  },
+                  {
+                    "key": "limit",
+                    "value": "5",
+                    "description": "",
+                    "disabled": false
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "db026036-714b-4d04-a681-cc82f894e8c7"
+              }
+            ]
+          },
+          {
+            "id": "ce7a8e95-1b52-4e4a-90b8-3f059cac858f",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "1e5b6c8b-1e51-4b6d-a099-09f3a4814004"
+              }
+            ]
+          },
+          {
+            "id": "e5d04cf1-1438-499d-aaae-48dafdb463d7",
+            "name": "page",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/page/2"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "537d7dbf-0525-41f6-8cc1-de691a114057"
+              }
+            ]
+          },
+          {
+            "id": "9b64fd8c-c66a-49a6-a55d-9764315a43ee",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "imovel/cl33e5fjk00960mu4ms27wuo8"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "306e3377-6d70-4f1c-b4f7-7e19faddbac6"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "locatario",
+        "description": "",
+        "item": [
+          {
+            "id": "a0c4170e-534c-444a-aa1b-a82958f8bd26",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locatario/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "c8bde319-731c-4dfc-af75-cf1c1fa761cf"
+              }
+            ]
+          },
+          {
+            "id": "0ff8b1f4-636b-4c67-b107-3f39392a4404",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locatario/get/cl20vfixi0000yilynd2hv45m"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "3195a265-f5df-4c5a-9552-c3f30714991c"
+              }
+            ]
+          },
+          {
+            "id": "88a6ca0e-93e4-4063-be78-d8db5ac9271d",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locatario/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "b7ecf583-cc06-459d-a488-3c343ffa3c37"
+              }
+            ]
+          },
+          {
+            "id": "356e15ce-5687-4425-b487-069e3d97f3b8",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locatario/cl24u09wc0003calyj36tf0ce"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "dbcfceb2-0312-4d42-858d-46b6c54581e7"
+              }
+            ]
+          },
+          {
+            "id": "2069c32f-1031-49ee-8dd8-4c27a8ca5a8e",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locatario"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t\"firstName\": \"Guilherme\",\n\t\"lastName\": \"Gouveia\",\n\t\"email\": \"gui@gou.veia\",\n\t\"password\": \"gui123\",\n\t\"address\": \"string\",\n\t\"city\": \"string\",\n\t\"state\": \"string\",\n\t\"cep\": \"string\",\n\t\"telefones\": [\n\t\t\"(35) 997232378\"\n\t],\n\t\"birthdate\": \"26/12/2001\",\n\t\"associados\": [\n\t\t\t{\n\t\t\t\t\"name\": \"Eduardo Gouveia\",\n\t\t\t\t\"tipo\": \"IRMAO\",\n\t\t\t\t\"birthdate\": \"10/07/2007\"\n\t\t\t}\n\t]\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "9377d688-afd9-4df8-a84f-ca368a901176"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "associado",
+        "description": "",
+        "item": [
+          {
+            "id": "0cb89683-fe44-4804-b40e-d44962c936fe",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "associado/get?cod_lct=cl24w63of0019zplyx7vxfku9&name=Eduardo Gouveia"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "bdf580c9-fee2-4933-91ba-560aba8f866e"
+              }
+            ]
+          },
+          {
+            "id": "79ecd5d3-14f2-451d-839f-9604a731d35a",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "associado?cod_lct=cl24w63of0019zplyx7vxfku9&name=Eduardo Gouveia"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "c8f5e2d3-3c34-478b-ae91-39ef4be171ac"
+              }
+            ]
+          },
+          {
+            "id": "958272ad-c2c1-4484-8c54-55f2ca6b8d81",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "associado"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"name\": \"Terezinha Gouveia\",\n    \"cod_lct\": \"cl26ogkt80010zgly0pq56b9v\",\n    \"birthdate\": \"03/10/1980\",\n    \"tipo\": \"MAE\"\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "7ea7243b-f7bb-4c59-9a28-bf50087e97e7"
+              }
+            ]
+          },
+          {
+            "id": "fc34cd8e-55f4-4c83-b5ee-c10656d3214f",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "pessoa/locatario/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "15e3c3d3-63ce-4515-9350-70f6f67fb320"
+              }
+            ]
+          },
+          {
+            "id": "747c3e6c-f943-4935-a906-493353ff8469",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "associado/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "71baec7f-3748-41b0-8230-b1777b9c961e"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "contrato",
+        "description": "",
+        "item": [
+          {
+            "id": "075be6f1-4d83-4b89-9f13-8b48aba3a0af",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "contrato/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "e8d56c1e-eb71-437b-8d18-b56dee211b7a"
+              }
+            ]
+          },
+          {
+            "id": "42457885-0fce-4e8e-bf3b-d826ed61dce5",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "contrato/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "cad65659-b627-4138-9b82-22379d838ba2"
+              }
+            ]
+          },
+          {
+            "id": "cd521b0a-6eae-4872-846b-1c2b79bbb202",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "contrato"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n\t \"cod_lcd\": \"cl26e72ki0010ggly6uzgco24\",\n   \"cod_lct\": \"cl26a9slm000029lyz4arzjnj\",\n   \"cod_imv\": \"cl26qzxuu0006ooly20ysybho\",\n\t\"dateInit\": \"26/10/2021\",\n\t\"dateEnd\": \"30/12/2024\",\n\t\"type\": \"LOCACAO\"\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "0dc2f0e9-1f4f-472a-a8d8-2583f92dad40"
+              }
+            ]
+          },
+          {
+            "id": "652a14ce-c261-4c91-95ca-d94baaaef45d",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "contrato/get"
+                ],
+                "query": [
+                  {
+                    "key": "cod_lct",
+                    "value": "cl26a9slm000029lyz4arzjnj",
+                    "description": "",
+                    "disabled": false
+                  },
+                  {
+                    "key": "cod_lcd",
+                    "value": "cl26e72ki0010ggly6uzgco24",
+                    "description": "",
+                    "disabled": false
+                  },
+                  {
+                    "key": "cod_imv",
+                    "value": "cl26qzxuu0006ooly20ysybho",
+                    "description": "",
+                    "disabled": false
+                  }
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "1b81b748-58e0-48e8-9708-5cfc667a22b8"
+              }
+            ]
+          },
+          {
+            "id": "6ef4ee6d-f364-4fbc-a861-0ea399d446a5",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 2}}",
+                "path": [
+                  "contrato"
+                ],
+                "query": [
+                  {
+                    "key": "cod_lct",
+                    "value": "cl26a9slm000029lyz4arzjnj",
+                    "description": "",
+                    "disabled": false
+                  },
+                  {
+                    "key": "cod_lcd",
+                    "value": "cl26e72ki0010ggly6uzgco24",
+                    "description": "",
+                    "disabled": false
+                  },
+                  {
+                    "key": "cod_imv",
+                    "value": "cl26qjtum0006wjlybfx5dk8x",
+                    "description": "",
+                    "disabled": false
+                  }
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "3d1180fc-1175-4ead-9af4-983de4852e74"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "telefone",
+        "description": "",
+        "item": [
+          {
+            "id": "db3e5217-e86c-495f-b226-35281ff18608",
+            "name": "getByCod",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "telefone/get?idPessoa=cl24w63of0019zplyx7vxfku9&numero=(35) 997232360"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "2bcd3731-8c63-4105-a3f7-37275b3ae4bd"
+              }
+            ]
+          },
+          {
+            "id": "e0c60451-ecc4-40c3-80e8-1072582a2783",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "telefone?idPessoa=cl26fumrn0003yflyqxtt15sr&numero=(35) 997232378"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "4e2ba647-14da-4c96-906e-fe4fda3ee180"
+              }
+            ]
+          },
+          {
+            "id": "7ac3c111-af25-4e08-99c6-b2085aaed6a8",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "telefone"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\n    \"idPessoa\": \"cl26fumrn0003yflyqxtt15sr\",\n    \"numero\": \"(35) 997322377\"\n}",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "5ffba86d-3721-4676-971a-abd5e2151af9"
+              }
+            ]
+          },
+          {
+            "id": "ab55800c-e03b-4ae3-a5d4-2c8378e9aa64",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "telefone/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "f0f2511f-98b5-499f-b6cd-446f35a823c4"
+              }
+            ]
+          },
+          {
+            "id": "cea14a71-0aad-4809-ba39-1e9ff2500e30",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "telefone/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "d99f9b81-4fcb-44a5-958b-51255f3ceb14"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "image",
+        "description": "",
+        "item": [
+          {
+            "id": "d27f4aee-0f16-47ce-8007-d200b78ae153",
+            "name": "insert",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "image/upload?idOwner=cl2i1daas0001z7lyz818a8qp"
+                ]
+              },
+              "method": "POST",
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "multipart/form-data",
+                  "description": "",
+                  "disabled": false
+                },
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "formdata",
+                "formdata": [
+                  {
+                    "key": "file",
+                    "disabled": false,
+                    "type": "file",
+                    "description": ""
+                  }
+                ],
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "9407b966-ee9f-4d89-94a4-2a5936f5e3d4"
+              }
+            ]
+          },
+          {
+            "id": "a028a3cc-e2a5-4df8-81dc-3ec879189830",
+            "name": "count",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "telefone/count"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "744d0d80-286f-43e6-b9d5-18d1eba2dfd4"
+              }
+            ]
+          },
+          {
+            "id": "c61896de-4ff2-4f78-b893-f3df0c04b400",
+            "name": "getAll",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "image/all"
+                ]
+              },
+              "method": "GET",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "87ed3659-0abb-4f54-9429-6347df627131"
+              }
+            ]
+          },
+          {
+            "id": "b62a7289-77b3-4df8-a2c8-65955202308a",
+            "name": "delete",
+            "request": {
+              "url": {
+                "host": "{{Server 1}}",
+                "path": [
+                  "image/904fcfbdccb1249654e300210af49562-3dafc5bfffc0c4f11f56785c2a394e6d.jpg"
+                ]
+              },
+              "method": "DELETE",
+              "header": [
+                {
+                  "key": "Accept",
+                  "value": "*/*",
+                  "disabled": false
+                }
+              ],
+              "body": {
+                "mode": "raw",
+                "disabled": false
+              },
+              "description": ""
+            },
+            "response": [
+              {
+                "header": [],
+                "body": "any",
+                "code": 200,
+                "name": "Response_200",
+                "id": "c929560f-9804-4daf-a24b-015c3b09f60a"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "key": "Server 1",
+        "value": "DefaultParameterValue"
+      },
+      {
+        "key": "Server 2",
+        "value": "http://localhost:3333"
+      }
+    ],
+    "auth": {
+      "type": "noauth"
+    }
+  }
