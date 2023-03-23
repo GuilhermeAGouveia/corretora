@@ -8,10 +8,10 @@ import UniqueKeyRoutesFactory from "./factory/UniqueKeyRoutesFactory";
 const routerPessoa = new UniqueKeyRoutesFactory("/pessoa", PessoaController);
 const routesPessoa = routerPessoa.createRoutes();
 
-const routerLocador = new UniqueKeyRoutesFactory("/pessoa/locador", LocadorController);
+const routerLocador = new UniqueKeyRoutesFactory("/locador", LocadorController);
 const routesLocador = routerLocador.createRoutes();
 
-const routerLocatario = new UniqueKeyRoutesFactory("/pessoa/locatario", LocatarioController);
+const routerLocatario = new UniqueKeyRoutesFactory("/locatario", LocatarioController);
 const routesLocatario = routerLocatario.createRoutes();
 
 

@@ -1,7 +1,7 @@
 import { AssociadoType, Pessoa } from "@prisma/client";
 
 export interface PessoaWithTelefone extends Pessoa {
-  telefones?: string[];
+  phones?: {numero: string}[];
 }
 
 export interface Locador extends PessoaWithTelefone {

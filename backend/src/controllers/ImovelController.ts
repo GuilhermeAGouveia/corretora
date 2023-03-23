@@ -51,7 +51,7 @@ export default {
       let filterProps = req.query as Filter;
 
       //Get page attributes
-      const pageNumber = parseInt((req.params.page as string) || "1");
+      const page = parseInt((req.params.page as string) || "1");
       const limit = parseInt((req.query.limit as string) || "10");
 
       //Get sort attributes
@@ -61,7 +61,7 @@ export default {
       const result = await imovelService.filter(
         filterProps,
         {
-          pageNumber,
+          page,
           limit,
         },
         {
@@ -80,32 +80,8 @@ export default {
     const page = parseInt(req.params.page as string); // page é um string que vem do params
     const perPage = parseInt((req.query.perPage as string) || "10"); // perPage é um string que vem do query, se não tiver, usa 10 como default
 
-    const imoveis = prisma.imovel.findMany({
-      skip: perPage * (page - 1),
-      take: perPage,
-      include: {
-        images: {
-          select: {
-            url: true,
-            originalname: true,
-            size: true,
-          },
-        },
-      },
-    });
-
-    const total = prisma.imovel.count();
-
-    const [imoveisPage, totalPage] = await prisma.$transaction([
-      imoveis,
-      total,
-    ]);
-
-    res.json({
-      data: imoveisPage,
-      total: totalPage,
-      hasNext: totalPage > page * perPage,
-    });
+    const pageImoveis = await imovelService.page({page, limit: perPage});
+    res.json(pageImoveis);
   },
 } as Controller & {
   filter: (req: Request, res: Response) => Promise<void>;

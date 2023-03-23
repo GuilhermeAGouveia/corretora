@@ -1,6 +1,6 @@
 import { Imovel, PrismaClient } from "@prisma/client";
 import { Console } from "console";
-import { Service, Filter, Page, OfferType } from "../interfaces";
+import { Service, Filter, Page, OfferType, Pagination } from "../interfaces";
 
 const prisma = new PrismaClient();
 
@@ -146,7 +146,7 @@ export default {
   },
   filter: async (filterProps, pageDefinitions) => {
 
-    if (pageDefinitions.pageNumber < 1) 
+    if (pageDefinitions.page < 1) 
       throw new Error("O numero de página deve ser maior que 1")
 
     const filter = adapterFilterFrontendToBackend(filterProps);
@@ -183,7 +183,7 @@ export default {
     }
 
     const imoveis = prisma.imovel.findMany({
-      skip: (pageDefinitions.pageNumber - 1) * pageDefinitions.limit,
+      skip: (pageDefinitions.page - 1) * pageDefinitions.limit,
       take: pageDefinitions.limit,
       where: wherePrisma,
       orderBy: defineOrderBy(filterProps.orderBy, filterProps.sort),
@@ -207,19 +207,45 @@ export default {
     return {
       data: imoveisList,
       total,
-      hasNext: total > pageDefinitions.pageNumber * pageDefinitions.limit,
+      hasNext: total > pageDefinitions.page * pageDefinitions.limit,
     };
-  }
+  },
+  page: async ({page, limit}) => {
+    const imoveis = prisma.imovel.findMany({
+      skip: limit * (page - 1),
+      take: limit,
+      include: {
+        images: {
+          select: {
+            url: true,
+            originalname: true,
+            size: true,
+          },
+        },
+      },
+    });
+
+    const total = prisma.imovel.count();
+
+    const [imoveisPage, totalPage] = await prisma.$transaction([
+      imoveis,
+      total,
+    ]);
+
+    return {
+      data: imoveisPage,
+      total: totalPage,
+      hasNext: totalPage > page * limit,
+    };
+  },
 } as Service<Imovel, string> & {
   filter: (
     filterProps: Filter,
-    pageDefinitions: { 
-      pageNumber: number; 
-      limit: number 
-    },
+    pageDefinitions: Pagination,
     sortDefinitions: {
       orderBy?: string;
       sort?: string;
     }
   ) => Promise<Page<Imovel>>;
+  page: (pageDefinitions: Pagination) => Promise<Page<Imovel>>;
 };
