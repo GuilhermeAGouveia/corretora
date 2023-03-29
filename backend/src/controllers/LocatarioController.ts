@@ -1,54 +1,21 @@
-import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
 import {Controller} from "../interfaces"
-
-const prisma = new PrismaClient();
+import locatarioService from "../services/LocatarioService";
 
 export default {
   count: async (req: Request, res: Response) => {
-    const count = await prisma.locatario.count();
-    res.json(count);
+    const count = await locatarioService.count();
   },
   default: async (req: Request, res: Response) => {
     res.send("Raiz para locatario");
   },
   getByCod: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
-    const locatario = await prisma.locatario.findUnique({
-      where: {
-        cod_lct: cod,
-      },
-      include: {
-        pessoa: {
-          include: {
-            phones: true,
-          },
-        },
-      },
-    });
+    const locatario = await locatarioService.getByCod(cod);
     res.json(locatario);
   },
   getAll: async (req: Request, res: Response) => {
-    const locatario = await prisma.locatario.findMany({
-      include: {
-        pessoa: {
-          include: {
-            phones: {
-              select: {
-                numero: true,
-              },
-            },
-          },
-        },
-        associados: {
-          select: {
-            name: true,
-            tipo: true,
-            birthdate: true,
-          },
-        },
-      },
-    });
+    const locatario = await locatarioService.getAll();
 
     res.json(locatario);
   },
@@ -60,16 +27,9 @@ export default {
     try {
       const cod = req.params.cod;
 
-      const locatario = await prisma.pessoa.deleteMany({
-        where: {
-          id: cod,
-          Locatario: {
-            cod_lct: cod,
-          },
-        },
-      });
+      const locatario = await locatarioService.delete(cod);
 
-      return res.json(!!locatario.count);
+      return res.json(locatario);
     } catch (error: any) {
       return res.status(400).json(error);
     }

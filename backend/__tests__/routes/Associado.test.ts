@@ -24,7 +24,6 @@ const createAssociadoTest = (cod_lct: string) => ({
 
 
 var pessoaTestCod: string;
-var associadoParcialKeyName: string;
 beforeAll(async () => {
   const res = await request(app).post("/pessoa/").send(pessoaTest); // create a user to be associated with the pessoa
   pessoaTestCod = res.body.id;
@@ -40,7 +39,6 @@ describe("Test endpoint /associado", () => {
   });
   test("POST /associado/ [Criar imóvel]", async () => {
     const res = await request(app).post("/associado/").send(createAssociadoTest(pessoaTestCod));
-    associadoParcialKeyName = res.body;
     expect(res.body).toBe(createAssociadoTest(pessoaTestCod).name);
     expect(res.status).toBe(200);
   });

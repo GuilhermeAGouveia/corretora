@@ -19,6 +19,7 @@
     "@types/react-input-mask": "^3.0.1",
     "@types/uuidv4": "^5.0.0",
     "axios": "^0.26.1",
+    "caniuse-lite": "^1.0.30001458",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "filesize": "^8.0.7",
