@@ -1,9 +1,6 @@
-import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import jwt from "jsonwebtoken";
 
 import sessionService from "../services/SessionService";
-const prisma = new PrismaClient();
 
 export default {
   async login(req: Request, res: Response) {

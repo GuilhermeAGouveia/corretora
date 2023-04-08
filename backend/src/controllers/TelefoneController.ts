@@ -1,12 +1,12 @@
-import { PrismaClient, Telefone } from "@prisma/client";
 import { Request, Response } from "express";
 import {Controller} from "../interfaces"
+import handleErrorPrisma from "../handleErrorPrisma";
 
-const prisma = new PrismaClient();
+import telefoneService from "../services/TelefoneService";
 
 export default {
   count: async (req: Request, res: Response) => {
-    const count = await prisma.telefone.count();
+    const count = await telefoneService.count();
     res.json(count);
   },
   default: async (req: Request, res: Response) => {
@@ -14,57 +14,39 @@ export default {
   },
   getByCod: async (req: Request, res: Response) => {
     try {
-      const idTelefone = req.query as any as Telefone;
-      const telefone = await prisma.telefone.findUnique({
-        where: {
-          idTelefone,
-        },
-      });
-
+      const idTelefone = req.query as any;
+      const telefone = await telefoneService.getByCod(idTelefone);
       res.json(telefone);
     } catch (error: any) {
       res.status(500).json({ error: error.message });
     }
   },
   getAll: async (req: Request, res: Response) => {
-    const telefone = await prisma.telefone.findMany();
+    const telefone = await telefoneService.getAll();
 
     res.json(telefone);
   },
 
   insert: async (req: Request, res: Response) => {
     try {
-      const telefone = req.body as Telefone;
+      const telefone = req.body as any;
 
-      const telefoneInsert = await prisma.telefone.create({
-        data: telefone,
-      });
+      const telefoneInsert = await telefoneService.insert(telefone);
 
-      return res.json(telefoneInsert.idPessoa);
+      return res.json(telefoneInsert);
     } catch (error: any) {
-      return res.status(400).json(error);
+      return res.status(400).json(handleErrorPrisma(error));
     }
   },
   delete: async (req: Request, res: Response) => {
     try {
-      const idTelefone = req.query as any as Telefone;
+      const idTelefone = req.query as any;
 
-      const telefone = await prisma.telefone.delete({
-        where: {
-          idTelefone,
-        },
-      });
+      const telefone = await telefoneService.delete(idTelefone);
 
       res.json(telefone);
     } catch (error: any) {
-      switch (error.code) {
-        case "P2025":
-          return res.status(400).json({
-            error: "Não é possível deletar um telefone que não está cadastrado",
-          });
-        default:
-          res.status(500).json(error);
-      }
+      res.status(500).json(handleErrorPrisma(error));
     }
   },
 } as Controller;
