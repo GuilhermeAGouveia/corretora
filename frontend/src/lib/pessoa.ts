@@ -40,7 +40,7 @@ export function parseFormPessoaToPessoa(
         city: city as string,
         state: state as string,
         cep: cep as string,
-        telefones: telefones as string[]
+        phones: telefones as string[]
     } as Pessoa;
 
     return pessoa;
