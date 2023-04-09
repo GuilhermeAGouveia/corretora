@@ -16,13 +16,14 @@ export const Form = styled.div`
 export const SectionInputContent = styled.div`
   position: relative;
   width: 100%;
-  overflow-x: auto;
-  overflow-y: visible;
+  height: 100%;
   & > * {
-    margin: 15px auto;
+    margin: 0px auto;
+    margin-top: 15px;
   }
 
-  padding: 10px;
+  margin: 0px 15px;
+
 `;
 export const ButtonSubmit = styled.button`
   position: relative;
@@ -50,7 +51,8 @@ export const FormHeader = styled.div`
 export const FormContentWrapper = styled.div`
   position: relative;
   width: 100%;
-  overflow: hidden;
+  height: 100%;
+  overflow-y: hidden; /* Se mudar para visible, o form não fica responsivo */
   overflow-x: hidden;
   
 `;
@@ -60,8 +62,9 @@ export const FormContent = styled(motion.form)<MotionAdvancedProps & {
   position: relative;
   width: ${(props:any) => `calc(${props.nSections} * 100%)`};
   display: flex;
-  overflow: hidden;
+  align-items: flex-start;
   height: auto;
+  overflow-y: visible;
 `;
 
 export const ActionsForm = styled.div`
@@ -92,7 +95,7 @@ export const AreaShow = styled.div`
 export const SubmitContainer = styled.div`
   position: relative;
   width: 100%;
-  min-height: 100%;
+  height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;

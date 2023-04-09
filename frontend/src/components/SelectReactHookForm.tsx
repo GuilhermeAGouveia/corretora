@@ -56,7 +56,8 @@ const SelectReactHookForm = ({
                         control: (provided) => ({
                             ...provided,
                             borderRadius: "21px",
-                            minheight: "42px",
+                            minHeight: "42px",
+                  
                         }),
                     }}
                     ref={rest.ref}
