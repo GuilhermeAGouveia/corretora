@@ -68,16 +68,16 @@ export const ActionsForm = styled.div`
   position: relative;
   width: 100%;
   height: 44px;
-  padding: 8px;
+  padding: 4px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 `;
-export const ReturnButton = styled.button`
+export const MoveButton = styled.button`
   position: relative;
   width: 36px;
   height: 36px;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 3px;
   border: none;
 `;
