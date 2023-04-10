@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, KeyboardEvent } from "react";
 import { FiCheck, FiChevronLeft } from "react-icons/fi";
 import colors from "../../styles/colors";
 import ShowTrail from "./component/ShowTrail";
@@ -32,6 +32,15 @@ interface FormImovelProps {
 const FormComponent = ({ sections, onSubmit, error }: FormImovelProps) => {
   const [trail, setTrail] = useState(0);
 
+  const moveInFormByArrow = (e: KeyboardEvent<HTMLFormElement>) => {
+    if (e.key == "Left" || e.key == "ArrowLeft") {
+      handleSetTrailNumber(trail - 1);
+    } else if (e.key == "Right" || e.key == "ArrowRight") {
+      if (trail === sections.length - 1) onSubmit();
+      else handleSetTrailNumber(trail + 1);
+    }
+  };
+
   const handleSetTrailNumber = (num: number) => {
     if (num < 0) num = 0;
 
@@ -64,6 +73,7 @@ const FormComponent = ({ sections, onSubmit, error }: FormImovelProps) => {
       </FormHeader>
       <FormContentWrapper>
         <FormContent
+          onKeyPress={moveInFormByArrow}
           onSubmit={(e) => {
             e.preventDefault();
             if (trail === sections.length - 1)

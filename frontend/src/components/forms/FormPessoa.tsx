@@ -23,6 +23,7 @@ import SelectReactHookForm, {
 } from "../SelectReactHookForm";
 import FormComponent from "./FormComponent";
 import { ButtonSubmit, SubmitContainer } from "./styles";
+import { tr } from "date-fns/locale";
 
 export interface IFormPessoa {
   email: string;
@@ -54,6 +55,7 @@ const FormPessoa = () => {
   const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
 
   const onSubmit = async (data: any) => {
+    try {
     data = data as IFormPessoa;
     let pessoa = parseFormPessoaToPessoa(data);
     await insertPessoa(pessoa);
@@ -61,6 +63,9 @@ const FormPessoa = () => {
       type: AlertType.SUCCESS,
       message: "Pessoa cadastrada com sucesso!",
     });
+    } catch (e) {
+      onError(e);
+    }
   };
 
   const onError = (errors: any) => {
@@ -76,7 +81,7 @@ const FormPessoa = () => {
         }
       }
 
-      return "Mensagem não encontrada";
+      return "Erro ao inserir usuário";
     }
 
     let message = getMessageInJsonRecursive(errors);

@@ -57,7 +57,7 @@ export default {
     if (pessoa) {
       return res.json({ error: "Email cadastrado" });
     }
-    res.status(400).json({ message: "Email não encontrado" })
+    res.status(404).json({ message: "Email não encontrado" })
   }
 } as Controller & {
   verifyEmail: (req: Request, res: Response) => Promise<void>;
