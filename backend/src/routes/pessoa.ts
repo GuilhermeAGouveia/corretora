@@ -8,6 +8,8 @@ import UniqueKeyRoutesFactory from "./factory/UniqueKeyRoutesFactory";
 const routerPessoa = new UniqueKeyRoutesFactory("/pessoa", PessoaController);
 const routesPessoa = routerPessoa.createRoutes();
 
+routesPessoa.get("/pessoa/email/:cod", PessoaController.verifyEmail);
+
 const routerLocador = new UniqueKeyRoutesFactory("/locador", LocadorController);
 const routesLocador = routerLocador.createRoutes();
 

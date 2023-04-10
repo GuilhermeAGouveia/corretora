@@ -110,4 +110,14 @@ export default {
       throw new Error(error.message || "Erro ao deletar pessoa");
     }
   },
-} as Service<PessoaWithTelefone, string>;
+  getByEmail: async (email: string) => {
+    const pessoa = await prisma.pessoa.findUnique({
+      where: {
+        email,
+      },
+    });
+    return pessoa;
+  },
+} as Service<PessoaWithTelefone, string> & {
+  getByEmail: (email: string) => Promise<Pessoa>;
+};

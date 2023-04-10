@@ -52,4 +52,13 @@ export default {
       return res.status(400).json({ error: error.message });
     }
   },
-} as Controller;
+  verifyEmail: async (req: Request, res: Response) => {
+    const pessoa = await PessoaService.getByEmail(req.params.cod);
+    if (pessoa) {
+      return res.json({ error: "Email cadastrado" });
+    }
+    res.status(400).json({ message: "Email não encontrado" })
+  }
+} as Controller & {
+  verifyEmail: (req: Request, res: Response) => Promise<void>;
+};
