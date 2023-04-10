@@ -35,7 +35,7 @@ export default {
       pessoa.phones = phones_ && phones_.map((numero) => ({ numero }));
 
       const pessoaInsert = await PessoaService.insert(pessoa);
-      res.json(pessoaInsert)
+      res.status(201).json(pessoaInsert)
     } catch (error: any) {
       console.log(error);
       res.status(400).json(error);

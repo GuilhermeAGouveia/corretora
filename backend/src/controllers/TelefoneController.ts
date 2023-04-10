@@ -33,7 +33,7 @@ export default {
 
       const telefoneInsert = await telefoneService.insert(telefone);
 
-      return res.json(telefoneInsert);
+      return res.status(201).json(telefoneInsert);
     } catch (error: any) {
       return res.status(400).json(handleErrorPrisma(error));
     }

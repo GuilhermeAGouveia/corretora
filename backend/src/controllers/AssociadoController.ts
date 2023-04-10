@@ -34,7 +34,7 @@ export default {
     try {
       const associado = req.body as Associado;
       const associadoInsert = await associadoService.insert(associado);
-      return res.json(associadoInsert.name);
+      return res.status(201).json(associadoInsert.name);
     } catch (error: any) {
       return res.status(400).json(error);
     }

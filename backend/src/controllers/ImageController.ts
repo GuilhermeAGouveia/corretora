@@ -21,7 +21,7 @@ export default {
 
             const image = adapterMulterFileToImage(multerFile, idOwner);
             const imageInsert = await imageService.insert(image);
-            return res.json(imageInsert.url);
+            return res.status(201).json(imageInsert.url);
 
         } catch (error: any) {
             console.log(error);

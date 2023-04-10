@@ -30,7 +30,7 @@ export default {
     try {
       const imovel = req.body as Imovel;
       const imovelInsert = await imovelService.insert(imovel);
-      res.json(imovelInsert.cod_imv);
+      res.status(201).json(imovelInsert.cod_imv);
     } catch (error: any) {
       console.log(error);
       res.status(400).json(error);

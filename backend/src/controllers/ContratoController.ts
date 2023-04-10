@@ -36,7 +36,7 @@ export default {
             const Contrato = req.body as Contrato;
             const ContratoInsert = await contratoService.insert(Contrato);
 
-            return res.json(ContratoInsert.cod_lcd + "|" + ContratoInsert.cod_lct + "|" + ContratoInsert.cod_imv);
+            return res.status(201).json(ContratoInsert.cod_lcd + "|" + ContratoInsert.cod_lct + "|" + ContratoInsert.cod_imv);
         } catch (error: any) {
             return res.status(400).json(error);
         }
