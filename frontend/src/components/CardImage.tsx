@@ -8,17 +8,18 @@ import colors from "../styles/colors";
 
 interface CardImageProps {
     imageUrl: string;
+    onClick?: () => void;
     alt: string;
 }
 
-const CardImage = ({imageUrl, alt}: CardImageProps) => {
+const CardImage = ({imageUrl, alt, onClick}: CardImageProps) => {
     const [isLoadingImage, setIsLoadingImage] = useState(true);
     const [imageDimensions, setImageDimensions] = useState({
       width: 450,
       height: 450,
     });
     return (
-        <CardImovelImage>
+        <CardImovelImage onClick={onClick}>
         <Image
           src={imageUrl}
           alt={alt}

@@ -132,6 +132,9 @@ const inputCSS = css`
   border: none;
   background: none;
   color: rgba(0, 0, 0, 0.8);
+  :invalid {
+    border: none;
+    }
 `;
 
 const InputWithMask = styled(InputMask)`

@@ -25,7 +25,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
     );
   };
   return (
-    <CardImovelContainer onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}>
+    <CardImovelContainer>
       <CardImovelButtonFavorite
         onHoverStart={() => setIsHover(true)}
         onHoverEnd={() => setIsHover(false)}
@@ -53,6 +53,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
         </AnimatePresence>
       </CardImovelButtonFavorite>
       <CardImage
+      onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}
       imageUrl={
         imovel.images[0]
           ? imovel.images[0].url

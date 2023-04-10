@@ -52,6 +52,7 @@ export const FormContentWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 100%;
+  margin-top: 20px;
   overflow-y: hidden; /* Se mudar para visible, o form não fica responsivo */
   overflow-x: hidden;
   
