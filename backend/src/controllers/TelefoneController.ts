@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import {Controller} from "../interfaces"
-import handleErrorPrisma from "../handleErrorPrisma";
 
 import telefoneService from "../services/TelefoneService";
 
@@ -35,7 +34,7 @@ export default {
 
       return res.status(201).json(telefoneInsert);
     } catch (error: any) {
-      return res.status(400).json(handleErrorPrisma(error));
+      return res.status(400).json({ error: error.message });
     }
   },
   delete: async (req: Request, res: Response) => {
@@ -46,7 +45,7 @@ export default {
 
       res.json(telefone);
     } catch (error: any) {
-      res.status(500).json(handleErrorPrisma(error));
+      res.status(500).json({ error: error.message});
     }
   },
 } as Controller;

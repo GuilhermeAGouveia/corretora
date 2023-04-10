@@ -33,7 +33,7 @@ export default {
       res.status(201).json(imovelInsert.cod_imv);
     } catch (error: any) {
       console.log(error);
-      res.status(400).json(error);
+      res.status(400).json({ error: error.message });
     }
   },
   delete: async (req: Request, res: Response) => {
@@ -42,7 +42,7 @@ export default {
       const imovel = await imovelService.delete(cod);
       res.json(imovel);
     } catch (error: any) {
-      res.status(400).json(error);
+      res.status(400).json({ error: error.message });
     }
   },
 
@@ -70,18 +70,23 @@ export default {
         }
       );
       return res.json(result)
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
-      res.status(400).send("Erro ao buscar informações de filtro, consulte os logs da API");
+      res.status(400).json({ error: error.message });
     }
   },
 
   page: async (req: Request, res: Response) => {
+    try {
     const page = parseInt(req.params.page as string); // page é um string que vem do params
     const perPage = parseInt((req.query.perPage as string) || "10"); // perPage é um string que vem do query, se não tiver, usa 10 como default
 
     const pageImoveis = await imovelService.page({page, limit: perPage});
     res.json(pageImoveis);
+    } catch (error: any) {
+      console.log(error)
+      res.status(400).json({ error: error.message });
+    }
   },
 } as Controller & {
   filter: (req: Request, res: Response) => Promise<void>;

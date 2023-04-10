@@ -31,7 +31,7 @@ export default {
       });
     } catch (error: any) {
       console.log(error);
-      throw error;
+      throw new Error(error.message || "Erro ao inserir telefone");
     }
   },
   delete: async (idTelefone: IdTelefone) => {
@@ -43,7 +43,7 @@ export default {
       });
     } catch (error: any) {
       console.log(error);
-      throw error;
+      throw new Error(error.message || "Erro ao deletar telefone");
     }
   },
 } as Service<Telefone, IdTelefone>;

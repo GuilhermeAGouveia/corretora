@@ -61,7 +61,7 @@ export default {
             });
             return locatarioInsert;
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao inserir locatario");
         }
     },
 

@@ -76,7 +76,6 @@ function adapterFilterFrontendToBackend(filterProps: Filter) {
   return filter;
 }
 
-
 export default {
   count: async () => {
     const count = await prisma.imovel.count();
@@ -128,7 +127,7 @@ export default {
       });
       return imovelInsert;
     } catch (error: any) {
-      throw new Error(error);
+      throw new Error(error.message || "Erro ao inserir imovel");
     }
   },
 
@@ -145,72 +144,77 @@ export default {
     }
   },
   filter: async (filterProps, pageDefinitions) => {
+    try {
+      if (pageDefinitions.page < 1)
+        throw new Error("O numero de página deve ser maior que 1");
 
-    if (pageDefinitions.page < 1) 
-      throw new Error("O numero de página deve ser maior que 1")
-
-    const filter = adapterFilterFrontendToBackend(filterProps);
+      const filter = adapterFilterFrontendToBackend(filterProps);
 
       const wherePrisma = {
-      OR: filter.OR,
-      ...filter.area,
-      ...filter.mensalidade,
-      ...filter.price,
-      ...filter.supDescribe,
-      ...filter.offerType,
-      ...filter.area,
-      ...filter.type,
-      ...filter.cod_lcd,
-    };
-
-    // Se o campo em orderBy não existir, um error será lançado
-    function defineOrderBy(orderBy?: string, sort?: string) {
-      if (!orderBy) {
-        return {};
-      }
-
-      if (Object.keys({} as Imovel).includes(orderBy)) {
-        throw new Error(`Field ${orderBy} not found`);
-      }
-
-      if (!["asc", "desc"].includes((sort as string).toLowerCase())) {
-        throw new Error(`Sort ${sort} not found`);
-      }
-
-      return {
-        [orderBy]: sort?.toLowerCase() || "asc",
+        OR: filter.OR,
+        ...filter.area,
+        ...filter.mensalidade,
+        ...filter.price,
+        ...filter.supDescribe,
+        ...filter.offerType,
+        ...filter.area,
+        ...filter.type,
+        ...filter.cod_lcd,
       };
-    }
 
-    const imoveis = prisma.imovel.findMany({
-      skip: (pageDefinitions.page - 1) * pageDefinitions.limit,
-      take: pageDefinitions.limit,
-      where: wherePrisma,
-      orderBy: defineOrderBy(filterProps.orderBy, filterProps.sort),
-      include: {
-        images: {
-          select: {
-            url: true,
-            originalname: true,
-            size: true,
+      // Se o campo em orderBy não existir, um error será lançado
+      function defineOrderBy(orderBy?: string, sort?: string) {
+        if (!orderBy) {
+          return {};
+        }
+
+        if (Object.keys({} as Imovel).includes(orderBy)) {
+          throw new Error(`Field ${orderBy} not found`);
+        }
+
+        if (!["asc", "desc"].includes((sort as string).toLowerCase())) {
+          throw new Error(`Sort ${sort} not found`);
+        }
+
+        return {
+          [orderBy]: sort?.toLowerCase() || "asc",
+        };
+      }
+
+      const imoveis = prisma.imovel.findMany({
+        skip: (pageDefinitions.page - 1) * pageDefinitions.limit,
+        take: pageDefinitions.limit,
+        where: wherePrisma,
+        orderBy: defineOrderBy(filterProps.orderBy, filterProps.sort),
+        include: {
+          images: {
+            select: {
+              url: true,
+              originalname: true,
+              size: true,
+            },
           },
         },
-      },
-    });
+      });
 
-    const count = prisma.imovel.count({
-      where: wherePrisma,
-    });
+      const count = prisma.imovel.count({
+        where: wherePrisma,
+      });
 
-    const [imoveisList, total] = await prisma.$transaction([imoveis, count]);
+      const [imoveisList, total] = await prisma.$transaction([imoveis, count]);
 
-    return {
-      data: imoveisList,
-      total,
-      hasNext: total > pageDefinitions.page * pageDefinitions.limit,
-    };
+      return {
+        data: imoveisList,
+        total,
+        hasNext: total > pageDefinitions.page * pageDefinitions.limit,
+      };
+    } catch (error: any) {
+      throw new Error(error.message || "Erro ao filtrar imoveis");
+    }
   },
-  page: async ({page, limit}) => {
+  page: async ({ page, limit }) => {
+    if (page < 1) throw new Error("O numero de página deve ser maior que 1");
+    if (limit < 1) throw new Error("O numero de limite deve ser maior que 1");
     const imoveis = prisma.imovel.findMany({
       skip: limit * (page - 1),
       take: limit,

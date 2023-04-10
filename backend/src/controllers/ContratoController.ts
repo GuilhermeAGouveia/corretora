@@ -38,7 +38,7 @@ export default {
 
             return res.status(201).json(ContratoInsert.cod_lcd + "|" + ContratoInsert.cod_lct + "|" + ContratoInsert.cod_imv);
         } catch (error: any) {
-            return res.status(400).json(error);
+            return res.status(400).json({ error: error.message});
         }
     },
     delete: async (req: Request, res: Response) => {
@@ -49,12 +49,7 @@ export default {
 
             return res.json(contrato);
         } catch (error: any) {
-            switch (error.code) {
-                case "P2025":
-                    return res.status(400).json({error: "Não é possível excluir um contrato que não existe"});
-                default:
-                    return res.status(500).json(error);
-            }
+            return res.status(400).json({ error: error.message});
         }
 
     }

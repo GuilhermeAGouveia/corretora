@@ -25,7 +25,7 @@ export default {
 
             return contrato
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao buscar contrato");
         }
     },
     getAll: async () => {
@@ -41,7 +41,7 @@ export default {
 
             return contratoInsert
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao inserir contrato");
         }
     },
     delete: async (cod) => {

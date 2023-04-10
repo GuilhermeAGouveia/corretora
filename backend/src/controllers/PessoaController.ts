@@ -38,7 +38,7 @@ export default {
       res.status(201).json(pessoaInsert)
     } catch (error: any) {
       console.log(error);
-      res.status(400).json(error);
+      res.status(400).json({ error: error.message });
     }
   },
   delete: async (req: Request, res: Response) => {
@@ -49,7 +49,7 @@ export default {
 
       return res.json(pessoa);
     } catch (error: any) {
-      return res.status(400).json(error);
+      return res.status(400).json({ error: error.message });
     }
   },
 } as Controller;

@@ -31,7 +31,7 @@ export default {
     },
 
     getAll: async () => {
-        const locador = await  await prisma.locador.findMany({
+        const locador = await prisma.locador.findMany({
             include: {
               pessoa: {
                 include: {
@@ -59,7 +59,7 @@ export default {
             });
             return locadorInsert;
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao inserir locador");
         }
     },
 
@@ -72,7 +72,7 @@ export default {
             });
             return locador;
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao deletar locador");
         }
     }
 

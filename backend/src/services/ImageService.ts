@@ -21,7 +21,7 @@ export default {
             return imageInsert
 
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao inserir imagem");
         }
     },
     delete: async (cod) => {
@@ -34,7 +34,7 @@ export default {
             await deleteFile(image); // delete file from s3 or local
             return image;
         } catch (error: any) {
-            throw new Error(error);
+            throw new Error(error.message || "Erro ao deletar imagem");
         }
     },
     getByCod: async (cod) => {

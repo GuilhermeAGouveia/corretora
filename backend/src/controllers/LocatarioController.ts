@@ -31,7 +31,7 @@ export default {
 
       return res.json(locatario);
     } catch (error: any) {
-      return res.status(400).json(error);
+      return res.status(400).json({ error: error.message});
     }
   },
-} as Controller;
+} as Controller;  

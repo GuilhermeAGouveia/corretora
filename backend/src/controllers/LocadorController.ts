@@ -33,7 +33,7 @@ export default {
 
       return res.json(locador);
     } catch (error: any) {
-      return res.status(400).json(error);
+      return res.status(400).json({ error: error.message});
     }
   },
 } as Controller;

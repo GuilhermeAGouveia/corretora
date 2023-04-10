@@ -94,7 +94,7 @@ export default {
 
       return insertPessoa;
     } catch (error: any) {
-      throw new Error(error);
+      throw new Error(error.message || "Erro ao inserir pessoa");
     }
   },
 
@@ -107,7 +107,7 @@ export default {
       });
       return pessoa;
     } catch (error: any) {
-      throw new Error(error);
+      throw new Error(error.message || "Erro ao deletar pessoa");
     }
   },
 } as Service<PessoaWithTelefone, string>;
