@@ -77,7 +77,7 @@ const Header = () => {
           Anunciar
         </HeaderBottomButton>
         <LineDivision />
-        <HeaderBottomButton onClick={() => router.push("lista")}>
+        <HeaderBottomButton onClick={() => router.push("lista?action=anunciar")}>
           Procurar
         </HeaderBottomButton>
       </HeaderBottom>

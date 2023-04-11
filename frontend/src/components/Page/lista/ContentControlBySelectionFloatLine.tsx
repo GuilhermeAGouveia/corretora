@@ -14,13 +14,15 @@ interface Option {
 interface ContentControlBySelectionFloatLineProps {
   content: Option[];
   isFixed?: boolean;
+  initialSelected?: number;
 }
 
 export default function ContentControlByFloatLine({
   content,
   isFixed,
+  initialSelected
 }: ContentControlBySelectionFloatLineProps) {
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(initialSelected || 0);
 
   const selectButtons = content.map((option, index) => {
     return {
@@ -48,6 +50,7 @@ export default function ContentControlByFloatLine({
               }
         }
         buttons={selectButtons}
+        initialSelected={selected}
       />
       <ContentRoot
         animate={{

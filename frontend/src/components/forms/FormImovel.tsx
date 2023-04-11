@@ -226,9 +226,10 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
           <Input
             key={"aptoInput"}
             name="area"
+            metricType="m²"
             type="number"
             control={control}
-            placeholder="Área (m²)"
+            placeholder="Área"
             defaultValue={0}
           />,
           ...getAditionalFields(imovelType).map((field) => {
@@ -241,6 +242,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
                   control={control}
                   placeholder={field.placeholder}
                   defaultValue={field.defaultValue}
+                  metricType={field.metricType}
                 />
               );
             if (field.componentType === "select")
@@ -269,17 +271,19 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
           <Input
             key={"mensalidadeInput"}
             name="mensalidade"
+            metricType="R$"
             type="number"
             control={control}
-            placeholder="Mensalidade (R$)"
+            placeholder="Mensalidade"
             defaultValue={0}
           />,
           <Input
             key={"priceInput"}
             name="price"
+            metricType="R$"
+            placeholder="Preço"
             type="number"
             control={control}
-            placeholder="Preço de venda (R$)"
             defaultValue={0}
           />,
         ],

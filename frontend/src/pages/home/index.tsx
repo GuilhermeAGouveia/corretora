@@ -3,11 +3,6 @@ import styled from "styled-components";
 import Header from "../../components/Page/home/Header";
 
 export default function Home() {
-  const router = useRouter();
-
-  const handleBack = () => {
-    router.back();
-  };
 
   return (
     <HomeContainer>

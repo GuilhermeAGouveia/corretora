@@ -30,6 +30,7 @@ import {
     SearchSection,
     SearchTotal
 } from "../../styles/pages/lista";
+import { route } from "next/dist/server/router";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -41,6 +42,8 @@ export default function Marketplace({
 }: MarketplaceProps) {
   console.log("Marketplace - render");
   const router = useRouter();
+  const {action: pageChoice} = router.query as {action: "listar" | "anunciar"};
+
   const [blockSelect, setBlockSelect] = useState(false);
   const [imoveis, setImoveis] = useState(pageImoveisProp.data);
   const [isLoadingItems, setisLoadingItems] = useState(false);
@@ -217,9 +220,10 @@ export default function Marketplace({
         onScrollEnd(e.target as HTMLElement, getMoreImoveis)();
       }, 1000)}
     >
-      <HeaderLista></HeaderLista>
+      <HeaderLista pageName="Pagina Inicial"></HeaderLista>
 
       <ContentControlBySelectionFloatLine
+        initialSelected={pageChoice == "listar" ? 0 : 1}
         isFixed={blockSelect}
         content={contentsForContentControl}
       />

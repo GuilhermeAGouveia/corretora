@@ -11,6 +11,7 @@ export interface Field {
   required?: boolean;
   options?: SelectOption[];
   defaultValue?: string | number;
+  metricType?: string;
 }
 
 const aditionalFields = {
@@ -22,6 +23,7 @@ const aditionalFields = {
       placeholder: "Número de banheiros",
       required: false,
       defaultValue: 0,
+      metricType: "banheiros",
     },
     {
       componentType: "input",
@@ -46,6 +48,7 @@ const aditionalFields = {
       name: "nBathrooms",
       type: "number",
       placeholder: "Número de banheiros",
+      metricType: "banheiro(s)",
       required: false,
       defaultValue: 0,
     },
@@ -54,6 +57,7 @@ const aditionalFields = {
       name: "nRooms",
       type: "number",
       placeholder: "Número de quartos",
+      metricType: "quarto(s)",
       required: false,
       defaultValue: 0,
     },
@@ -61,6 +65,7 @@ const aditionalFields = {
       componentType: "input",
       name: "nSuites",
       type: "number",
+      metricType: "suíte(s)",
       placeholder: "Número de suítes",
       required: false,
       defaultValue: 0,

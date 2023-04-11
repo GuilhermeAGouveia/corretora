@@ -19,9 +19,10 @@ export interface ButtonSelectFloatLine {
 
 interface SelectOptionPros extends React.HTMLAttributes<HTMLDivElement> {
   buttons: ButtonSelectFloatLine[];
+  initialSelected?: number;
 }
 
-const SelectOption = ({ buttons, style }: SelectOptionPros) => {
+const SelectOption = ({ buttons, style, initialSelected }: SelectOptionPros) => {
   // create refs for each option;
   const optionRef = useRef<RefObject<HTMLObjectElement>[]>([]);
 
@@ -29,7 +30,7 @@ const SelectOption = ({ buttons, style }: SelectOptionPros) => {
     .fill(null)
     .map(() => createRef());
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(1);
   const [lineProps, setLineProps] = useState({
     left: 0,
     width: 0,
@@ -48,7 +49,7 @@ const SelectOption = ({ buttons, style }: SelectOptionPros) => {
 
   useEffect(() => {
     window.addEventListener("resize", () => handleSelect(selected));
-    handleSelect(0);
+    handleSelect(selected);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

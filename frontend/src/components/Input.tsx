@@ -6,6 +6,7 @@ import colors from "../styles/colors";
 
 export type InputProps = InputMaskProps | React.InputHTMLAttributes<HTMLInputElement> & {
     mask?: string | Array<(string | RegExp)>
+    metricType?: string;
 };
 
 const InputComponent = ({
@@ -13,6 +14,7 @@ const InputComponent = ({
                             name,
                             defaultValue,
                             type,
+                            metricType,
                             ...inputProps
                         }: InputProps) => {
 
@@ -101,6 +103,7 @@ const InputComponent = ({
                         ref={setInputRef}
                         value={undefined}
                         type={typeInput}
+                        inputMode={type === "number" ? "numeric" : "text"}
                         placeholder={isChanging ? defaultValue?.toString() : ""} // mostra o placeholder se o input estiver em foco, senão não mostra nada.
                         // Isso é necessário para que o placeholder do inpput e o placeholder component não entrem em conflito sem usar zIndex
                         onBlur={(e: any) => {
@@ -108,12 +111,19 @@ const InputComponent = ({
                         }}
                         onFocus={(e: any) => handleIsChanging(e, true)}
                         autoComplete="off"
+                        
                     />)
             }
             {type === "password" && (
                 <ShowPasswordButton onClick={handleShowPassword} type={"button"}>
                     {typeInput === "password" ? "Mostrar" : "Esconder"}
                 </ShowPasswordButton>
+            )}
+
+            {metricType && (
+                <MetricType>
+                    {metricType}
+                </MetricType>
             )}
 
         </InputContainer>
@@ -184,4 +194,15 @@ const ShowPasswordButton = styled.button`
   color: rgba(0, 0, 0, 0.5);
   cursor: pointer;
   font-weight: 500;
+`;
+
+const MetricType = styled.div`
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    font-family: "Montserrat", sans-serif;
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.5);
+    font-weight: 500;
 `;
