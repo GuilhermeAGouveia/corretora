@@ -42,7 +42,6 @@ export default function Marketplace({
 }: MarketplaceProps) {
   console.log("Marketplace - render");
   const router = useRouter();
-  const {action: pageChoice} = router.query as {action: "listar" | "anunciar"};
 
   const [blockSelect, setBlockSelect] = useState(false);
   const [imoveis, setImoveis] = useState(pageImoveisProp.data);
@@ -223,7 +222,7 @@ export default function Marketplace({
       <HeaderLista pageName="Pagina Inicial"></HeaderLista>
 
       <ContentControlBySelectionFloatLine
-        initialSelected={pageChoice == "listar" ? 0 : 1}
+        initialSelected={0}
         isFixed={blockSelect}
         content={contentsForContentControl}
       />

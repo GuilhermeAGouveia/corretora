@@ -340,23 +340,14 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
             {finalAnimationConfirm && ( //Exibe este componente apenas quando o cadastro estiver totalmente completo
                <ContainerButtonsEndRegister>
                <Button label="Voltar a pagina inicial" onClick={() => router.push("/lista")}/>
-               <Button label={`Continuar inserindo ${imovelType}`} onClick={() => router.reload()}/>
+               <Button label={`Continuar inserindo ${imovelType.toLowerCase()}`} onClick={() => router.reload()}/>
              </ContainerButtonsEndRegister>
             )}
           </SubmitContainer>,
         ],
       },
     ],
-    [
-      cidades,
-      estados,
-      imagens,
-      imovelType,
-      control,
-      loading,
-      totalProgress,
-      finalAnimationConfirm,
-    ]
+    [control, estados, cidades, imagens, imovelType, totalProgress, loading, finalAnimationConfirm, router]
   );
 
   return (
