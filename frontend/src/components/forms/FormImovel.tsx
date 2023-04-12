@@ -25,6 +25,9 @@ import SelectReactHookForm, {
 } from "../SelectReactHookForm";
 import FormComponent from "./FormComponent";
 import { ButtonSubmit, SubmitContainer } from "./styles";
+import styled from "styled-components";
+import Button from "../Button";
+import {useRouter} from "next/router";
 
 export interface FormImovel {
   street?: string;
@@ -46,6 +49,7 @@ interface FormImovelProps {
 
 const FormImovel = ({ imovelType }: FormImovelProps) => {
   //const formRef = useRef<HTMLFormElement>(null);
+  const router = useRouter();
   const { user } = useAuth();
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formImovelSchema),
@@ -334,7 +338,10 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
               )}
 
             {finalAnimationConfirm && ( //Exibe este componente apenas quando o cadastro estiver totalmente completo
-              <Link href={"/lista"}>Voltar a pagina inicial</Link>
+               <ContainerButtonsEndRegister>
+               <Button label="Voltar a pagina inicial" onClick={() => router.push("/lista")}/>
+               <Button label={`Continuar inserindo ${imovelType}`} onClick={() => router.reload()}/>
+             </ContainerButtonsEndRegister>
             )}
           </SubmitContainer>,
         ],
@@ -365,3 +372,11 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
 };
 
 export default FormImovel;
+
+const ContainerButtonsEndRegister = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+`;
