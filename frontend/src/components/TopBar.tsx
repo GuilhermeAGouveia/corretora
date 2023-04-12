@@ -1,23 +1,23 @@
 import styled, { css } from "styled-components";
-import { useAuth } from "../../../context/Auth";
-import useDeviceDetect from "../../../hooks/useDeviceDetect";
+import { useAuth } from "../context/Auth";
+import useDeviceDetect from "../hooks/useDeviceDetect";
 import {AiFillBackward} from "react-icons/ai"
-import colors from "../../../styles/colors";
+import colors from "../styles/colors";
 import { useRouter } from "next/router";
-import MenuLateral from "./MenuLateral";
-import MenuUserOptions from "./MenuUserOptions/index";
+import MenuLateral from "./Page/lista/MenuLateral";
+import MenuUserOptions from "./Page/lista/MenuUserOptions/index";
 
-interface HeaderProps {
+interface TopBarProps {
   pageName: string;
 }
-const HeaderLista = ({pageName}: HeaderProps) => {
+const TopBar = ({pageName}: TopBarProps) => {
   const router = useRouter();
   const { user } = useAuth();
   const { isMobileView } = useDeviceDetect();
 
   return (
-    <Header isMobileView={isMobileView}>
-      <TopBar>
+    <TopBarContainer isMobileView={isMobileView}>
+      <TopBarContent>
         <MenuLateral></MenuLateral>
         {pageName && <TitlePage>{pageName}</TitlePage>}
         <RightButtons>
@@ -26,12 +26,12 @@ const HeaderLista = ({pageName}: HeaderProps) => {
           </BackButton>
           <MenuUserOptions />
         </RightButtons>
-      </TopBar>
-    </Header>
+      </TopBarContent>
+    </TopBarContainer>
   );
 };
 
-export default HeaderLista;
+export default TopBar;
 const deviceStyles = {
   mobile: css`
     position: fixed;
@@ -59,13 +59,13 @@ const BackButton = styled.button`
   border: none;
 `;
 
-const Header = styled.header<{isMobileView: boolean}>`
+const TopBarContainer = styled.header<{isMobileView: boolean}>`
   ${({ isMobileView }) => deviceStyles[isMobileView ? "mobile" : "desktop"]}
   height: auto;
   background: ${colors.secondary};
 `;
 
-const TopBar = styled.div`
+const TopBarContent = styled.div`
   position: relative;
   width: 100%;
   height: 50px;

@@ -1,10 +1,10 @@
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled, { css } from "styled-components";
-import useDeviceDetect from "../hooks/useDeviceDetect";
-import colors from "../styles/colors";
-import Button from "./Button";
-import Logo from "./Logo";
+import useDeviceDetect from "../../../hooks/useDeviceDetect";
+import colors from "../../../styles/colors";
+import Button from "../../Button";
+import Logo from "../../Logo";
 
 export default function MainBar() {
   const router = useRouter();

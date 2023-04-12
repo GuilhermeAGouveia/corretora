@@ -7,7 +7,7 @@ import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
 import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
-import HeaderLista from "../../components/Page/lista/Header";
+import TopBar from "../../components/TopBar";
 import ListCards from "../../components/Page/lista/ListCards";
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
 import { useAuth } from "../../context/Auth";
@@ -31,6 +31,7 @@ import {
     SearchTotal
 } from "../../styles/pages/lista";
 import { route } from "next/dist/server/router";
+import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -101,7 +102,7 @@ export default function Marketplace({
     };
   }
 
-  const getMoreImoveis = async () => {
+  const getMoreImoveis = useCallback(async () => {
     // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
     // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
     // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
@@ -115,7 +116,7 @@ export default function Marketplace({
     pageNumber += 1;
     setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
     setisLoadingItems(false);
-  };
+  }, [filterValues, isLoadingItems, pageImoveis]);
 
   // Controla se o SelectFloatLine em ControlContentBySelectionFloatLine deve ser fixo ou relativo na tela
   function swapDisplaySelect(e: HTMLElement) {
@@ -159,13 +160,14 @@ export default function Marketplace({
           </LeftSection>
           {useMemo(
             () => (
-              <ListCards
+             /*  <ListCards
                 imoveis={imoveis}
                 isLoadingItems={isLoadingItems}
                 cardComponent={CardImovel}
-              />
+              /> */
+              <InfiniteScrollList onScrollEnd={getMoreImoveis} cardComponent={CardImovel} data={imoveis}/>
             ),
-            [imoveis, isLoadingItems]
+            [imoveis, getMoreImoveis]
           )}
         </SearchSection>
       ),
@@ -217,10 +219,9 @@ export default function Marketplace({
     <ListRoot
       onScroll={debounce((e) => {
         swapDisplaySelect(e.target as HTMLElement);
-        onScrollEnd(e.target as HTMLElement, getMoreImoveis)();
       }, 1000)}
     >
-      <HeaderLista pageName="Pagina Inicial"></HeaderLista>
+      <TopBar pageName="Pagina Inicial"></TopBar>
 
       <ContentControlBySelectionFloatLine
         initialSelected={pageChoice == "listar" ? 0 : 1}

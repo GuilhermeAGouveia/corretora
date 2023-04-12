@@ -1,21 +1,18 @@
 import { useState } from "react";
 import Lottie from "react-lottie";
 import styled from "styled-components";
-import loadingData from "../../../assets/lotties/loading.json";
 import { AlertType, CardImovelProps, IImovel } from "../../../lib/interfaces";
 import api from "../../../services/api";
 import colors from "../../../styles/colors";
 import BannerInfo, { useBannerInfo } from "../../BannerInfo";
 
 interface ListCardsProps {
-  imoveis: IImovel[];
-  isLoadingItems?: boolean;
-  cardComponent: React.ComponentType<CardImovelProps>;
+  imoveis: any[];
+  cardComponent: React.FC<CardImovelProps>;
 }
 
 const ListCards = ({
   cardComponent: Card,
-  isLoadingItems,
   imoveis: imoveisProps,
 }: ListCardsProps) => {
   console.log("ListCards - render");
@@ -58,23 +55,6 @@ const ListCards = ({
         )}
       </CardsContainer>
 
-      {isLoadingItems && (
-        <LoadingBottom>
-          <Lottie
-            options={{
-              loop: true,
-              autoplay: true,
-
-              animationData: loadingData,
-              rendererSettings: {
-                preserveAspectRatio: "xMidYMid slice",
-              },
-            }}
-            width={50}
-            height={50}
-          />
-        </LoadingBottom>
-      )}
       {alert && (
         <BannerInfo control={control} type={alert.type}>
           {alert.message}
@@ -111,14 +91,6 @@ const CardsContainerRoot = styled.div`
   }
 `;
 
-const LoadingBottom = styled.div`
-  position: relative;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const NoneImoveis = styled.div`
   position: relative;
