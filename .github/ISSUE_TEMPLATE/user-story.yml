@@ -23,9 +23,9 @@ body:
       label: Critérios de Aceitação
       description: Forneça seus critérios de aceitação
       value: |
-        - [] 
-        - []
-        - []
+        - [ ] 
+        - [ ]
+        - [ ]
     validations:
       required: true
 
