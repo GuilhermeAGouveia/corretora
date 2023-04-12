@@ -14,7 +14,7 @@ export interface ButtonSelectFloatLine {
     label: string;
     Icon?: React.ComponentType<any>;
   };
-  onClick?: () => void;
+  onClick?: (num: number) => void;
 }
 
 interface SelectOptionPros extends React.HTMLAttributes<HTMLDivElement> {
@@ -30,7 +30,7 @@ const SelectOption = ({ buttons, style, initialSelected }: SelectOptionPros) => 
     .fill(null)
     .map(() => createRef());
 
-  const [selected, setSelected] = useState(1);
+  const [selected, setSelected] = useState(0);
   const [lineProps, setLineProps] = useState({
     left: 0,
     width: 0,
@@ -62,7 +62,7 @@ const SelectOption = ({ buttons, style, initialSelected }: SelectOptionPros) => 
           selected={index === selected}
           onClick={() => {
             handleSelect(index);
-            if (option.onClick) option.onClick();
+            if (option.onClick) option.onClick(index);
           }}
         >
           {option.content.Icon && <option.content.Icon />}
