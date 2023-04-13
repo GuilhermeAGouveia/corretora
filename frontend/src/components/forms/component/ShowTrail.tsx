@@ -2,6 +2,7 @@ import React from "react";
 import {IconType} from "react-icons";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
+import { uniqueId } from "lodash";
 
 interface ShowTrailProps {
     trails: IconType[];
@@ -14,14 +15,14 @@ export default function ShowTrail({trails, style, trail, handleSetTrailNumber}: 
     return (
         <ShowTrailContainer style={style}>
             {trails.map((Icon, index) =>
-                <>
-                    <ShowTrailItem key={"trail-item-" + index} values={{index, trail}} onClick={() =>
+                <div key={"trail-item-" + uniqueId()}>
+                    <ShowTrailItem values={{index, trail}} onClick={() =>
                         handleSetTrailNumber(index)
                     }>
                         <Icon size={15} color={'white'}/>
                     </ShowTrailItem>
                     {!(index === trails.length - 1) && <InterLineDivision key={"trail-line-" + index}/>}
-                </>
+                </div>
             )}
         </ShowTrailContainer>
     );

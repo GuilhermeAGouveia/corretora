@@ -4,8 +4,8 @@ import InputMask, { Props as InputMaskProps } from "react-input-mask";
 import styled, { css } from "styled-components";
 import colors from "../styles/colors";
 
-export type InputProps = InputMaskProps | React.InputHTMLAttributes<HTMLInputElement> & {
-    mask?: string | Array<(string | RegExp)>
+export type InputProps = (InputMaskProps | React.InputHTMLAttributes<HTMLInputElement>) & {
+    mask?: string | Array<(string | RegExp)>;
     metricType?: string;
 };
 

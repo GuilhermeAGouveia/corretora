@@ -15,8 +15,8 @@ export interface CardImovelProps {
 
 export interface Image {
   url: string;
-  originalname?: string;
-  size?: number;
+  originalname: string;
+  size: number;
 }
 
 export interface IImovel {

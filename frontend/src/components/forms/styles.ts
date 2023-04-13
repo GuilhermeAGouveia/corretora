@@ -58,10 +58,10 @@ export const FormContentWrapper = styled.div`
   
 `;
 export const FormContent = styled(motion.form)<MotionAdvancedProps & {
-    nSections: number;
+    nsections: number;
 }>`
   position: relative;
-  width: ${(props:any) => `calc(${props.nSections} * 100%)`};
+  width: ${(props:any) => `calc(${props.nsections} * 100%)`};
   display: flex;
   align-items: flex-start;
   height: auto;

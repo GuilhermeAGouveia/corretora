@@ -14,7 +14,7 @@ export async function insertImage(
   // A query idOwner é o codigo do dono da imagem, no caso o imóvel
   await api.post<any>(`/image/upload?idOwner=${cod_imv}`, formData, {
     onUploadProgress: (e) => {
-      const progress = Math.round((e.loaded * 100) / e.total);
+      const progress = Math.round((e.loaded * 100) / (e.total || 1));
       if (progressState) {
         progressState(image.id, progress);
       }
