@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { CardImovelProps, LevelFurnished } from "../lib/interfaces";
 import colors from "../styles/colors";
 import CardImage from "./CardImage";
+import { uniqueId } from "lodash";
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
@@ -42,10 +43,11 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
               animate={{ width: 20, height: 20 }}
               exit={{ width: 0, height: 0 }}
             >
-              <FaHeart size={15} color={colors.primary} />
+              <FaHeart key={uniqueId()} size={15} color={colors.primary} />
             </IconHeart>
           )}
           <FaRegHeart
+            key={uniqueId()}
             style={{ position: "absolute" }}
             size={15}
             color={"rgba(0, 0, 0, 0.2)"}
@@ -53,13 +55,13 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
         </AnimatePresence>
       </CardImovelButtonFavorite>
       <CardImage
-      onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}
-      imageUrl={
-        imovel.images[0]
-          ? imovel.images[0].url
-          : "https://picsum.photos/200/300"
-      }
-      alt={imovel.images?.[0]?.originalname as string && "Imagem"}
+        onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}
+        imageUrl={
+          imovel.images[0]
+            ? imovel.images[0].url
+            : "https://picsum.photos/200/300"
+        }
+        alt={(imovel.images?.[0]?.originalname as string) && "Imagem"}
       />
 
       <LineDivider />
@@ -122,8 +124,6 @@ const CardImovelContainer = styled("div")`
     width: calc(50% - 10px);
   }
 `;
-
-
 
 const CardDescription = styled.div`
   position: relative;
@@ -225,4 +225,3 @@ const IconHeart = styled(motion.div)`
   align-items: center;
   justify-content: center;
 `;
-
