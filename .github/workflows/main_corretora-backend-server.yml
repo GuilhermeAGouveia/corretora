@@ -21,8 +21,8 @@ jobs:
           node-version: '18.x'
 
       - name: npm install, build, and test
-        working-directory: backend
         run: |
+          cd backend
           npm install
           npm run build --if-present
           npm run test --if-present
@@ -57,4 +57,4 @@ jobs:
           app-name: 'corretora-backend-server'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2B7A529C9CD44CBD96EC0B91B9CD9B91 }}
-          package: .
+          package: backend
