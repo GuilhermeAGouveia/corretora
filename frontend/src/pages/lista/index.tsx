@@ -7,7 +7,7 @@ import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
 import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
-import HeaderLista from "../../components/Page/lista/Header";
+import TopBar from "../../components/TopBar";
 import ListCards from "../../components/Page/lista/ListCards";
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
 import { useAuth } from "../../context/Auth";
@@ -30,7 +30,6 @@ import {
     SearchSection,
     SearchTotal
 } from "../../styles/pages/lista";
-import { route } from "next/dist/server/router";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -219,7 +218,7 @@ export default function Marketplace({
         onScrollEnd(e.target as HTMLElement, getMoreImoveis)();
       }, 1000)}
     >
-      <HeaderLista pageName="Pagina Inicial"></HeaderLista>
+      <TopBar pageName="Pagina Inicial"></TopBar>
 
       <ContentControlBySelectionFloatLine
         initialSelected={0}

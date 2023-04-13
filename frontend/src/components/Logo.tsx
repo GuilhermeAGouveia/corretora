@@ -3,7 +3,7 @@ import styled from "styled-components";
 import logoPng from "../assets/images/logo.png";
 
 const LogoComponent = () => {
-  return <Logo src={logoPng} width={83} height={70}/>;
+  return <Logo src={logoPng} width={83} height={70} alt="Logo empresa"/>;
 };
 
 export default LogoComponent;
