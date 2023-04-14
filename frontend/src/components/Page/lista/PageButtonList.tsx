@@ -17,9 +17,11 @@ export default function PageButtonList({
   isLoadingInitialData,
 }: ListComponent) {
   const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
+  const [pageNumber, setPageNumber] = useState(1);
   const [page, setPage] = useState<Page<IImovel>>(initialPage);
   const { isMobileView } = useDeviceDetect();
   async function onChangePage(page: number) {
+    setPageNumber(page);
     document.getElementById("listRoot")?.scrollTo(0, 0);
     setIsLoadingItems(true);
     setPage((old) => ({ ...old, data: [] }));
@@ -59,6 +61,7 @@ export default function PageButtonList({
           style={{
             margin: "20px 0",
           }}
+          page={pageNumber}
         />
       )}
     </ListContainer>
