@@ -1,5 +1,5 @@
 import {Menu, MenuItem} from "@szhsin/react-menu";
-import {FiMoreVertical} from "react-icons/fi";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 import colors from "../styles/colors";
 
 interface MenuImovelActionsProps {
@@ -26,6 +26,9 @@ function MoreButton() {
         <button style={{
             background: "transparent",
             border: "none",
-        }}><FiMoreVertical size={30} color={colors.primary}/></button>
+        }}><MoreVertIcon sx={{
+            fontSize: 30,
+            color: colors.primary,
+        }}/></button>
     )
 }

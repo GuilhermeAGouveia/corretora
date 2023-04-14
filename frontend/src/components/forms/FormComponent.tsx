@@ -1,5 +1,6 @@
 import React, { useEffect, useState, KeyboardEvent } from "react";
-import { FiCheck, FiChevronLeft } from "react-icons/fi";
+import CheckIcon from "@mui/icons-material/Check";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import colors from "../../styles/colors";
 import ShowTrail from "./component/ShowTrail";
 
@@ -13,13 +14,11 @@ import {
   MoveButton,
   SectionInputContent,
 } from "./styles";
-import { IconType } from "react-icons";
-import BannerInfo, { useBannerInfo } from "../BannerInfo";
-import { AlertType } from "../../lib/interfaces";
+import { SvgIconComponent } from "@mui/icons-material";
 
 export interface IFormSection {
   description: string;
-  icon: IconType;
+  icon: SvgIconComponent;
   inputs: React.ReactNode[];
 }
 
@@ -58,11 +57,21 @@ const FormComponent = ({ sections, onSubmit, error }: FormImovelProps) => {
       <FormHeader>
         <ActionsForm>
           <MoveButton onClick={() => handleSetTrailNumber(trail - 1)}>
-            <FiChevronLeft size={20} color={colors.primary} />
+            <ChevronLeftIcon
+              sx={{
+                color: colors.primary,
+                fontSize: 20,
+              }}
+            />
           </MoveButton>
           <AreaShow>{sections[trail].description}</AreaShow>
           <MoveButton onClick={() => handleSetTrailNumber(trail + 1)}>
-            <FiCheck size={20} color={colors.primary} />
+            <CheckIcon
+              sx={{
+                color: colors.primary,
+                fontSize: 20,
+              }}
+            />
           </MoveButton>
         </ActionsForm>
         <ShowTrail
@@ -76,8 +85,7 @@ const FormComponent = ({ sections, onSubmit, error }: FormImovelProps) => {
           onKeyPress={moveInFormByArrow}
           onSubmit={(e) => {
             e.preventDefault();
-            if (trail === sections.length - 1)
-                onSubmit();
+            if (trail === sections.length - 1) onSubmit();
             else handleSetTrailNumber(trail + 1);
           }}
           animate={{

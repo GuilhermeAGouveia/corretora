@@ -1,7 +1,7 @@
 import { Menu, MenuDivider, MenuHeader, MenuItem } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/slide.css";
-import { FaSignOutAlt } from "react-icons/fa";
+import LogoutIcon from '@mui/icons-material/Logout';
 import styled from "styled-components";
 import { useAuth } from "../../../../context/Auth";
 
@@ -37,7 +37,10 @@ const MenuUserOptions = ({ buttonTextColor }: MenuButtonProps) => {
       <MenuItem>Paste</MenuItem>
       <MenuDivider />
       <MenuItemLogout onClick={handleLogout}>
-        <FaSignOutAlt size={"1em"} color={"red"} />
+        <LogoutIcon sx={{
+          color: "red",
+          fontSize: "1.2rem",
+        }} />
         Sair
       </MenuItemLogout>
     </MenuContainer>

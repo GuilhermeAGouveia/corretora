@@ -1,10 +1,11 @@
 import styled, { css } from "styled-components";
 import { useAuth } from "../context/Auth";
 import useDeviceDetect from "../hooks/useDeviceDetect";
-import {AiFillBackward} from "react-icons/ai"
 import colors from "../styles/colors";
 import { useRouter } from "next/router";
 import MenuLateral from "./Page/lista/MenuLateral";
+import KeyboardBackspaceOutlinedIcon from '@mui/icons-material/KeyboardBackspaceOutlined';
+
 import MenuUserOptions from "./Page/lista/MenuUserOptions/index";
 
 interface TopBarProps {
@@ -22,7 +23,10 @@ const TopBar = ({pageName}: TopBarProps) => {
         {pageName && <TitlePage>{pageName}</TitlePage>}
         <RightButtons>
           <BackButton onClick={() => router.back()}>
-            <AiFillBackward size={30} color={colors.white}></AiFillBackward>
+            <KeyboardBackspaceOutlinedIcon sx={{
+              fontSize: 30,
+              color: colors.white,
+            }}/>
           </BackButton>
           <MenuUserOptions />
         </RightButtons>

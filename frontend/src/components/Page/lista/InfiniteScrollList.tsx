@@ -1,14 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
-import styled from "styled-components";
-import colors from "../../../styles/colors";
-import loadingData from "../../../assets/lotties/loading.json";
-import ListCards from "./ListCards";
 import { IImovel, Page } from "../../../lib/interfaces";
 import { debounce, orderBy } from "lodash";
 import { getImoveisByFilterWithPage } from "../../../lib/imovel";
-import { CircularProgress, ImageList } from "@mui/material";
+import { CircularProgress, ImageList, List } from "@mui/material";
 import ListComponent from "./IListComponent";
-import { ListContainer, LoadingBottomContainer } from "../../../styles/pages/lista";
+import {
+  ListContainer,
+  LoadingBottomContainer,
+} from "../../../styles/pages/lista";
 import useDeviceDetect from "../../../hooks/useDeviceDetect";
 
 let pageNumber = 1;
@@ -20,7 +19,7 @@ export default function InfiniteScrollList({
   orderByOptions,
   isLoadingInitialData,
 }: ListComponent) {
-  const { isMobileView } = useDeviceDetect()
+  const { isMobileView } = useDeviceDetect();
   const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
   const [page, setPage] = useState<Page<IImovel>>(initialPage);
   const [imoveis, setImoveis] = useState<IImovel[]>(initialPage.data);
@@ -68,11 +67,15 @@ export default function InfiniteScrollList({
       id="infiniteScrollContainer"
       onScroll={debounce(scrollEnd(getMoreImoveis), 1000)}
     >
-      <ListCards
-        imoveis={page.data}
-        cardComponent={CardComponent}
-        isLoading={isLoadingItems}
-      />
+      <List
+        style={{
+          padding: "10px 20px",
+        }}
+      >
+        {page.data.map((imovel) => (
+          <CardComponent key={imovel.cod_imv} imovel={imovel} />
+        ))}
+      </List>
       {isLoadingItems && (
         <LoadingBottomContainer>
           <CircularProgress />
@@ -81,4 +84,3 @@ export default function InfiniteScrollList({
     </ListContainer>
   );
 }
-

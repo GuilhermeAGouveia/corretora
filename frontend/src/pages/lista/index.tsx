@@ -1,14 +1,15 @@
 import { debounce } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
-import { FiFilter, FiSearch } from "react-icons/fi";
+import AddHomeWorkOutlinedIcon from '@mui/icons-material/AddHomeWorkOutlined';
+import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
 import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
 import TopBar from "../../components/TopBar";
-import ListCards from "../../components/Page/lista/ListCards";
+import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
@@ -32,6 +33,7 @@ import {
 } from "../../styles/pages/lista";
 import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 import PageButtonList from "../../components/Page/lista/PageButtonList";
+import { fontGrid } from "@mui/material/styles/cssUtils";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -105,7 +107,7 @@ export default function Marketplace({
     {
       buttonDisplayContent: {
         label: "Procurar",
-        Icon: FiSearch,
+        Icon: SearchOutlinedIcon,
       },
       content: (
         <SearchSection>
@@ -116,7 +118,10 @@ export default function Marketplace({
             <ModalResponsive
               isMobile={isMobileView}
               buttonContent={
-                <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                <FilterListOutlinedIcon sx={{
+                  color: "rgba(0, 0, 0, 0.7)",
+                  fontSize: "24px"
+                }}/>
               }
             >
               <Filter onFilter={onFilter} filterValues={filterValues} />
@@ -124,7 +129,10 @@ export default function Marketplace({
             <ModalResponsive
               isMobile={isMobileView}
               buttonContent={
-                <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                <SortByAlphaOutlinedIcon sx={{
+                  color: "rgba(0, 0, 0, 0.7)",
+                  fontSize: "24px"
+                }} />
               }
             >
               <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
@@ -147,7 +155,7 @@ export default function Marketplace({
     {
       buttonDisplayContent: {
         label: "Anunciar",
-        Icon: FaBullhorn,
+        Icon: AddHomeWorkOutlinedIcon,
       },
       content: (
         <AnounceSection>

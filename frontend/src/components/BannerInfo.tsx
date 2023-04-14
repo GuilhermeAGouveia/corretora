@@ -2,8 +2,13 @@ import {AnimatePresence, motion, MotionAdvancedProps} from "framer-motion";
 import {useEffect, useState} from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
-import {FiAlertCircle, FiCheckCircle, FiXCircle} from "react-icons/fi";
 import {AlertType} from "../lib/interfaces";
+
+//Icons
+
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
+
 
 export interface BannerInfoControl {
     state: boolean; // true = show, false = hide
@@ -25,12 +30,12 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
         setTimeout(() => {
             control.desactive();
         }, 3000);
-    }, []);
+    }, [control]);
 
     const AlertIcons = {
-        [AlertType.SUCCESS]: FiCheckCircle,
-        [AlertType.ERROR]: FiXCircle,
-        [AlertType.WARNING]: FiAlertCircle,
+        [AlertType.SUCCESS]: CheckCircleOutlineIcon,
+        [AlertType.ERROR]: ErrorOutlineIcon,
+        [AlertType.WARNING]: ErrorOutlineIcon,
     }
 
     const AlertIcon = AlertIcons[type];
@@ -45,7 +50,10 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
                     exit={{opacity: 0, x: -300}}
                 >
                     <IconeBanner>
-                        <AlertIcon color={"white"} size={20}/>
+                        <AlertIcon sx={{
+                            color: "white",
+                            fontSize: 20,
+                        }}/>
                     </IconeBanner>
                     {children}
                 </BannerInfoContainer>
