@@ -18,8 +18,9 @@ export default function Button({label, onClick, ...rest} : ButtonProps) {
 
 const ButtonRoot = styled.button`
     position: relative;
-    height: 36px;
-    width: 94px;
+    height: auto;
+    width: auto;
+    padding: 10px 15px;
 
     background: none;
     border: none;

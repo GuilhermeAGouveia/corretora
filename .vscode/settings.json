@@ -1,0 +1,8 @@
+{
+    "appService.zipIgnorePattern": [
+        "node_modules{,/**}",
+        ".vscode{,/**}"
+    ],
+    "appService.defaultWebAppToDeploy": "/subscriptions/fa346d6f-e2e0-41bd-8323-5f94604b533f/resourceGroups/corretora-cluster/providers/Microsoft.Web/sites/corretora-backend-server",
+    "appService.deploySubpath": "backend"
+}

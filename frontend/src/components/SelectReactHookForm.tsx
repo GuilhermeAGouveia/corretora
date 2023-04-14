@@ -52,6 +52,7 @@ const SelectReactHookForm = ({
                 field: ControllerRenderProps<FieldValues>;
             }) => (
                 <Select
+                    instanceId={name}
                     styles={{
                         control: (provided) => ({
                             ...provided,

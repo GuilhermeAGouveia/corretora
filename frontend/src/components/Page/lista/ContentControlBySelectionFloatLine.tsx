@@ -24,11 +24,11 @@ export default function ContentControlByFloatLine({
 }: ContentControlBySelectionFloatLineProps) {
   const [selected, setSelected] = useState(initialSelected || 0);
 
-  const selectButtons = content.map((option, index) => {
+  const selectButtons = content.map(option => {
     return {
       content: option.buttonDisplayContent,
-      onClick: () => {
-        setSelected(index);
+      onClick: (num: number) => {
+        setSelected(num);
       },
     };
   });

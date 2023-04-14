@@ -40,7 +40,7 @@ describe("Test endpoint /associado", () => {
   test("POST /associado/ [Criar imóvel]", async () => {
     const res = await request(app).post("/associado/").send(createAssociadoTest(pessoaTestCod));
     expect(res.body).toBe(createAssociadoTest(pessoaTestCod).name);
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
   });
   test("GET /associado/get/?cod_lct=<cod>&name=<name> [Get associado by cod]", async () => {
     const res = await request(app).get(

@@ -49,7 +49,7 @@ describe("Test endpoint /imovel/all [Get all imóvel]", () => {
       .post("/imovel/")
       .send(createImovelTest(pessoaTestCod));
     imovelTestCod = res.body;
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(201);
   });
   test("GET /imovel/get/:cod [Get imovel by cod]", async () => {
     const res = await request(app).get("/imovel/get/" + imovelTestCod);

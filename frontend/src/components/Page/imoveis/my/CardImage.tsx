@@ -22,8 +22,9 @@ export function CardImage({ imagesUrl }: CardImageProps) {
                     : "https://picsum.photos/200/300"
             }
                    alt={imagesUrl[0] ? imagesUrl[0].originalname : "Imagem"}
-                   layout={'fill'}
-                   objectFit={'cover'}
+                   style={{
+                          objectFit: "cover",
+                   }}
                    priority
                    quality={100}
 

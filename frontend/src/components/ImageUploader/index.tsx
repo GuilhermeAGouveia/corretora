@@ -1,4 +1,4 @@
-import filesize from "filesize";
+import {filesize} from "filesize";
 import { uniqueId } from "lodash";
 import React, { useEffect } from "react";
 import FileList from "./FileList";
@@ -33,7 +33,7 @@ function ImageUploader({ uploaded }: ImageUploaderProps) {
       file,
       id: uniqueId(),
       name: file.name,
-      readableSize: filesize(file.size),
+      readableSize: filesize(file.size) as string,
       preview: URL.createObjectURL(file),
       uploaded: false,
       error: false,

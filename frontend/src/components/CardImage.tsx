@@ -24,16 +24,19 @@ const CardImage = ({imageUrl, alt, onClick}: CardImageProps) => {
           src={imageUrl}
           alt={alt}
           {...imageDimensions}
-          objectFit="cover"
+          style={{
+            objectFit: "cover",
+            objectPosition: "center",
+          }}
           onLoadingComplete={({
             naturalHeight: height,
             naturalWidth: width,
           }) => {
-            let newWidth = 400 / width;
+            let newWidth = 250 / width;
             let newHeight = height * newWidth;
             if (newHeight < 250) newHeight = 250;
             if (newHeight > 450) newHeight = 450;
-            setImageDimensions({ width: 400, height: newHeight });
+            setImageDimensions({ width: 250, height: newHeight });
             setIsLoadingImage(false);
           }}
           quality={100}

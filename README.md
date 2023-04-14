@@ -83,6 +83,3 @@ Esse projeto está sob licença. Veja o arquivo [LICENSE](https://github.com/Gui
 
 #### Conta teste para login:
 
-email: teste@gmail.com
-
-pass: gui123
