@@ -10,11 +10,7 @@ import MenuUserOptions from "./Page/lista/MenuUserOptions/index";
 interface TopBarProps {
   pageName: string;
 }
-<<<<<<< HEAD
 const TopBar = ({pageName}: TopBarProps) => {
-=======
-const TopBar = ({pageName}: HeaderProps) => {
->>>>>>> main
   const router = useRouter();
   const { user } = useAuth();
   const { isMobileView } = useDeviceDetect();
