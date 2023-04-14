@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { FiInfo } from "react-icons/fi";
+import InfoIcon from '@mui/icons-material/Info';
 import styled from "styled-components";
 import colors from "../styles/colors";
 
@@ -17,7 +17,10 @@ const InfoButton = ({ info, width, colorIcon }: InfoButtonProps) => {
   };
   return (
     <InfoButtonContainer size={width} onHoverStart={handleIsOpen} onHoverEnd={handleIsOpen} onClick={handleIsOpen}>
-      <FiInfo size={width * 0.9} color={colorIcon || colors.primary}></FiInfo>
+      <InfoIcon sx={{
+        color: colorIcon || colors.primary,
+        fontSize: width * 0.9,
+      }}/>
       {isOpen && <InfoMessage>{info}</InfoMessage>}
     </InfoButtonContainer>
   );

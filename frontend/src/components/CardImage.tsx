@@ -1,9 +1,8 @@
 import Image from 'next/image';
 import { useState } from "react";
-import Lottie from "react-lottie";
 import styled from "styled-components";
-import loadingData from "../assets/lotties/loading.json";
 import colors from "../styles/colors";
+import { CircularProgress, Skeleton } from '@mui/material';
 
 
 interface CardImageProps {
@@ -42,21 +41,9 @@ const CardImage = ({imageUrl, alt, onClick}: CardImageProps) => {
           quality={100}
         />
         {isLoadingImage && (
-          <ImagePlaceholder>
-            <Lottie
-              options={{
-                loop: true,
-                autoplay: true,
-
-                animationData: loadingData,
-                rendererSettings: {
-                  preserveAspectRatio: "xMidYMid slice",
-                },
-              }}
-              width={100}
-              height={100}
-            />
-          </ImagePlaceholder>
+         <ImagePlaceholder>
+            <CircularProgress/>
+         </ImagePlaceholder>
         )}
       </CardImovelImage>
     )
@@ -67,6 +54,7 @@ const CardImovelImage = styled.div`
   position: relative;
   width: 100%;
   height: auto;
+  min-height: 300px;
 `;
 
 export const ImagePlaceholder = styled.div`
@@ -74,7 +62,7 @@ export const ImagePlaceholder = styled.div`
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 300px;
   background-color: ${colors.white};
   display: flex;
   justify-content: center;

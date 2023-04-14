@@ -1,13 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import {
-    FiCheckCircle,
-    FiLock,
-    FiMapPin,
-    FiPhone,
-    FiUser
-} from "react-icons/fi";
+
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import LockIcon from '@mui/icons-material/Lock';
+import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
+import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
+import PersonIcon from '@mui/icons-material/Person';
 import { getCidades, getEstados } from "../../lib/externalData";
 import { AlertType } from "../../lib/interfaces";
 import {
@@ -113,7 +112,7 @@ const FormPessoa = () => {
   const sections = [
     {
       description: "Dados pessoais",
-      icon: FiUser,
+      icon: PersonIcon,
       inputs: [
         <Input
           name="firstName"
@@ -148,7 +147,7 @@ const FormPessoa = () => {
     },
     {
       description: "Telefones",
-      icon: FiPhone,
+      icon: LocalPhoneIcon,
       inputs: [
         <MultiInput
           name="telefones"
@@ -162,7 +161,7 @@ const FormPessoa = () => {
     },
     {
       description: "Endereço",
-      icon: FiMapPin,
+      icon: AddLocationAltIcon,
       inputs: [
         <Input
           name="cep"
@@ -218,7 +217,7 @@ const FormPessoa = () => {
     },
     {
       description: "Segurança",
-      icon: FiLock,
+      icon: LockIcon,
       inputs: [
         <Input
           key={"passwordInput"}
@@ -238,7 +237,7 @@ const FormPessoa = () => {
     },
     {
       description: "Enviar",
-      icon: FiCheckCircle,
+      icon: CheckCircleIcon,
       inputs: [
         <SubmitContainer key={"submitPessoa"}>
           <ButtonSubmit type="submit">Enviar</ButtonSubmit>

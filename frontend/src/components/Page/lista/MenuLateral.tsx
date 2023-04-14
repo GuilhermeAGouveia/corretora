@@ -1,8 +1,10 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { AiOutlineHome, AiOutlinePaperClip } from "react-icons/ai";
-import { FaBars, FaRegHeart } from "react-icons/fa";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import AddHomeOutlinedIcon from '@mui/icons-material/AddHomeOutlined';
+import HistoryEduOutlinedIcon from '@mui/icons-material/HistoryEduOutlined';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 
@@ -16,7 +18,10 @@ const MenuLateral = () => {
   return (
     <AnimatePresence>
       <ButtonMenuLateral onClick={handleClick}>
-        <FaBars size={20} color={colors.primary}></FaBars>
+        <MenuOutlinedIcon sx={{
+          fontSize: 20,
+          color: colors.primary,
+        }}/>
       </ButtonMenuLateral>
       {isActive && (
         <>
@@ -25,9 +30,9 @@ const MenuLateral = () => {
             animate={{ opacity: 1, x: 0, y: 0 }}
             exit={{ opacity: 0, x: -300, y: -300 }}
           >
-            <Item><FaRegHeart size={'1rem'}/><span>Favoritos</span></Item>
-            <Item><AiOutlinePaperClip size={'1rem'}/><span>Meus Contratos</span></Item>
-            <Item onClick={() => router.push('/imoveis/my')}><AiOutlineHome size={'1rem'}/><span>Meus Imóveis</span></Item>
+            <Item><FavoriteBorderIcon sx={{fontSize: "1rem"}}/><span>Favoritos</span></Item>
+            <Item><HistoryEduOutlinedIcon sx={{fontSize: "1rem"}}/><span>Meus Contratos</span></Item>
+            <Item onClick={() => router.push('/imoveis/my')}><AddHomeOutlinedIcon sx={{fontSize: "1rem"}}/><span>Meus Imóveis</span></Item>
           </MenuLateralContainer>
           <FalseBg onClick={() => setIsActive(false)}></FalseBg>
         </>

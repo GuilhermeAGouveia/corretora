@@ -1,14 +1,15 @@
 import { debounce } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { FaBullhorn, FaSortNumericDown } from "react-icons/fa";
-import { FiFilter, FiSearch } from "react-icons/fi";
+import AddHomeWorkOutlinedIcon from '@mui/icons-material/AddHomeWorkOutlined';
+import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
+import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
 import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
 import TopBar from "../../components/TopBar";
-import ListCards from "../../components/Page/lista/ListCards";
+import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
@@ -31,6 +32,8 @@ import {
     SearchTotal
 } from "../../styles/pages/lista";
 import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
+import PageButtonList from "../../components/Page/lista/PageButtonList";
+import { fontGrid } from "@mui/material/styles/cssUtils";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -89,33 +92,6 @@ export default function Marketplace({
     [orderByValues]
   );
 
-  function onScrollEnd(e: HTMLElement, func: () => any) {
-    console.log("OnScrollEnd");
-    return () => {
-      const { scrollTop, clientHeight, scrollHeight } = e;
-
-      if (scrollTop + clientHeight >= scrollHeight - 50) {
-        func();
-      }
-    };
-  }
-
-  const getMoreImoveis = useCallback(async () => {
-    // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
-    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
-    // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
-    if (isLoadingItems || !pageImoveis.hasNext) return;
-
-    setisLoadingItems(true);
-    const moreImoveis = await getImoveisByFilterWithPage(
-      filterValues,
-      pageNumber + 1
-    );
-    pageNumber += 1;
-    setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
-    setisLoadingItems(false);
-  }, [filterValues, isLoadingItems, pageImoveis]);
-
   // Controla se o SelectFloatLine em ControlContentBySelectionFloatLine deve ser fixo ou relativo na tela
   function swapDisplaySelect(e: HTMLElement) {
     const { scrollTop, clientHeight, scrollHeight } = e;
@@ -131,7 +107,7 @@ export default function Marketplace({
     {
       buttonDisplayContent: {
         label: "Procurar",
-        Icon: FiSearch,
+        Icon: SearchOutlinedIcon,
       },
       content: (
         <SearchSection>
@@ -142,7 +118,10 @@ export default function Marketplace({
             <ModalResponsive
               isMobile={isMobileView}
               buttonContent={
-                <FiFilter size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                <FilterListOutlinedIcon sx={{
+                  color: "rgba(0, 0, 0, 0.7)",
+                  fontSize: "24px"
+                }}/>
               }
             >
               <Filter onFilter={onFilter} filterValues={filterValues} />
@@ -150,7 +129,10 @@ export default function Marketplace({
             <ModalResponsive
               isMobile={isMobileView}
               buttonContent={
-                <FaSortNumericDown size={24} color={"rgba(0, 0, 0, 0.7)"} />
+                <SortByAlphaOutlinedIcon sx={{
+                  color: "rgba(0, 0, 0, 0.7)",
+                  fontSize: "24px"
+                }} />
               }
             >
               <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
@@ -163,9 +145,9 @@ export default function Marketplace({
                 isLoadingItems={isLoadingItems}
                 cardComponent={CardImovel}
               /> */
-              <InfiniteScrollList onScrollEnd={getMoreImoveis} cardComponent={CardImovel} data={imoveis}/>
+              <PageButtonList cardComponent={CardImovel} initialPage={pageImoveis} filterValues={filterValues} orderByOptions={orderByValues} isLoadingInitialData={isLoadingItems}/>
             ),
-            [imoveis, getMoreImoveis]
+            [filterValues, isLoadingItems, orderByValues, pageImoveis]
           )}
         </SearchSection>
       ),
@@ -173,7 +155,7 @@ export default function Marketplace({
     {
       buttonDisplayContent: {
         label: "Anunciar",
-        Icon: FaBullhorn,
+        Icon: AddHomeWorkOutlinedIcon,
       },
       content: (
         <AnounceSection>
@@ -214,7 +196,7 @@ export default function Marketplace({
   }, []);
 
   return (
-    <ListRoot
+    <ListRoot id="listRoot"
       onScroll={debounce((e) => {
         swapDisplaySelect(e.target as HTMLElement);
       }, 1000)}

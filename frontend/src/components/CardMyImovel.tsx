@@ -1,6 +1,5 @@
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { FiMapPin } from "react-icons/fi";
 import styled from "styled-components";
 import { CardImovelProps } from "../lib/interfaces";
 import colors from "../styles/colors";
@@ -44,8 +43,8 @@ export default function CardMyImovel({ imovel, onDelete }: CardImovelProps) {
           <MenuImovelActions onDelete={onDelete} imovelId={imovel.cod_imv} />
         </CardDescriptionHeader>
         <address>
-          <FiMapPin size={14} color={colors.primary} /> {imovel.address},{" "}
-          {imovel.district}
+{/*           <FiMapPin size={14} color={colors.primary} /> {imovel.address},{" "}
+ */}          {imovel.district}
         </address>
         <div>{imovel.area}</div>
         <div>{imovel.hasGarage}</div>

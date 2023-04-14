@@ -1,11 +1,11 @@
 import React from "react";
-import {IconType} from "react-icons";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 import { uniqueId } from "lodash";
+import { SvgIconComponent } from "@mui/icons-material";
 
 interface ShowTrailProps {
-    trails: IconType[];
+    trails: SvgIconComponent[];
     style?: React.CSSProperties;
     trail: number;
     handleSetTrailNumber: (number: number) => void;
@@ -19,7 +19,10 @@ export default function ShowTrail({trails, style, trail, handleSetTrailNumber}: 
                     <ShowTrailItem values={{index, trail}} onClick={() =>
                         handleSetTrailNumber(index)
                     }>
-                        <Icon size={15} color={'white'}/>
+                        <Icon sx={{
+                            fontSize: 15,
+                            color: colors.white,
+                        }}/>
                     </ShowTrailItem>
                     {!(index === trails.length - 1) && <InterLineDivision key={"trail-line-" + index}/>}
                 </div>

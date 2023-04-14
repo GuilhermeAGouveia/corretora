@@ -1,23 +1,46 @@
-import { useState } from "react";
-import styled from "styled-components";
-import colors from "../../../styles/colors";
-import loadingData from "../../../assets/lotties/loading.json";
-import Lottie from "react-lottie";
-import ListCards from "./ListCards";
-import { IImovel } from "../../../lib/interfaces";
-import { debounce } from "lodash";
+import { useCallback, useEffect, useState } from "react";
+import { IImovel, Page } from "../../../lib/interfaces";
+import { debounce, orderBy } from "lodash";
+import { getImoveisByFilterWithPage } from "../../../lib/imovel";
+import { CircularProgress, ImageList, List } from "@mui/material";
+import ListComponent from "./IListComponent";
+import {
+  ListContainer,
+  LoadingBottomContainer,
+} from "../../../styles/pages/lista";
+import useDeviceDetect from "../../../hooks/useDeviceDetect";
 
-interface InfiniteScrollListProps {
-  data: IImovel[];
-  cardComponent: React.FC<any>;
-  onScrollEnd: () => Promise<void>;
-}
+let pageNumber = 1;
+
 export default function InfiniteScrollList({
-  data,
-  cardComponent,
-  onScrollEnd,
-}: InfiniteScrollListProps) {
-  const [isLoadingItems, setIsLoadingItems] = useState(false);
+  initialPage,
+  cardComponent: CardComponent,
+  filterValues,
+  orderByOptions,
+  isLoadingInitialData,
+}: ListComponent) {
+  const { isMobileView } = useDeviceDetect();
+  const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
+  const [page, setPage] = useState<Page<IImovel>>(initialPage);
+  const [imoveis, setImoveis] = useState<IImovel[]>(initialPage.data);
+  const getMoreImoveis = useCallback(async () => {
+    // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
+    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
+    // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
+    if (isLoadingItems || !page.hasNext) return;
+
+    setIsLoadingItems(true);
+    const moreImoveis = await getImoveisByFilterWithPage(
+      { ...filterValues, ...orderByOptions },
+      pageNumber + 1
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    pageNumber += 1;
+    setPage(moreImoveis);
+    setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
+    setIsLoadingItems(false);
+  }, [filterValues, isLoadingItems, orderByOptions, page.hasNext]);
+
   function scrollEnd(func: () => Promise<any>) {
     console.log("OnScrollEnd");
     return async () => {
@@ -34,46 +57,30 @@ export default function InfiniteScrollList({
     };
   }
 
-  return (
-    <InfiniteScrollContainer
-      id="infiniteScrollContainer"
-      onScroll={debounce(scrollEnd(onScrollEnd), 1000)}
-    >
-      <ListCards imoveis={data} cardComponent={cardComponent} />
-      {isLoadingItems && (
-        <LoadingBottom>
-          <Lottie
-            options={{
-              loop: true,
-              autoplay: true,
+  useEffect(() => {
+    setImoveis(initialPage.data);
+  }, [initialPage]);
 
-              animationData: loadingData,
-              rendererSettings: {
-                preserveAspectRatio: "xMidYMid slice",
-              },
-            }}
-            width={50}
-            height={50}
-          />
-        </LoadingBottom>
+  return (
+    <ListContainer
+      isMobile={isMobileView}
+      id="infiniteScrollContainer"
+      onScroll={debounce(scrollEnd(getMoreImoveis), 1000)}
+    >
+      <List
+        style={{
+          padding: "10px 20px",
+        }}
+      >
+        {page.data.map((imovel) => (
+          <CardComponent key={imovel.cod_imv} imovel={imovel} />
+        ))}
+      </List>
+      {isLoadingItems && (
+        <LoadingBottomContainer>
+          <CircularProgress />
+        </LoadingBottomContainer>
       )}
-    </InfiniteScrollContainer>
+    </ListContainer>
   );
 }
-
-const InfiniteScrollContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  background: ${colors.white};
-  margin: 0 auto;
-`;
-
-const LoadingBottom = styled.div`
-  position: relative;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;

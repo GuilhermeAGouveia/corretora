@@ -1,8 +1,10 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import Link from "next/link";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { FiAlignLeft, FiCheck, FiDollarSign, FiImage } from "react-icons/fi";
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import ImageIcon from '@mui/icons-material/Image';
+import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
 import Lottie from "react-lottie";
 import animationData from "../../assets/lotties/checked.json";
 import { useAuth } from "../../context/Auth";
@@ -164,7 +166,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
     () => [
       {
         description: "Informações básicas",
-        icon: FiAlignLeft,
+        icon: FormatAlignLeftIcon,
         inputs: [
           <Input
             key={"streetInput"}
@@ -215,7 +217,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
       },
       {
         description: "Insira suas imagens",
-        icon: FiImage,
+        icon: ImageIcon,
         inputs: [
           <ImageUploader
             key={"imageUpload"}
@@ -225,7 +227,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
       },
       {
         description: "Informações adicionais",
-        icon: FiAlignLeft,
+        icon: FormatAlignLeftIcon,
         inputs: [
           <Input
             key={"aptoInput"}
@@ -270,7 +272,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
       {
         description: "Quanto vai custar?",
 
-        icon: FiDollarSign,
+        icon: AttachMoneyIcon,
         inputs: [
           <Input
             key={"mensalidadeInput"}
@@ -294,7 +296,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
       },
       {
         description: "Finalizar",
-        icon: FiCheck,
+        icon: CheckCircleIcon,
         inputs: [
           <SubmitContainer key={"submitContainer"}>
             {totalProgress !== 100 && !loading && (

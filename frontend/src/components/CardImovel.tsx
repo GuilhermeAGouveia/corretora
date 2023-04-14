@@ -1,7 +1,8 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { FaHeart, FaRegHeart } from "react-icons/fa";
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import styled from "styled-components";
 import { CardImovelProps, LevelFurnished } from "../lib/interfaces";
 import colors from "../styles/colors";
@@ -43,14 +44,19 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
               animate={{ width: 20, height: 20 }}
               exit={{ width: 0, height: 0 }}
             >
-              <FaHeart key={uniqueId()} size={15} color={colors.primary} />
+              <FavoriteIcon key={uniqueId()} sx={{
+                color: colors.primary,
+                fontSize: 15,
+              }} />
             </IconHeart>
           )}
-          <FaRegHeart
+          <FavoriteBorderIcon
             key={uniqueId()}
             style={{ position: "absolute" }}
-            size={15}
-            color={"rgba(0, 0, 0, 0.2)"}
+            sx={{
+              color: colors.primary,
+              fontSize: 15,
+            }}
           />
         </AnimatePresence>
       </CardImovelButtonFavorite>
