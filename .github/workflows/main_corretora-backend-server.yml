@@ -57,4 +57,3 @@ jobs:
           app-name: 'corretora-backend-server'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_2B7A529C9CD44CBD96EC0B91B9CD9B91 }}
-          package: backend
