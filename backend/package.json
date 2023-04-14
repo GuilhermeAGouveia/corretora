@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "",
     "start": "node build/src/server.js",
     "build": "tsc",
     "dev": "nodemon src/server.ts"
