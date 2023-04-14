@@ -6,13 +6,13 @@ import { getCookie } from "../../../lib/cookies";
 import { getByLocador } from "../../../lib/imovel";
 import { IImovel } from "../../../lib/interfaces";
 import colors from "../../../styles/colors";
-import Header from "../../../components/TopBar";
+import TopBar from "../../../components/TopBar";
 
 export default function MyImoveis({ imoveis }: { imoveis: IImovel[] }) {
 
   return (
     <Container>
-      <Header pageName="Meus imóveis"></Header>
+      <TopBar pageName="Meus Imóveis"></TopBar>
       <ListCards imoveis={imoveis} cardComponent={CardMyImovel}></ListCards>
     </Container>
   );

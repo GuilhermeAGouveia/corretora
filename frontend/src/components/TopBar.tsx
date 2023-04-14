@@ -7,10 +7,10 @@ import { useRouter } from "next/router";
 import MenuLateral from "./Page/lista/MenuLateral";
 import MenuUserOptions from "./Page/lista/MenuUserOptions/index";
 
-interface HeaderProps {
+interface TopBarProps {
   pageName: string;
 }
-const TopBar = ({pageName}: HeaderProps) => {
+const TopBar = ({pageName}: TopBarProps) => {
   const router = useRouter();
   const { user } = useAuth();
   const { isMobileView } = useDeviceDetect();

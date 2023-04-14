@@ -30,6 +30,7 @@ import {
     SearchSection,
     SearchTotal
 } from "../../styles/pages/lista";
+import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -99,7 +100,7 @@ export default function Marketplace({
     };
   }
 
-  const getMoreImoveis = async () => {
+  const getMoreImoveis = useCallback(async () => {
     // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
     // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
     // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
@@ -113,7 +114,7 @@ export default function Marketplace({
     pageNumber += 1;
     setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
     setisLoadingItems(false);
-  };
+  }, [filterValues, isLoadingItems, pageImoveis]);
 
   // Controla se o SelectFloatLine em ControlContentBySelectionFloatLine deve ser fixo ou relativo na tela
   function swapDisplaySelect(e: HTMLElement) {
@@ -157,13 +158,14 @@ export default function Marketplace({
           </LeftSection>
           {useMemo(
             () => (
-              <ListCards
+             /*  <ListCards
                 imoveis={imoveis}
                 isLoadingItems={isLoadingItems}
                 cardComponent={CardImovel}
-              />
+              /> */
+              <InfiniteScrollList onScrollEnd={getMoreImoveis} cardComponent={CardImovel} data={imoveis}/>
             ),
-            [imoveis, isLoadingItems]
+            [imoveis, getMoreImoveis]
           )}
         </SearchSection>
       ),
@@ -215,7 +217,6 @@ export default function Marketplace({
     <ListRoot
       onScroll={debounce((e) => {
         swapDisplaySelect(e.target as HTMLElement);
-        onScrollEnd(e.target as HTMLElement, getMoreImoveis)();
       }, 1000)}
     >
       <TopBar pageName="Pagina Inicial"></TopBar>
