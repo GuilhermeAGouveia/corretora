@@ -9,14 +9,9 @@ import {
 } from "../../../lib/imovel";
 import ListCards from "./ListCards";
 import useDeviceDetect from "../../../hooks/useDeviceDetect";
+import ListComponent from "./IListComponent";
 
-interface PageButtonListProps {
-  initialPage: Page<IImovel>;
-  isLoadingInitialData: boolean;
-  cardComponent: React.FC<any>;
-  filterValues: any;
-  orderByOptions: any;
-}
+
 
 export default function PageButtonList({
   initialPage,
@@ -24,7 +19,7 @@ export default function PageButtonList({
   filterValues,
   orderByOptions,
   isLoadingInitialData,
-}: PageButtonListProps) {
+}: ListComponent) {
   const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
   const [page, setPage] = useState<Page<IImovel>>(initialPage);
   const {isMobileView} = useDeviceDetect()

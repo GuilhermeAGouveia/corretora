@@ -2,21 +2,12 @@ import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 import loadingData from "../../../assets/lotties/loading.json";
-import Lottie from "react-lottie";
 import ListCards from "./ListCards";
 import { IImovel, Page } from "../../../lib/interfaces";
 import { debounce, orderBy } from "lodash";
 import { getImoveisByFilterWithPage } from "../../../lib/imovel";
 import { CircularProgress, ImageList } from "@mui/material";
-import { List } from "@mui/icons-material";
-
-interface InfiniteScrollListProps {
-  initialPage: Page<IImovel>;
-  isLoadingInitialData: boolean;
-  cardComponent: React.FC<any>;
-  filterValues: any;
-  orderByOptions: any;
-}
+import ListComponent from "./IListComponent";
 
 let pageNumber = 1;
 
@@ -25,8 +16,8 @@ export default function InfiniteScrollList({
   cardComponent: CardComponent,
   filterValues,
   orderByOptions,
-  isLoadingInitialData
-}: InfiniteScrollListProps) {
+  isLoadingInitialData,
+}: ListComponent) {
   const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
   const [page, setPage] = useState<Page<IImovel>>(initialPage);
   const [imoveis, setImoveis] = useState<IImovel[]>(initialPage.data);
@@ -38,7 +29,7 @@ export default function InfiniteScrollList({
 
     setIsLoadingItems(true);
     const moreImoveis = await getImoveisByFilterWithPage(
-      {...filterValues, ...orderByOptions},
+      { ...filterValues, ...orderByOptions },
       pageNumber + 1
     );
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -73,14 +64,11 @@ export default function InfiniteScrollList({
       id="infiniteScrollContainer"
       onScroll={debounce(scrollEnd(getMoreImoveis), 1000)}
     >
-      <ImageList gap={4} style={{
-        display: 'flex',
-        justifyContent: 'flex-start',
-      }}>
-        {imoveis.map((imovel) => (
-          <CardComponent key={imovel.cod_imv} imovel={imovel} />
-        ))}
-      </ImageList>
+      <ListCards
+        imoveis={page.data}
+        cardComponent={CardComponent}
+        isLoading={isLoadingItems}
+      />
       {isLoadingItems && (
         <LoadingBottom>
           <CircularProgress />
