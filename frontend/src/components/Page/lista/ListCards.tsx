@@ -9,11 +9,13 @@ import BannerInfo, { useBannerInfo } from "../../BannerInfo";
 interface ListCardsProps {
   imoveis: any[];
   cardComponent: React.FC<CardImovelProps>;
+  isLoading?: boolean;
 }
 
 const ListCards = ({
   cardComponent: Card,
   imoveis: imoveisProps,
+  isLoading
 }: ListCardsProps) => {
   console.log("ListCards - render");
   const [imovelUpdate, setImovelUpdate] = useState<IImovel[] | null>(null);
@@ -50,7 +52,7 @@ const ListCards = ({
               onDelete={handleDelete}
             />
           ))
-        ) : (
+        ) : (!isLoading &&
           <NoneImoveis>Nenhum imóvel encontrado</NoneImoveis>
         )}
       </CardsContainer>

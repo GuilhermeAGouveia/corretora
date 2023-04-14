@@ -31,6 +31,7 @@ import {
     SearchTotal
 } from "../../styles/pages/lista";
 import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
+import PageButtonList from "../../components/Page/lista/PageButtonList";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -89,33 +90,6 @@ export default function Marketplace({
     [orderByValues]
   );
 
-  function onScrollEnd(e: HTMLElement, func: () => any) {
-    console.log("OnScrollEnd");
-    return () => {
-      const { scrollTop, clientHeight, scrollHeight } = e;
-
-      if (scrollTop + clientHeight >= scrollHeight - 50) {
-        func();
-      }
-    };
-  }
-
-  const getMoreImoveis = useCallback(async () => {
-    // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
-    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
-    // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
-    if (isLoadingItems || !pageImoveis.hasNext) return;
-
-    setisLoadingItems(true);
-    const moreImoveis = await getImoveisByFilterWithPage(
-      filterValues,
-      pageNumber + 1
-    );
-    pageNumber += 1;
-    setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
-    setisLoadingItems(false);
-  }, [filterValues, isLoadingItems, pageImoveis]);
-
   // Controla se o SelectFloatLine em ControlContentBySelectionFloatLine deve ser fixo ou relativo na tela
   function swapDisplaySelect(e: HTMLElement) {
     const { scrollTop, clientHeight, scrollHeight } = e;
@@ -163,9 +137,9 @@ export default function Marketplace({
                 isLoadingItems={isLoadingItems}
                 cardComponent={CardImovel}
               /> */
-              <InfiniteScrollList onScrollEnd={getMoreImoveis} cardComponent={CardImovel} data={imoveis}/>
+              <PageButtonList cardComponent={CardImovel} initialPage={pageImoveis} filterValues={filterValues} orderByOptions={orderByValues} isLoadingInitialData={isLoadingItems}/>
             ),
-            [imoveis, getMoreImoveis]
+            [filterValues, isLoadingItems, orderByValues, pageImoveis]
           )}
         </SearchSection>
       ),
@@ -214,7 +188,7 @@ export default function Marketplace({
   }, []);
 
   return (
-    <ListRoot
+    <ListRoot id="listRoot"
       onScroll={debounce((e) => {
         swapDisplaySelect(e.target as HTMLElement);
       }, 1000)}

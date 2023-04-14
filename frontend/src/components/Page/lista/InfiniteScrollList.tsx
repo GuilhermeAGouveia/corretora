@@ -1,23 +1,53 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import styled from "styled-components";
 import colors from "../../../styles/colors";
 import loadingData from "../../../assets/lotties/loading.json";
 import Lottie from "react-lottie";
 import ListCards from "./ListCards";
-import { IImovel } from "../../../lib/interfaces";
-import { debounce } from "lodash";
+import { IImovel, Page } from "../../../lib/interfaces";
+import { debounce, orderBy } from "lodash";
+import { getImoveisByFilterWithPage } from "../../../lib/imovel";
+import { CircularProgress, ImageList } from "@mui/material";
+import { List } from "@mui/icons-material";
 
 interface InfiniteScrollListProps {
-  data: IImovel[];
+  initialPage: Page<IImovel>;
+  isLoadingInitialData: boolean;
   cardComponent: React.FC<any>;
-  onScrollEnd: () => Promise<void>;
+  filterValues: any;
+  orderByOptions: any;
 }
+
+let pageNumber = 1;
+
 export default function InfiniteScrollList({
-  data,
-  cardComponent,
-  onScrollEnd,
+  initialPage,
+  cardComponent: CardComponent,
+  filterValues,
+  orderByOptions,
+  isLoadingInitialData
 }: InfiniteScrollListProps) {
-  const [isLoadingItems, setIsLoadingItems] = useState(false);
+  const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
+  const [page, setPage] = useState<Page<IImovel>>(initialPage);
+  const [imoveis, setImoveis] = useState<IImovel[]>(initialPage.data);
+  const getMoreImoveis = useCallback(async () => {
+    // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
+    // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
+    // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
+    if (isLoadingItems || !page.hasNext) return;
+
+    setIsLoadingItems(true);
+    const moreImoveis = await getImoveisByFilterWithPage(
+      {...filterValues, ...orderByOptions},
+      pageNumber + 1
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    pageNumber += 1;
+    setPage(moreImoveis);
+    setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
+    setIsLoadingItems(false);
+  }, [filterValues, isLoadingItems, orderByOptions, page.hasNext]);
+
   function scrollEnd(func: () => Promise<any>) {
     console.log("OnScrollEnd");
     return async () => {
@@ -34,27 +64,26 @@ export default function InfiniteScrollList({
     };
   }
 
+  useEffect(() => {
+    setImoveis(initialPage.data);
+  }, [initialPage]);
+
   return (
     <InfiniteScrollContainer
       id="infiniteScrollContainer"
-      onScroll={debounce(scrollEnd(onScrollEnd), 1000)}
+      onScroll={debounce(scrollEnd(getMoreImoveis), 1000)}
     >
-      <ListCards imoveis={data} cardComponent={cardComponent} />
+      <ImageList gap={4} style={{
+        display: 'flex',
+        justifyContent: 'flex-start',
+      }}>
+        {imoveis.map((imovel) => (
+          <CardComponent key={imovel.cod_imv} imovel={imovel} />
+        ))}
+      </ImageList>
       {isLoadingItems && (
         <LoadingBottom>
-          <Lottie
-            options={{
-              loop: true,
-              autoplay: true,
-
-              animationData: loadingData,
-              rendererSettings: {
-                preserveAspectRatio: "xMidYMid slice",
-              },
-            }}
-            width={50}
-            height={50}
-          />
+          <CircularProgress />
         </LoadingBottom>
       )}
     </InfiniteScrollContainer>
@@ -76,4 +105,5 @@ const LoadingBottom = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 999;
 `;
