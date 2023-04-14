@@ -8,6 +8,8 @@ import { debounce, orderBy } from "lodash";
 import { getImoveisByFilterWithPage } from "../../../lib/imovel";
 import { CircularProgress, ImageList } from "@mui/material";
 import ListComponent from "./IListComponent";
+import { ListContainer, LoadingBottomContainer } from "../../../styles/pages/lista";
+import useDeviceDetect from "../../../hooks/useDeviceDetect";
 
 let pageNumber = 1;
 
@@ -18,6 +20,7 @@ export default function InfiniteScrollList({
   orderByOptions,
   isLoadingInitialData,
 }: ListComponent) {
+  const { isMobileView } = useDeviceDetect()
   const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
   const [page, setPage] = useState<Page<IImovel>>(initialPage);
   const [imoveis, setImoveis] = useState<IImovel[]>(initialPage.data);
@@ -60,7 +63,8 @@ export default function InfiniteScrollList({
   }, [initialPage]);
 
   return (
-    <InfiniteScrollContainer
+    <ListContainer
+      isMobile={isMobileView}
       id="infiniteScrollContainer"
       onScroll={debounce(scrollEnd(getMoreImoveis), 1000)}
     >
@@ -70,28 +74,11 @@ export default function InfiniteScrollList({
         isLoading={isLoadingItems}
       />
       {isLoadingItems && (
-        <LoadingBottom>
+        <LoadingBottomContainer>
           <CircularProgress />
-        </LoadingBottom>
+        </LoadingBottomContainer>
       )}
-    </InfiniteScrollContainer>
+    </ListContainer>
   );
 }
 
-const InfiniteScrollContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  background: ${colors.white};
-  margin: 0 auto;
-`;
-
-const LoadingBottom = styled.div`
-  position: relative;
-  width: 100%;
-  height: 50px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-`;

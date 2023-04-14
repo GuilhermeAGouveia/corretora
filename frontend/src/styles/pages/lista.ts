@@ -119,3 +119,27 @@ export const AnnounceLineDivision = styled.div`
   margin: 10px auto;
 `;
 
+export const ListContainer = styled.div<{isMobile: boolean}>`
+  position: relative;
+  width: 100%;
+  height: auto;
+  background: ${colors.white};
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin: 0 auto;
+
+  ${props => props.isMobile && `
+    padding-bottom: 55px;
+  `}
+`;
+
+export const LoadingBottomContainer = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

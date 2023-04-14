@@ -10,6 +10,7 @@ import {
 import ListCards from "./ListCards";
 import useDeviceDetect from "../../../hooks/useDeviceDetect";
 import ListComponent from "./IListComponent";
+import { ListContainer, LoadingBottomContainer } from "../../../styles/pages/lista";
 
 
 
@@ -40,12 +41,12 @@ export default function PageButtonList({
   }
 
   return (
-    <PaginationButtonContainer isMobile={isMobileView}>
+    <ListContainer isMobile={isMobileView}>
       <ListCards imoveis={page.data} cardComponent={CardComponent} isLoading={isLoadingItems} />
       {isLoadingItems && (
-        <LoadingBottom>
+        <LoadingBottomContainer>
           <CircularProgress />
-        </LoadingBottom>
+        </LoadingBottomContainer>
       )}
       <Pagination
         count={page.total / page.data.length}
@@ -55,31 +56,7 @@ export default function PageButtonList({
         }}
       />
    
-    </PaginationButtonContainer>
+    </ListContainer>
   );
 }
 
-const PaginationButtonContainer = styled.div<{isMobile: boolean}>`
-  position: relative;
-  width: 100%;
-  height: auto;
-  background: ${colors.white};
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  margin: 0 auto;
-
-  ${props => props.isMobile && `
-    padding-bottom: 55px;
-  `}
-`;
-
-const LoadingBottom = styled.div`
-  position: relative;
-  width: 100%;
-  min-height: 70vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
