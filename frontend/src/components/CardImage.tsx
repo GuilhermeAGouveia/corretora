@@ -54,6 +54,7 @@ const CardImovelImage = styled.div`
   position: relative;
   width: 100%;
   height: auto;
+  min-height: 200px;
 `;
 
 export const ImagePlaceholder = styled.div`
