@@ -31,7 +31,7 @@ export const SearchSection = styled.section`
 `;
 export const LeftSection = styled.div`
   position: relative;
-  width: 210px;
+  width: 280px;
   height: auto;
   padding: 10px;
   display: block;

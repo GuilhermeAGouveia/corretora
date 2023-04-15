@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import { OrderByValues } from "../../../../lib/interfaces";
 import SelectReactHookForm from "../../../SelectReactHookForm";
-import { ActionButton, ActionContainer, ActionContent, ActionItem, ActionLabel, ActionTitle } from "./styles";
+import { ActionButton, ActionContainer, ActionContent, ActionItem, ActionLabel } from "./styles";
 
 
 interface OrderByProps {
@@ -28,13 +28,10 @@ const OrderBy = ({ onOrderBy, value }: OrderByProps) => {
   ];
   return (
     <ActionContainer>
-      <ActionTitle>
-        <h2>Ordenar por</h2>
-      </ActionTitle>
       <ActionContent onSubmit={handleSubmit(onOrderBy)}>
       <ActionItem>
           <ActionLabel>
-            <h3>Campo</h3>
+            <h4>Campo</h4>
           </ActionLabel>
           <SelectReactHookForm
             name={"orderBy"}
@@ -45,7 +42,7 @@ const OrderBy = ({ onOrderBy, value }: OrderByProps) => {
         </ActionItem>
         <ActionItem>
           <ActionLabel>
-            <h3>Modo</h3>
+            <h4>Modo</h4>
           </ActionLabel>
           <SelectReactHookForm
             name={"sort"}

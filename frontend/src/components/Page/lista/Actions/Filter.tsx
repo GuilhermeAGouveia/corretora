@@ -5,7 +5,7 @@ import { getAllCidades } from "../../../../lib/externalData";
 import { FilterValues } from "../../../../lib/interfaces";
 import SelectReactHookForm, { SelectOption } from "../../../SelectReactHookForm";
 import FilterInputRangeNumber from "../FilterInputRangeNumber";
-import { ActionButton, ActionContainer, ActionContent, ActionItem, ActionLabel, ActionTitle } from "./styles";
+import { ActionButton, ActionContainer, ActionContent, ActionItem, ActionLabel } from "./styles";
 
 interface FilterProps {
     onFilter: (data: any) => void;
@@ -50,13 +50,10 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
 
     return (
         <ActionContainer>
-            <ActionTitle>
-                <h2>Filtros</h2>
-            </ActionTitle>
             <ActionContent onSubmit={handleSubmit(onFilter)}>
                 <ActionItem>
                     <ActionLabel>
-                        <h3>Local</h3>
+                        <h4>Local</h4>
                     </ActionLabel>
                     <SelectReactHookForm
                         value={filterValues.local}
@@ -71,7 +68,7 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
                 </ActionItem>
                 <ActionItem>
                     <ActionLabel>
-                        <h3>Tipo</h3>
+                        <h4>Tipo</h4>
                     </ActionLabel>
                     <SelectReactHookForm
                         value={filterValues.type || typeSelectOptions[0].value}
@@ -82,7 +79,7 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
                 </ActionItem>
                 <ActionItem>
                     <ActionLabel>
-                        <h3>Mensalidade</h3>
+                        <h4>Mensalidade</h4>
                     </ActionLabel>
                     <FilterInputRangeNumber
                         name="mensalidade"
@@ -93,7 +90,7 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
                 </ActionItem>
                 <ActionItem>
                     <ActionLabel>
-                        <h3>Preço</h3>
+                        <h4>Preço</h4>
                     </ActionLabel>
                     <FilterInputRangeNumber
                         name="price"
@@ -104,7 +101,7 @@ const Filter = ({onFilter, filterValues}: FilterProps) => {
                 </ActionItem>
                 <ActionItem>
                     <ActionLabel>
-                        <h3>Tipo de Oferta</h3>
+                        <h4>Tipo de Oferta</h4>
                     </ActionLabel>
                     <SelectReactHookForm
                         value={filterValues.offerType || offerTypeSelectOptions[0].value}
