@@ -47,7 +47,7 @@ const ShowConfigs = () => {
             <h4>Listagem</h4>
           </ActionLabel>
 
-          <ToggleButtonGroup size="small" value={configValues} onChange={(e, value) => handleChange(e, "listType", value)} exclusive fullWidth>
+          <ToggleButtonGroup size="small" value={configValues.listType} onChange={(e, value) => handleChange(e, "listType", value)} exclusive fullWidth>
             <ToggleButton value="page" key="page">
               <ViewArrayIcon />
             </ToggleButton>
@@ -61,7 +61,7 @@ const ShowConfigs = () => {
             <h4>Exibir dono</h4>
           </ActionLabel>
 
-          <ToggleButtonGroup size="small" value={configValues} onChange={(e, value) => handleChange(e, "showOwner", value)} exclusive fullWidth>
+          <ToggleButtonGroup size="small" value={configValues.showOwner} onChange={(e, value) => handleChange(e, "showOwner", value)} exclusive fullWidth>
             <ToggleButton value={true} key="showOwner">
               <VisibilityIcon />
             </ToggleButton>
