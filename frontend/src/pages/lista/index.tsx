@@ -35,7 +35,7 @@ import {
 import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 import PageButtonList from "../../components/Page/lista/PageButtonList";
 import { fontGrid } from "@mui/material/styles/cssUtils";
-import ShowConfigs from "../../components/Page/lista/Actions/ShowConfigs";
+import ShowConfigs from "../../components/Page/lista/Actions/ShowListConfigs";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -49,11 +49,11 @@ export default function Marketplace({
   const router = useRouter();
 
   const [blockSelect, setBlockSelect] = useState(false);
-  const [imoveis, setImoveis] = useState(pageImoveisProp.data);
   const [isLoadingItems, setisLoadingItems] = useState(false);
   const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
   const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
+  const [listConfig, setListConfig] = useState();
   const [isMobileView, setIsMobileView] = useState(false);
 
   const { user } = useAuth();
@@ -70,7 +70,6 @@ export default function Marketplace({
     );
 
     pageNumber = 1;
-    setImoveis(pageImoveis.data);
     setPageImoveis(pageImoveis);
     setisLoadingItems(false);
   };
@@ -88,7 +87,6 @@ export default function Marketplace({
 
       pageNumber = 1;
       setPageImoveis(pageImoveis);
-      setImoveis(pageImoveis.data);
       setisLoadingItems(false);
     },
     [orderByValues]

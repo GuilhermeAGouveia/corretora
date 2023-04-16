@@ -16,15 +16,27 @@ import {
 } from "./styles";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
 
+interface ConfigValues {
+  showOwner: boolean;
+  listType: "page" | "infinite";
+}
+
+interface ShowConfigsProps {
+  configValues: ConfigValues;
+}
 
 const ShowConfigs = () => {
-  const [listType, setListType] = useState("page");
+  const [configValues, setConfigValues] = useState<ConfigValues>({
+    showOwner: false,
+    listType: "page",
+  });
   const { control, handleSubmit, register } = useForm();
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
-    newAlignment: string
+    configKey: keyof ConfigValues,
+    configValue: any
   ) => {
-    setListType(newAlignment);
+    setConfigValues((prev) => ({ ...prev, [configKey]: configValue }));
   };    
 
   return (
@@ -35,7 +47,7 @@ const ShowConfigs = () => {
             <h4>Listagem</h4>
           </ActionLabel>
 
-          <ToggleButtonGroup size="small" value={listType} onChange={handleChange} exclusive fullWidth>
+          <ToggleButtonGroup size="small" value={configValues} onChange={(e, value) => handleChange(e, "listType", value)} exclusive fullWidth>
             <ToggleButton value="page" key="page">
               <ViewArrayIcon />
             </ToggleButton>
@@ -49,11 +61,11 @@ const ShowConfigs = () => {
             <h4>Exibir dono</h4>
           </ActionLabel>
 
-          <ToggleButtonGroup size="small" value={listType} onChange={handleChange} exclusive fullWidth>
-            <ToggleButton value="page" key="page">
+          <ToggleButtonGroup size="small" value={configValues} onChange={(e, value) => handleChange(e, "showOwner", value)} exclusive fullWidth>
+            <ToggleButton value={true} key="showOwner">
               <VisibilityIcon />
             </ToggleButton>
-            <ToggleButton value="infinite" key="infinite">
+            <ToggleButton value={false} key="notShowOwner">
               <VisibilityOffIcon />
             </ToggleButton>
           </ToggleButtonGroup>
