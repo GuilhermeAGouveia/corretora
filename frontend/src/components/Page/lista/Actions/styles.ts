@@ -6,14 +6,9 @@ export const ActionContainer = styled.div`
   width: 100%;
   height: auto;
   padding: 10px;
+  padding-top: 0;
 `;
-export const ActionTitle = styled.div`
-  position: relative;
-  width: 100%;
-  height: auto;
-  color: rgba(0, 0, 0, 0.9);
-  margin-bottom: 15px;
-`;
+
 export const ActionContent = styled.form`
   position: relative;
   width: 100%;
@@ -29,12 +24,12 @@ export const ActionItem = styled.div`
   position: relative;
   width: 100%;
   max-width: 150px;
-  margin: 20px 0;
-
+  margin-bottom: 20px;
   &::after {
     content: "";
     position: absolute;
     bottom: -10px;
+    left: 0;
     width: 100%;
     height: 1px;
     background: rgba(0, 0, 0, 0.1);
@@ -44,6 +39,7 @@ export const ActionLabel = styled.div`
   position: relative;
   width: 100%;
   margin-bottom: 10px;
+  font-size: medium;
 `;
 export const ActionButton = styled.button`
   position: relative;

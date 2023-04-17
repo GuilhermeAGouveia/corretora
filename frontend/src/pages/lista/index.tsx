@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import AddHomeWorkOutlinedIcon from '@mui/icons-material/AddHomeWorkOutlined';
 import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
+import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
 import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
@@ -34,6 +35,7 @@ import {
 import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 import PageButtonList from "../../components/Page/lista/PageButtonList";
 import { fontGrid } from "@mui/material/styles/cssUtils";
+import ShowConfigs from "../../components/Page/lista/Actions/ShowListConfigs";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -47,11 +49,11 @@ export default function Marketplace({
   const router = useRouter();
 
   const [blockSelect, setBlockSelect] = useState(false);
-  const [imoveis, setImoveis] = useState(pageImoveisProp.data);
   const [isLoadingItems, setisLoadingItems] = useState(false);
   const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
   const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
+  const [listConfig, setListConfig] = useState();
   const [isMobileView, setIsMobileView] = useState(false);
 
   const { user } = useAuth();
@@ -68,7 +70,6 @@ export default function Marketplace({
     );
 
     pageNumber = 1;
-    setImoveis(pageImoveis.data);
     setPageImoveis(pageImoveis);
     setisLoadingItems(false);
   };
@@ -86,7 +87,6 @@ export default function Marketplace({
 
       pageNumber = 1;
       setPageImoveis(pageImoveis);
-      setImoveis(pageImoveis.data);
       setisLoadingItems(false);
     },
     [orderByValues]
@@ -116,6 +116,8 @@ export default function Marketplace({
               <SearchTotal>{pageImoveis.total} imóveis encontrados</SearchTotal>
             </SearchInfo>
             <ModalResponsive
+              title="Filtros"
+              isPrimary
               isMobile={isMobileView}
               buttonContent={
                 <FilterListOutlinedIcon sx={{
@@ -127,6 +129,7 @@ export default function Marketplace({
               <Filter onFilter={onFilter} filterValues={filterValues} />
             </ModalResponsive>
             <ModalResponsive
+              title="Ordenar"
               isMobile={isMobileView}
               buttonContent={
                 <SortByAlphaOutlinedIcon sx={{
@@ -136,6 +139,19 @@ export default function Marketplace({
               }
             >
               <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
+            </ModalResponsive>
+            <ModalResponsive
+              title="Configurações de exibição"
+              isPrimary
+              isMobile={isMobileView}
+              buttonContent={
+                <AutoAwesomeMosaicIcon sx={{
+                  color: "rgba(0, 0, 0, 0.7)",
+                  fontSize: "24px"
+                }}/>
+              }
+            >
+              <ShowConfigs></ShowConfigs>
             </ModalResponsive>
           </LeftSection>
           {useMemo(
