@@ -1,41 +1,43 @@
 import { debounce } from "lodash";
 import { useRouter } from "next/router";
 import { useCallback, useEffect, useMemo, useState } from "react";
-import AddHomeWorkOutlinedIcon from '@mui/icons-material/AddHomeWorkOutlined';
-import FilterListOutlinedIcon from '@mui/icons-material/FilterListOutlined';
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
-import AutoAwesomeMosaicIcon from '@mui/icons-material/AutoAwesomeMosaic';
+import AddHomeWorkOutlinedIcon from "@mui/icons-material/AddHomeWorkOutlined";
+import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
+import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
 import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
 import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
 import TopBar from "../../components/TopBar";
-import SortByAlphaOutlinedIcon from '@mui/icons-material/SortByAlphaOutlined';
+import SortByAlphaOutlinedIcon from "@mui/icons-material/SortByAlphaOutlined";
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
 import { useAuth } from "../../context/Auth";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
 import {
-    FilterValues,
-    IImovel,
-    OrderByValues,
-    Page
+  FilterValues,
+  IImovel,
+  OrderByValues,
+  Page,
 } from "../../lib/interfaces";
 import {
-    AnnounceLineDivision,
-    AnounceButton,
-    AnounceContent,
-    AnounceSection,
-    AnounceTitle,
-    LeftSection,
-    ListRoot,
-    SearchInfo,
-    SearchSection,
-    SearchTotal
+  AnnounceLineDivision,
+  AnounceButton,
+  AnounceContent,
+  AnounceSection,
+  AnounceTitle,
+  LeftSection,
+  ListRoot,
+  SearchInfo,
+  SearchSection,
+  SearchTotal,
 } from "../../styles/pages/lista";
 import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 import PageButtonList from "../../components/Page/lista/PageButtonList";
 import { fontGrid } from "@mui/material/styles/cssUtils";
 import ShowConfigs from "../../components/Page/lista/Actions/ShowListConfigs";
+import { ListConfigProvider, useListConfigs } from "../../context/ListSettings";
+import ListComponent from "../../components/Page/lista/IListComponent";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -53,10 +55,34 @@ export default function Marketplace({
   const [pageImoveis, setPageImoveis] = useState(pageImoveisProp);
   const [filterValues, setFilterValues] = useState({} as FilterValues);
   const [orderByValues, setOrderByValues] = useState({} as OrderByValues);
-  const [listConfig, setListConfig] = useState();
   const [isMobileView, setIsMobileView] = useState(false);
+  const [ListComponent, setListComponent] = useState<JSX.Element>(<></>);
 
   const { user } = useAuth();
+  const { configs } = useListConfigs();
+
+  useEffect(() => console.log(configs), [configs])
+
+  useEffect(() => {
+    const listProps = {
+      cardComponent: CardImovel,
+      initialPage: pageImoveis,
+      filterValues: filterValues,
+      orderByOptions: orderByValues,
+      isLoadingInitialData: isLoadingItems,
+    };
+    if (configs?.listType === "page") {
+      setListComponent(<PageButtonList {...listProps} />);
+    } else {
+      setListComponent(<InfiniteScrollList {...listProps} />);
+    }
+  }, [
+    configs?.listType,
+    pageImoveis,
+    filterValues,
+    orderByValues,
+    isLoadingItems,
+  ]);
 
   const onOrderBy = async (orderByOptions: OrderByValues) => {
     console.log("orderByOptions", orderByOptions);
@@ -120,10 +146,12 @@ export default function Marketplace({
               isPrimary
               isMobile={isMobileView}
               buttonContent={
-                <FilterListOutlinedIcon sx={{
-                  color: "rgba(0, 0, 0, 0.7)",
-                  fontSize: "24px"
-                }}/>
+                <FilterListOutlinedIcon
+                  sx={{
+                    color: "rgba(0, 0, 0, 0.7)",
+                    fontSize: "24px",
+                  }}
+                />
               }
             >
               <Filter onFilter={onFilter} filterValues={filterValues} />
@@ -132,10 +160,12 @@ export default function Marketplace({
               title="Ordenar"
               isMobile={isMobileView}
               buttonContent={
-                <SortByAlphaOutlinedIcon sx={{
-                  color: "rgba(0, 0, 0, 0.7)",
-                  fontSize: "24px"
-                }} />
+                <SortByAlphaOutlinedIcon
+                  sx={{
+                    color: "rgba(0, 0, 0, 0.7)",
+                    fontSize: "24px",
+                  }}
+                />
               }
             >
               <OrderBy value={orderByValues} onOrderBy={onOrderBy}></OrderBy>
@@ -145,26 +175,19 @@ export default function Marketplace({
               isPrimary
               isMobile={isMobileView}
               buttonContent={
-                <AutoAwesomeMosaicIcon sx={{
-                  color: "rgba(0, 0, 0, 0.7)",
-                  fontSize: "24px"
-                }}/>
+                <AutoAwesomeMosaicIcon
+                  sx={{
+                    color: "rgba(0, 0, 0, 0.7)",
+                    fontSize: "24px",
+                  }}
+                />
               }
             >
               <ShowConfigs></ShowConfigs>
             </ModalResponsive>
           </LeftSection>
-          {useMemo(
-            () => (
-             /*  <ListCards
-                imoveis={imoveis}
-                isLoadingItems={isLoadingItems}
-                cardComponent={CardImovel}
-              /> */
-              <PageButtonList cardComponent={CardImovel} initialPage={pageImoveis} filterValues={filterValues} orderByOptions={orderByValues} isLoadingInitialData={isLoadingItems}/>
-            ),
-            [filterValues, isLoadingItems, orderByValues, pageImoveis]
-          )}
+          {ListComponent}
+                     
         </SearchSection>
       ),
     },
@@ -212,19 +235,20 @@ export default function Marketplace({
   }, []);
 
   return (
-    <ListRoot id="listRoot"
-      onScroll={debounce((e) => {
-        swapDisplaySelect(e.target as HTMLElement);
-      }, 1000)}
-    >
-      <TopBar pageName="Pagina Inicial"></TopBar>
+      <ListRoot
+        id="listRoot"
+        onScroll={debounce((e) => {
+          swapDisplaySelect(e.target as HTMLElement);
+        }, 1000)}
+      >
+        <TopBar pageName="Pagina Inicial"></TopBar>
 
-      <ContentControlBySelectionFloatLine
-        initialSelected={0}
-        isFixed={blockSelect}
-        content={contentsForContentControl}
-      />
-    </ListRoot>
+        <ContentControlBySelectionFloatLine
+          initialSelected={0}
+          isFixed={blockSelect}
+          content={contentsForContentControl}
+        />
+      </ListRoot>
   );
 }
 

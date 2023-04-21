@@ -23,12 +23,12 @@ export default function InfiniteScrollList({
   const [isLoadingItems, setIsLoadingItems] = useState(isLoadingInitialData);
   const [page, setPage] = useState<Page<IImovel>>(initialPage);
   const [imoveis, setImoveis] = useState<IImovel[]>(initialPage.data);
-  const getMoreImoveis = useCallback(async () => {
+  const getMoreImoveis = async () => {
     // isLoadingItems é necessário para não carregar mais itens quando o usuário está carregando, evitando dados duplicados
     // !pageImoveis.data é necessário para não carregar mais itens quando a última pagina de dados já foi carregada, assim a
     // próxima terá um data vazio e servirá como um ponto de parada para consultas desnecessárias
     if (isLoadingItems || !page.hasNext) return;
-
+    console.log("pageNumber", pageNumber);
     setIsLoadingItems(true);
     const moreImoveis = await getImoveisByFilterWithPage(
       { ...filterValues, ...orderByOptions },
@@ -39,7 +39,7 @@ export default function InfiniteScrollList({
     setPage(moreImoveis);
     setImoveis((oldState) => [...oldState, ...moreImoveis.data]);
     setIsLoadingItems(false);
-  }, [filterValues, isLoadingItems, orderByOptions, page.hasNext]);
+  };
 
   function scrollEnd(func: () => Promise<any>) {
     console.log("OnScrollEnd");
@@ -61,6 +61,10 @@ export default function InfiniteScrollList({
     setImoveis(initialPage.data);
   }, [initialPage]);
 
+  useEffect(() => {
+    console.log(imoveis);
+  }, [imoveis]);
+
   return (
     <ListContainer
       isMobile={isMobileView}
@@ -72,13 +76,13 @@ export default function InfiniteScrollList({
           padding: "10px 20px",
         }}
       >
-        {page.data.map((imovel) => (
+        {imoveis.map((imovel) => (
           <CardComponent key={imovel.cod_imv} imovel={imovel} />
         ))}
       </List>
       {isLoadingItems && (
         <LoadingBottomContainer>
-          <CircularProgress />
+          <CircularProgress size={'30px'}/>
         </LoadingBottomContainer>
       )}
     </ListContainer>

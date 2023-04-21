@@ -15,28 +15,25 @@ import {
   ActionLabel,
 } from "./styles";
 import { ToggleButton, ToggleButtonGroup } from "@mui/material";
+import { useListConfigs } from "../../../../context/ListSettings";
+import BannerInfo, { useBannerInfo } from "../../../BannerInfo";
+import { AlertType } from "../../../../lib/interfaces";
 
-interface ConfigValues {
+export interface ConfigValues {
   showOwner: boolean;
   listType: "page" | "infinite";
 }
 
-interface ShowConfigsProps {
-  configValues: ConfigValues;
-}
-
 const ShowConfigs = () => {
-  const [configValues, setConfigValues] = useState<ConfigValues>({
-    showOwner: false,
-    listType: "page",
-  });
-  const { control, handleSubmit, register } = useForm();
+  const { configs, setConfigsAndSave } = useListConfigs();
+  const { setMessage, control: controlBanner} = useBannerInfo()
   const handleChange = (
     event: React.MouseEvent<HTMLElement>,
     configKey: keyof ConfigValues,
     configValue: any
   ) => {
-    setConfigValues((prev) => ({ ...prev, [configKey]: configValue }));
+    setConfigsAndSave({ ...configs, [configKey]: configValue });
+    setMessage(`Configurações alteradas: ${configKey}`, AlertType.SUCCESS)
   };    
 
   return (
@@ -47,7 +44,7 @@ const ShowConfigs = () => {
             <h4>Listagem</h4>
           </ActionLabel>
 
-          <ToggleButtonGroup size="small" value={configValues.listType} onChange={(e, value) => handleChange(e, "listType", value)} exclusive fullWidth>
+          <ToggleButtonGroup size="small" value={configs.listType} onChange={(e, value) => handleChange(e, "listType", value)} exclusive fullWidth>
             <ToggleButton value="page" key="page">
               <ViewArrayIcon />
             </ToggleButton>
@@ -61,7 +58,7 @@ const ShowConfigs = () => {
             <h4>Exibir dono</h4>
           </ActionLabel>
 
-          <ToggleButtonGroup size="small" value={configValues.showOwner} onChange={(e, value) => handleChange(e, "showOwner", value)} exclusive fullWidth>
+          <ToggleButtonGroup size="small" value={configs.showOwner} onChange={(e, value) => handleChange(e, "showOwner", value)} exclusive fullWidth>
             <ToggleButton value={true} key="showOwner">
               <VisibilityIcon />
             </ToggleButton>
@@ -71,6 +68,7 @@ const ShowConfigs = () => {
           </ToggleButtonGroup>
         </ActionItem>
       </ActionContent>
+      <BannerInfo control={controlBanner}/>
     </ActionContainer>
   );
 };
