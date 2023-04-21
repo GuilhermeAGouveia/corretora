@@ -16,7 +16,9 @@ export const Form = styled.div`
 export const SectionInputContent = styled.div`
   position: relative;
   width: 100%;
-  height: 100%;
+  height: auto;
+  overflow-x: hidden;
+  overflow-y: visible;
   & > * {
     margin: 0px auto;
     margin-top: 15px;
