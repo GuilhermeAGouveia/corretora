@@ -38,11 +38,11 @@ export async function insertManyImages(
 export function getRandomImageByImovelType(imovelType: ImovelType) {
   const imagesByType = {
     [ImovelType.CASA]:
-      "https://corretora-storage.s3.sa-east-1.amazonaws.com/imagens_background/casa.jpg",
+      "https://s2.glbimg.com/fekecXBrhfj5oL5VQYcTae7-VYE=/620x430/e.glbimg.com/og/ed/f/original/2020/05/04/gettyimages-1170286036.jpg",
     [ImovelType.APTO]:
-      "https://corretora-storage.s3.sa-east-1.amazonaws.com/imagens_background/apartamentos",
+      "https://www.tpsimoveis.com.br/tim.php?src=uploads/properties/2020/09/apartamento-venda-moinhos-de-vento-porto-alegre-tpsimoveis-1.jpg&w=1600&h=800",
     [ImovelType.COMERCIO]:
-      "https://corretora-storage.s3.sa-east-1.amazonaws.com/imagens_background/comercio.jpg",
+      "https://s3.amazonaws.com/static.nidoimovel.com.br/c399862d3b9d6b76c8436e924a68c45b/imovel/VK/VK3574/34b258c41f2ea117b14cbb319b824a78.jpg?1661525548",
   };
 
   return imagesByType[imovelType];
