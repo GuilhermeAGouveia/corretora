@@ -50,7 +50,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
               }} />
             </IconHeart>
           )}
-          <FavoriteBorderIcon
+          <FavoriteBorderIcon 
             key={uniqueId()}
             style={{ position: "absolute" }}
             sx={{

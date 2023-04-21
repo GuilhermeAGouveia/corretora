@@ -5,7 +5,7 @@ export const ListRoot = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
-  overflow-y: scroll;
+  overflow-y: hidden;
   background: ${colors.white};
 
   
@@ -122,11 +122,13 @@ export const AnnounceLineDivision = styled.div`
 export const ListContainer = styled.div<{isMobile: boolean}>`
   position: relative;
   width: 100%;
-  height: auto;
+  overflow-y: scroll;
+  height: calc(100vh - 100px);
   background: ${colors.white};
   display: flex;
   flex-direction: column;
   align-items: center;
+  
 
   margin: 0 auto;
 
@@ -135,10 +137,23 @@ export const ListContainer = styled.div<{isMobile: boolean}>`
   `}
 `;
 
-export const LoadingBottomContainer = styled.div`
+export const LoadingCentralContainer = styled.div`
   position: relative;
   width: 100%;
   min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+export const LoadingBottomContainer = styled.div`
+  position: fixed;
+  bottom: 70px;
+  width: 40px;
+  border-radius: 50%;
+  height: 40px;
+  padding: 5px;
+  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;

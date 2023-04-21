@@ -6,7 +6,7 @@ import useDeviceDetect from "../../../hooks/useDeviceDetect";
 import ListComponent from "./IListComponent";
 import {
   ListContainer,
-  LoadingBottomContainer,
+  LoadingCentralContainer,
 } from "../../../styles/pages/lista";
 
 export default function PageButtonList({
@@ -50,9 +50,9 @@ export default function PageButtonList({
         ))}
       </List>
       {isLoadingItems && (
-        <LoadingBottomContainer>
+        <LoadingCentralContainer>
           <CircularProgress />
-        </LoadingBottomContainer>
+        </LoadingCentralContainer>
       )}
       {page.data.length && (
         <Pagination

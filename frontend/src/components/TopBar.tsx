@@ -65,14 +65,14 @@ const BackButton = styled.button`
 
 const TopBarContainer = styled.header<{isMobileView: boolean}>`
   ${({ isMobileView }) => deviceStyles[isMobileView ? "mobile" : "desktop"]}
-  height: auto;
+  height: 50px;
   background: ${colors.secondary};
 `;
 
 const TopBarContent = styled.div`
   position: relative;
   width: 100%;
-  height: 50px;
+  height: 100%;
   padding: 0px 10px;
   display: flex;
   justify-content: space-between;
