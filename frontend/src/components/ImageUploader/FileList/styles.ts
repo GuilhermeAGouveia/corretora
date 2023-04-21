@@ -8,7 +8,8 @@ export const Container = styled.ul`
   justify-content: flex-start;
   align-items: center;
   margin: 0 20px;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
 
   @media (max-width: 768px) {
     margin: 10px 0;
@@ -22,7 +23,7 @@ export const Container = styled.ul`
     color: #444;
     background: ${colors.white};
     width: 250px;
-    height: 250px;
+    height: 230px;
     margin: 0 10px;
   }
 `;

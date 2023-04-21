@@ -57,6 +57,7 @@ export function AuthProvider({ children }: any) {
     setUser(null);
     deleteCookie("@corretora:token");
     deleteCookie("@corretora:userid");
+    location.reload();
   }, []);
 
   const isAuthenticated = !!user;
