@@ -10,22 +10,21 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 
 
+export interface AlertProps {
+    type: AlertType;
+    message: string;
+}
+
 export interface BannerInfoControl {
-    state: boolean; // true = show, false = hide
+    state?: AlertProps; // not undefined = show, undefined = hide
     desactive: () => void; // hide banner
 }
 
 interface BannerInfoProps {
-    children: any;
-    type: AlertType;
     control: BannerInfoControl;
 }
 
-const BannerInfo = ({type, children, control}: BannerInfoProps) => {
-
-    type = type || AlertType.SUCCESS;
-    children = children || "Sem mensagem";
-
+const BannerInfo = ({control}: BannerInfoProps) => {
     useEffect(() => {
         setTimeout(() => {
             control.desactive();
@@ -38,13 +37,13 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
         [AlertType.WARNING]: ErrorOutlineIcon,
     }
 
-    const AlertIcon = AlertIcons[type];
+    const AlertIcon = AlertIcons[control.state?.type || "warning"];
 
     return (
         <AnimatePresence>
             {control.state && (
                 <BannerInfoContainer
-                    type={type}
+                    type={control.state.type}
                     initial={{opacity: 0, x: -300}}
                     animate={{opacity: 1, x: 0}}
                     exit={{opacity: 0, x: -300}}
@@ -55,7 +54,7 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
                             fontSize: 20,
                         }}/>
                     </IconeBanner>
-                    {children}
+                    {control.state.message}
                 </BannerInfoContainer>
             )}
         </AnimatePresence>
@@ -64,10 +63,6 @@ const BannerInfo = ({type, children, control}: BannerInfoProps) => {
 
 export default BannerInfo;
 
-export interface AlertProps {
-    type: AlertType;
-    message: string;
-}
 
 export const useBannerInfo = () => {
     const alertState = useState<AlertProps>();
@@ -75,9 +70,9 @@ export const useBannerInfo = () => {
     const [alert, setAlert] = alertState;
 
     return {
-        alertState,
+        setMessage: (message: string, type: AlertType) => setAlert({message, type}),
         control: {
-            state: !!alert,
+            state: alert,
             desactive: () => setAlert(undefined),
         }
     }
