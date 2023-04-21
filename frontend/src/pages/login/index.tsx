@@ -24,7 +24,7 @@ import {
 
 export default function Login() {
     const router = useRouter();
-    const {control: controlBannerInfo, "alertState": [alert, setAlert]} = useBannerInfo();
+    const {control: controlBannerInfo, setMessage} = useBannerInfo();
 
     const [loading, setLoading] = useState(false);
     const {control, handleSubmit} = useForm();
@@ -53,18 +53,12 @@ export default function Login() {
 
     const preValidate = (data: any) => {
         if (!data.email || !data.password) {
-            setAlert({
-                type: AlertType.ERROR,
-                message: "Preencha todos os campos",
-            })
+            setMessage("Preencha todos os campos", AlertType.ERROR);
             return false;
         }
 
         if (data.password.length < 6) {
-            setAlert({
-                type: AlertType.WARNING,
-                message: "A senha deve ter no mínimo 6 caracteres",
-            })
+            setMessage("A senha deve ter no mínimo 6 caracteres", AlertType.WARNING);
             return false;
         }
 
@@ -80,15 +74,9 @@ export default function Login() {
             } catch (error: any) {
                 console.log(error);
                 if (error.toJSON().status === 400) {
-                    setAlert({
-                        type: AlertType.ERROR,
-                        message: "As credenciais estão incorretas",
-                    })
+                    setMessage("As credenciais estão incorretas", AlertType.ERROR);
                 } else {
-                    setAlert({
-                        type: AlertType.ERROR,
-                        message: "Ocorreu um erro ao fazer login",
-                    })
+                    setMessage("Ocorreu um erro ao fazer login", AlertType.ERROR);
                 }
             }
             setLoading(false);
@@ -97,9 +85,7 @@ export default function Login() {
 
     return (
         <LoginContainer>
-
-            {alert && <BannerInfo control={controlBannerInfo} type={alert.type}>{alert.message}</BannerInfo>}
-
+            <BannerInfo control={controlBannerInfo} />
             <LoginLeft>
                 <LogoCompany>
                     <LogoComponent/>

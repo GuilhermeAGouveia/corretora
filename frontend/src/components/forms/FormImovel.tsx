@@ -1,20 +1,17 @@
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ImageIcon from '@mui/icons-material/Image';
-import FormatAlignLeftIcon from '@mui/icons-material/FormatAlignLeft';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import ImageIcon from "@mui/icons-material/Image";
+import FormatAlignLeftIcon from "@mui/icons-material/FormatAlignLeft";
 import Lottie from "react-lottie";
 import animationData from "../../assets/lotties/checked.json";
 import { useAuth } from "../../context/Auth";
 import { getAditionalFields } from "../../lib/aditionalFields";
 import { getCidades, getEstados } from "../../lib/externalData";
 import { insertManyImages } from "../../lib/imagem";
-import {
-    insertImovel,
-    parseFormImovelToIImovel
-} from "../../lib/imovel";
+import { insertImovel, parseFormImovelToIImovel } from "../../lib/imovel";
 import { AlertType, ImovelType, LevelFurnished } from "../../lib/interfaces";
 import { formImovelSchema } from "../../lib/validations";
 import colors from "../../styles/colors";
@@ -22,14 +19,12 @@ import BannerInfo, { useBannerInfo } from "../BannerInfo";
 import ImageUploader, { UploadedFile } from "../ImageUploader";
 import Input from "../InputReactHookForm";
 import ProgressUpload from "../ProgressUpload";
-import SelectReactHookForm, {
-    SelectOption
-} from "../SelectReactHookForm";
+import SelectReactHookForm, { SelectOption } from "../SelectReactHookForm";
 import FormComponent from "./FormComponent";
 import { ButtonSubmit, SubmitContainer } from "./styles";
 import styled from "styled-components";
 import Button from "../Button";
-import {useRouter} from "next/router";
+import { useRouter } from "next/router";
 
 export interface FormImovel {
   street?: string;
@@ -56,11 +51,8 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
   const { control, handleSubmit } = useForm({
     resolver: yupResolver(formImovelSchema),
   });
-  const {
-    alertState: [alert, setAlert],
-    control: controlBannerInfo,
-  } = useBannerInfo();
-  
+  const { setMessage, control: controlBannerInfo } = useBannerInfo();
+
   const [estados, setEstados] = useState<SelectOption[]>([]); //usado pelo select de estados
   const [estado, setEstado] = useState<string>(); //  //usado pelo select de cidades para determinar de qual estado buscar cidades
   const [cidades, setCidades] = useState<SelectOption[]>([]); //usado pelo select de cidades
@@ -115,11 +107,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
     }
 
     let message = getMessageInJsonRecursive(errors);
-
-    setAlert({
-      type: AlertType.ERROR,
-      message,
-    });
+    setMessage(message, AlertType.ERROR);
   };
 
   const onSubmit = async (formValues: FormImovel) => {
@@ -180,14 +168,12 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
             type="number"
             control={control}
             placeholder="Número"
-
           />,
           <Input
             key={"districtInput"}
             name="district"
             control={control}
             placeholder="Bairro"
-
           />,
           <SelectReactHookForm
             key={"stateSelect"}
@@ -199,7 +185,6 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
             options={estados}
             controlReactHookForm={control}
             onChange={(value) => setEstado(value)}
-
           ></SelectReactHookForm>,
           <SelectReactHookForm
             key={"citySelect"}
@@ -211,7 +196,6 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
             placeholder="Cidade"
             options={cidades}
             controlReactHookForm={control}
-
           ></SelectReactHookForm>,
         ],
       },
@@ -300,11 +284,7 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
         inputs: [
           <SubmitContainer key={"submitContainer"}>
             {totalProgress !== 100 && !loading && (
-              <ButtonSubmit
-                type="submit"
-              >
-                Anunciar
-              </ButtonSubmit>
+              <ButtonSubmit type="submit">Anunciar</ButtonSubmit>
             )}
             {totalProgress !== 100 &&
               loading && ( //Exibe este componente enquanto o a imagem nã
@@ -340,26 +320,42 @@ const FormImovel = ({ imovelType }: FormImovelProps) => {
               )}
 
             {finalAnimationConfirm && ( //Exibe este componente apenas quando o cadastro estiver totalmente completo
-               <ContainerButtonsEndRegister>
-               <Button label="Voltar a pagina inicial" onClick={() => router.push("/lista")}/>
-               <Button label={`Continuar inserindo ${imovelType.toLowerCase()}`} onClick={() => router.reload()}/>
-             </ContainerButtonsEndRegister>
+              <ContainerButtonsEndRegister>
+                <Button
+                  label="Voltar a pagina inicial"
+                  onClick={() => router.push("/lista")}
+                />
+                <Button
+                  label={`Continuar inserindo ${imovelType.toLowerCase()}`}
+                  onClick={() => router.reload()}
+                />
+              </ContainerButtonsEndRegister>
             )}
           </SubmitContainer>,
         ],
       },
     ],
-    [control, estados, cidades, imagens, imovelType, totalProgress, loading, finalAnimationConfirm, router]
+    [
+      control,
+      estados,
+      cidades,
+      imagens,
+      imovelType,
+      totalProgress,
+      loading,
+      finalAnimationConfirm,
+      router,
+    ]
   );
 
   return (
     <>
-    <FormComponent sections={sections()} onSubmit={handleSubmit(onSubmit, onError)} />
-    {alert && (
-        <BannerInfo type={alert.type} control={controlBannerInfo}>
-          {alert.message}
-        </BannerInfo>
-      )}
+      <FormComponent
+        sections={sections()}
+        onSubmit={handleSubmit(onSubmit, onError)}
+      />
+
+      <BannerInfo control={controlBannerInfo} />
     </>
   );
 };

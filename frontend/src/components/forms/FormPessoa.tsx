@@ -2,24 +2,19 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import LockIcon from '@mui/icons-material/Lock';
-import AddLocationAltIcon from '@mui/icons-material/AddLocationAlt';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import PersonIcon from '@mui/icons-material/Person';
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import LockIcon from "@mui/icons-material/Lock";
+import AddLocationAltIcon from "@mui/icons-material/AddLocationAlt";
+import LocalPhoneIcon from "@mui/icons-material/LocalPhone";
+import PersonIcon from "@mui/icons-material/Person";
 import { getCidades, getEstados } from "../../lib/externalData";
 import { AlertType } from "../../lib/interfaces";
-import {
-    insertPessoa,
-    parseFormPessoaToPessoa
-} from "../../lib/pessoa";
+import { insertPessoa, parseFormPessoaToPessoa } from "../../lib/pessoa";
 import { formPessoaSchema } from "../../lib/validations";
 import BannerInfo, { useBannerInfo } from "../BannerInfo";
 import Input from "../InputReactHookForm";
 import MultiInput from "../MultiInputReactHookForm";
-import SelectReactHookForm, {
-    SelectOption
-} from "../SelectReactHookForm";
+import SelectReactHookForm, { SelectOption } from "../SelectReactHookForm";
 import FormComponent from "./FormComponent";
 import { ButtonSubmit, SubmitContainer } from "./styles";
 import { tr } from "date-fns/locale";
@@ -41,10 +36,7 @@ export interface IFormPessoa {
 }
 
 const FormPessoa = () => {
-  const {
-    alertState: [alert, setAlert],
-    control: controlBannerInfo,
-  } = useBannerInfo();
+  const { setMessage, control: controlBannerInfo } = useBannerInfo();
 
   const { handleSubmit, control } = useForm({
     resolver: yupResolver(formPessoaSchema),
@@ -55,13 +47,10 @@ const FormPessoa = () => {
 
   const onSubmit = async (data: any) => {
     try {
-    data = data as IFormPessoa;
-    let pessoa = parseFormPessoaToPessoa(data);
-    await insertPessoa(pessoa);
-    setAlert({
-      type: AlertType.SUCCESS,
-      message: "Pessoa cadastrada com sucesso!",
-    });
+      data = data as IFormPessoa;
+      let pessoa = parseFormPessoaToPessoa(data);
+      await insertPessoa(pessoa);
+      setMessage("Pessoa cadastrada com sucesso!", AlertType.SUCCESS);
     } catch (e) {
       onError(e);
     }
@@ -84,11 +73,7 @@ const FormPessoa = () => {
     }
 
     let message = getMessageInJsonRecursive(errors);
-
-    setAlert({
-      type: AlertType.ERROR,
-      message,
-    });
+    setMessage(message, AlertType.ERROR);
   };
 
   useEffect(() => {
@@ -252,11 +237,7 @@ const FormPessoa = () => {
         sections={sections}
         onSubmit={handleSubmit(onSubmit, onError)}
       />
-      {alert && (
-        <BannerInfo type={alert.type} control={controlBannerInfo}>
-          {alert.message}
-        </BannerInfo>
-      )}
+      <BannerInfo control={controlBannerInfo} />
     </>
   );
 };
