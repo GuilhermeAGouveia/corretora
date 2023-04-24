@@ -82,6 +82,11 @@ export interface Pessoa {
   state: string;
   cep: string;
   phones: string[];
+  avatar?: string;
+}
+
+export interface Locador extends Pessoa {
+  isPartner: boolean;
 }
 
 export interface FilterValues {

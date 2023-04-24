@@ -1,6 +1,6 @@
-import {getAPIHTTPClient} from "../services/api";
-import {Pessoa} from "./interfaces";
-import FormPessoa, {IFormPessoa} from "../components/forms/FormPessoa";
+import { IFormPessoa } from "../components/forms/FormPessoa";
+import { getAPIHTTPClient } from "../services/api";
+import { Locador, Pessoa } from "./interfaces";
 
 
 export async function insertPessoa(
@@ -12,6 +12,14 @@ export async function insertPessoa(
     return response.data;
 }
 
+export async function getLocadorByCod(
+    cod: string,
+    ctx?: any
+): Promise<Pessoa> {
+    const api = getAPIHTTPClient(ctx);
+    const response = await api.get<Locador>(`/locador/get/${cod}`);
+    return response.data;
+}
 export function parseFormPessoaToPessoa(
     formPessoa: IFormPessoa
 ): Pessoa {
