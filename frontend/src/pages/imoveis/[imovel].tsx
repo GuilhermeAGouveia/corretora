@@ -1,5 +1,4 @@
-import { Close, MoreVert } from "@mui/icons-material";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import { Add, Close, MoreVert } from "@mui/icons-material";
 import RoomIcon from "@mui/icons-material/Room";
 import { Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
@@ -10,6 +9,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import avatarPNG from "../../assets/images/avatar.png";
 import casaPNG from "../../assets/images/casa.png";
+import FavoriteButton from "../../components/FavoriteButton";
 import TopBar from "../../components/TopBar";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
 import { getAllImovel, getImovelByCod } from "../../lib/imovel";
@@ -47,6 +47,7 @@ interface ImovelProps {
 
 export default function Imovel({ imovel, locador }: ImovelProps) {
   const [imageSelected, setImageSelected] = useState("");
+  const [isFavorite, setIsFavorite] = useState(false);
   const { isMobileView } = useDeviceDetect();
   return (
     <ImovelDetailContainer>
@@ -76,22 +77,17 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
             </PropietarioInfo>
           </PropietarioContainer>
           <ActionsContainer>
-            <FavoriteBorderIcon
-              sx={{
-                color: colors.primary,
-                fontSize: 20,
-              }}
-            />
+            <FavoriteButton isFavorite={isFavorite} handleFavorite={() => setIsFavorite(!isFavorite)} size={25}/>
             <MoreVert
               sx={{
                 color: colors.primary,
-                fontSize: 20,
+                fontSize: 25,
               }}
             />
           </ActionsContainer>
         </TopContainer>
         <BodyContainer isMobile={isMobileView}>
-          <ImageContainer>
+          <ImageContainer isMobile={isMobileView}>
             <MainImageContainer>
               <Image
                 src={casaPNG}
@@ -176,6 +172,8 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
                     position: "relative",
                     fontWeight: 500,
                     color: "#343434",
+                    textAlign: "center",
+                    width: "100%",
                   }}
                 >
                   {imovel?.address}, {imovel?.city}, {imovel?.state}
@@ -184,13 +182,18 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               </LocalContainer>
             </ImovelTittleContainer>
             <ImovelDescriptionTextContainer>
+                
               <Typography
                 fontFamily={"Lato, sans-serif"}
                 fontWeight={300}
-                fontSize={18}
+                fontSize={"small"}
               >
                 Casa com 3 quartos, 2 banheiros, 1 vaga de garagem, 1 cozinha, 1
               </Typography>
+              <Add sx={{
+                color: colors.primary,
+                fontSize: 20,
+              }}/>
             </ImovelDescriptionTextContainer>
           </ImovelDescriptionContainer>
 
@@ -290,48 +293,48 @@ const ActionsContainer = styled.div`
   position: relative;
   display: flex;
   height: 100%;
-  width: 60%;
+  max-width: 40%;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
 `;
 
-const ImageContainer = styled.div`
+const ImageContainer = styled.div<{ isMobile: boolean }>`
   position: relative;
-  display: block;
+  display: flex;
   height: 40%;
-  width: 100%;
-  padding: 10px;
-  align-items: center;
+  width: ${(props) => (props.isMobile ? "100%" : "400px")};
+  padding: 10px 0;
+  align-items: flex-start;
   justify-content: center;
 `;
 const MainImageContainer = styled("div")`
   position: relative;
   display: flex;
-  height: 80%;
-  width: 100%;
+  height: 100%;
+  max-width: 100%;
   align-items: center;
   justify-content: center;
+  background: red;
   overflow: hidden;
 `;
 
 const ImageSelectorContainer = styled.div`
   position: relative;
-  display: flex;
-  height: 20%;
-  padding: 10px;
-  width: 100%;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 10px;
+  display: block;
+  height: 100%;
+  width: 70px;
   overflow: hidden;
+  background: white;
+
 `;
 
 const ImageSelector = styled(motion.div)`
   position: relative;
   display: flex;
+  width: 50px;
   height: 50px;
-  height: 50px;
+  margin: 10px auto;
   overflow: hidden;
   border-radius: 2px;
 `;
@@ -378,7 +381,7 @@ const ButtonImovel = styled.button`
   align-items: center;
   justify-content: space-around;
   overflow: hidden;
-  margin: 20px;
+  
 `;
 
 const ButtonsImovelContainer = styled.div<{
@@ -388,7 +391,10 @@ const ButtonsImovelContainer = styled.div<{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: ${(props) => (props.isMobile ? "row" : "column")};
+  gap: 20px;
   overflow: hidden;
+  margin: 20px;
 `;
 
 const ImovelTittleContainer = styled.div`
@@ -417,19 +423,27 @@ const LocalContainer = styled.div`
 `;
 
 const BodyContainer = styled.div<{ isMobile: boolean }>`
-  position: block;
+  position: relative;
+  display: ${(props) => (props.isMobile ? "block" : "flex")};
+  justify-content: center;
+  margin-top: 20px;
   height: auto;
   width: auto;
 `;
 
-const ImovelDescriptionTextContainer = styled.div`
+const ImovelDescriptionTextContainer = styled("div")`
   position: relative;
   display: flex;
+  box-shadow: none;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   padding: 10px 20px;
+  border-radius: 5px;
+  left: 20px;
+  max-width: calc(100% - 40px);
+  background: white;
 `;
 
 const ImovelDescriptionContainer = styled.div<{ isMobile: boolean }>`
@@ -443,4 +457,5 @@ const FullScreenBox = styled.div`
   width: 100%;
   height: 100vh;
   background-color: ${colors.white};
+  padding: 10px 0;
 `;
