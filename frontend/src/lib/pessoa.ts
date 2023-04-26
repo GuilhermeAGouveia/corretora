@@ -37,7 +37,7 @@ export function parseFormPessoaToPessoa(
         telefones
 
     } = formPessoa;
-
+    console.log(formPessoa);
     const pessoa: Pessoa = {
         email: email as string,
         firstName: firstName as string,
@@ -48,7 +48,7 @@ export function parseFormPessoaToPessoa(
         city: city as string,
         state: state as string,
         cep: cep as string,
-        phones: telefones as string[]
+        phones_: telefones as string[]
     } as Pessoa;
 
     return pessoa;

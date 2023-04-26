@@ -1,18 +1,22 @@
-import { debounce } from "lodash";
-import { useRouter } from "next/router";
-import { useCallback, useEffect, useMemo, useState } from "react";
 import AddHomeWorkOutlinedIcon from "@mui/icons-material/AddHomeWorkOutlined";
+import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
 import FilterListOutlinedIcon from "@mui/icons-material/FilterListOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import AutoAwesomeMosaicIcon from "@mui/icons-material/AutoAwesomeMosaic";
+import SortByAlphaOutlinedIcon from "@mui/icons-material/SortByAlphaOutlined";
+import { debounce } from "lodash";
+import { useRouter } from "next/router";
+import { useCallback, useEffect, useState } from "react";
 import CardImovel from "../../components/CardImovel";
 import Filter from "../../components/Page/lista/Actions/Filter";
 import OrderBy from "../../components/Page/lista/Actions/OrderBy";
+import ShowConfigs from "../../components/Page/lista/Actions/ShowListConfigs";
 import ContentControlBySelectionFloatLine from "../../components/Page/lista/ContentControlBySelectionFloatLine";
-import TopBar from "../../components/TopBar";
-import SortByAlphaOutlinedIcon from "@mui/icons-material/SortByAlphaOutlined";
+import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
 import ModalResponsive from "../../components/Page/lista/ModalResponsive";
+import PageButtonList from "../../components/Page/lista/PageButtonList";
+import TopBar from "../../components/TopBar";
 import { useAuth } from "../../context/Auth";
+import { useListConfigs } from "../../context/ListSettings";
 import { getImoveisByFilterWithPage, getImovelByPage } from "../../lib/imovel";
 import {
   FilterValues,
@@ -28,16 +32,11 @@ import {
   AnounceTitle,
   LeftSection,
   ListRoot,
+  NotResultContainer,
   SearchInfo,
   SearchSection,
   SearchTotal,
 } from "../../styles/pages/lista";
-import InfiniteScrollList from "../../components/Page/lista/InfiniteScrollList";
-import PageButtonList from "../../components/Page/lista/PageButtonList";
-import { fontGrid } from "@mui/material/styles/cssUtils";
-import ShowConfigs from "../../components/Page/lista/Actions/ShowListConfigs";
-import { ListConfigProvider, useListConfigs } from "../../context/ListSettings";
-import ListComponent from "../../components/Page/lista/IListComponent";
 
 interface MarketplaceProps {
   pageImoveis: Page<IImovel>;
@@ -186,7 +185,8 @@ export default function Marketplace({
               <ShowConfigs></ShowConfigs>
             </ModalResponsive>
           </LeftSection>
-          {ListComponent}
+          {pageImoveis.data.length && ListComponent}
+          {!pageImoveis.data.length && !isLoadingItems && <NotResultContainer>Não tenho nada para mostrar 😔</NotResultContainer>}
                      
         </SearchSection>
       ),

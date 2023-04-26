@@ -1,4 +1,4 @@
-import { WhatsApp } from "@mui/icons-material";
+import { Email, WhatsApp } from "@mui/icons-material";
 import { Typography } from "@mui/material";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
@@ -6,8 +6,8 @@ import styled from "styled-components";
 import useDeviceDetect from "../../../hooks/useDeviceDetect";
 import { IImovel, Locador } from "../../../lib/interfaces";
 import {
-    ButtonImovel,
-    ButtonsImovelContainer,
+  ButtonImovel,
+  ButtonsImovelContainer,
 } from "../../../pages/imoveis/[imovel]";
 import colors from "../../../styles/colors";
 
@@ -24,21 +24,26 @@ export default function Comprar({ imovel, locador }: ComprarProps) {
       `https://api.whatsapp.com/send?phone=${locador.phones[0].numero}&text=Olá, ${locador.firstName}!\nGostaria de mais informações sobre o imóvel ${window.location.href}`
     );
 
+  const getUrlWhatsapp = () => {
+    return `https://web.whatsapp.com/send/?phone=${
+      locador.phones[0].numero.replace("(", "").replace(")", "").replace("-", "").replace(" ", "")
+    }&text=${getTextMessage()}&type=phone_number&app_absent=0`;
+  };
+
+  const getUrlEmail = () => {
+    return encodeURI(
+      `mailto:${locador.email}?subject=[BlueHome] Existe um interesse no imóvel ${imovel.cod_imv}&body=Olá, ${locador.firstName}!\nGostaria de mais informações sobre o imóvel ${window.location.href}`
+    );
+  };
+
   useEffect(() => {
-    console.log(getTextMessage())
-    console.log(locador.phones)
-  }, []);
+    console.log(getUrlWhatsapp())
+  })
   return (
     <ActionImovelContainer isMobile={isMobileView}>
       <ActionImovelTitle>Comprar</ActionImovelTitle>
       <ButtonsImovelContainer isMobile={isMobileView}>
-        <ButtonImovel
-          onClick={() =>
-            (location.href = `https://web.whatsapp.com/send/?phone=${
-              locador.phones[0].numero
-            }&text=${getTextMessage()}&type=phone_number&app_absent=0`)
-          }
-        >
+        <ButtonImovel onClick={() => (location.href = getUrlWhatsapp())}>
           <WhatsApp
             sx={{
               color: colors.white,
@@ -53,8 +58,8 @@ export default function Comprar({ imovel, locador }: ComprarProps) {
             Enviar mensagem
           </Typography>
         </ButtonImovel>
-        <ButtonImovel>
-          <WhatsApp
+        <ButtonImovel onClick={() => (location.href = getUrlEmail())}>
+          <Email
             sx={{
               color: colors.white,
               fontSize: 40,

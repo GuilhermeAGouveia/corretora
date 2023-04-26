@@ -158,3 +158,12 @@ export const LoadingBottomContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const NotResultContainer = styled.div`
+  position: relative;
+  width: 100%;
+  min-height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;

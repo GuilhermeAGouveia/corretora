@@ -82,8 +82,9 @@ export interface Pessoa {
   state: string;
   cep: string;
   phones: {
-    numero: string; 
+    numero: string;
   }[];
+  phones_: string[];
   avatar?: string;
 }
 
