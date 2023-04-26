@@ -1,6 +1,6 @@
 import { Add, Close, MoreVert } from "@mui/icons-material";
 import RoomIcon from "@mui/icons-material/Room";
-import { Link, Typography } from "@mui/material";
+import { Drawer, Link, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { capitalize } from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -48,6 +48,12 @@ interface ImovelProps {
 export default function Imovel({ imovel, locador }: ImovelProps) {
   const [imageSelected, setImageSelected] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
+  const [anchorAlugar, setAnchorAlugar] = useState(false);
+  const [anchorComprar, setAnchorComprar] = useState(false);
+
+  const toogleAlugar = () => setAnchorAlugar(!anchorAlugar);
+  const toogleComprar = () => setAnchorComprar(!anchorComprar);
+  
   const { isMobileView } = useDeviceDetect();
   return (
     <ImovelDetailContainer>
@@ -220,6 +226,7 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               </Typography>
             </ButtonImovel>
             <ButtonImovel
+              onClick={toogleComprar}
               style={{
                 backgroundColor: "white",
                 color: colors.primary,
@@ -239,6 +246,17 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               >
                 Comprar
               </Typography>
+              <Drawer anchor={'bottom'} open={anchorComprar} onClose={toogleComprar}>
+                <Typography fontFamily={"Lato, sans-serif"} fontSize={14}>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Vestibulum euismod, nisi quis ultricies ultrices, nunc nisl
+                  aliquam nunc, vitae aliquam nunc nisl euismod nunc. Nulla
+                  facilisi. Sed euismod, nisl quis ultricies ultrices, nunc nisl
+                  aliquam nunc, vitae aliquam nunc nisl euismod nunc. Nulla
+                  facilisi. Sed euismod, nisl quis ultricies ultrices, nunc nisl
+                  aliquam nunc, vitae aliquam nunc nisl euismod nunc. Nulla
+                  </Typography>
+              </Drawer>
             </ButtonImovel>{" "}
           </ButtonsImovelContainer>
         </BodyContainer>
