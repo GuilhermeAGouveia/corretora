@@ -1,6 +1,6 @@
 import { Add, Close, MoreVert } from "@mui/icons-material";
 import RoomIcon from "@mui/icons-material/Room";
-import { Typography } from "@mui/material";
+import { Link, Typography } from "@mui/material";
 import { AnimatePresence, motion } from "framer-motion";
 import { capitalize } from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
@@ -77,7 +77,11 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
             </PropietarioInfo>
           </PropietarioContainer>
           <ActionsContainer>
-            <FavoriteButton isFavorite={isFavorite} handleFavorite={() => setIsFavorite(!isFavorite)} size={25}/>
+            <FavoriteButton
+              isFavorite={isFavorite}
+              handleFavorite={() => setIsFavorite(!isFavorite)}
+              size={25}
+            />
             <MoreVert
               sx={{
                 color: colors.primary,
@@ -159,8 +163,9 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               >
                 {capitalize(imovel?.type as string)} em
               </Typography>
-              <LocalContainer>
-              <RoomIcon
+              
+              <LocalContainer target="_brank" href={`https://www.google.com/maps/search/?api=1&query=${imovel?.address as string}, ${imovel?.city as string}, ${imovel?.state}&hl=pt-br`}>
+                <RoomIcon
                   sx={{
                     color: colors.primary,
                     fontSize: 20,
@@ -178,11 +183,9 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
                 >
                   {imovel?.address}, {imovel?.city}, {imovel?.state}
                 </Typography>
-              
               </LocalContainer>
             </ImovelTittleContainer>
             <ImovelDescriptionTextContainer>
-                
               <Typography
                 fontFamily={"Lato, sans-serif"}
                 fontWeight={300}
@@ -190,10 +193,12 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               >
                 Casa com 3 quartos, 2 banheiros, 1 vaga de garagem, 1 cozinha, 1
               </Typography>
-              <Add sx={{
-                color: colors.primary,
-                fontSize: 20,
-              }}/>
+              <Add
+                sx={{
+                  color: colors.primary,
+                  fontSize: 20,
+                }}
+              />
             </ImovelDescriptionTextContainer>
           </ImovelDescriptionContainer>
 
@@ -326,7 +331,6 @@ const ImageSelectorContainer = styled.div`
   width: 70px;
   overflow: hidden;
   background: white;
-
 `;
 
 const ImageSelector = styled(motion.div)`
@@ -337,6 +341,7 @@ const ImageSelector = styled(motion.div)`
   margin: 10px auto;
   overflow: hidden;
   border-radius: 2px;
+  cursor: pointer;
 `;
 
 const FocusImage = styled(motion.div)`
@@ -381,7 +386,6 @@ const ButtonImovel = styled.button`
   align-items: center;
   justify-content: space-around;
   overflow: hidden;
-  
 `;
 
 const ButtonsImovelContainer = styled.div<{
@@ -408,7 +412,7 @@ const ImovelTittleContainer = styled.div`
   justify-content: space-between;
 `;
 
-const LocalContainer = styled.div`
+const LocalContainer = styled(Link)`
   position: relative;
   display: flex;
   width: 100%;
@@ -420,6 +424,23 @@ const LocalContainer = styled.div`
   background: ${colors.white};
   border-radius: 5px;
   border: 1px solid ${colors.primary};
+
+  &::after {
+    content: "Abrir no Google Maps";
+    position: absolute;
+    display: flex;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    left: -100%;
+  }
+
+  &:hover::after {
+    left: 0;
+    transition: left 0.3s ease-in-out;
+  }
 `;
 
 const BodyContainer = styled.div<{ isMobile: boolean }>`
