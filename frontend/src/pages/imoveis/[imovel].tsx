@@ -10,6 +10,7 @@ import styled from "styled-components";
 import avatarPNG from "../../assets/images/avatar.png";
 import casaPNG from "../../assets/images/casa.png";
 import FavoriteButton from "../../components/FavoriteButton";
+import Comprar from "../../components/Page/imoveis/Comprar";
 import TopBar from "../../components/TopBar";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
 import { getAllImovel, getImovelByCod } from "../../lib/imovel";
@@ -246,16 +247,8 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               >
                 Comprar
               </Typography>
-              <Drawer anchor={'bottom'} open={anchorComprar} onClose={toogleComprar}>
-                <Typography fontFamily={"Lato, sans-serif"} fontSize={14}>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Vestibulum euismod, nisi quis ultricies ultrices, nunc nisl
-                  aliquam nunc, vitae aliquam nunc nisl euismod nunc. Nulla
-                  facilisi. Sed euismod, nisl quis ultricies ultrices, nunc nisl
-                  aliquam nunc, vitae aliquam nunc nisl euismod nunc. Nulla
-                  facilisi. Sed euismod, nisl quis ultricies ultrices, nunc nisl
-                  aliquam nunc, vitae aliquam nunc nisl euismod nunc. Nulla
-                  </Typography>
+              <Drawer anchor={isMobileView ? "bottom" : "right"} open={anchorComprar} onClose={toogleComprar}>
+                <Comprar imovel={imovel as IImovel} locador={locador as Locador}/>
               </Drawer>
             </ButtonImovel>{" "}
           </ButtonsImovelContainer>
@@ -391,7 +384,7 @@ const CloseImageButton = styled.button`
   right: 10px;
 `;
 
-const ButtonImovel = styled.button`
+export const ButtonImovel = styled.button`
   position: relative;
   display: flex;
   flex-direction: column;
@@ -406,7 +399,7 @@ const ButtonImovel = styled.button`
   overflow: hidden;
 `;
 
-const ButtonsImovelContainer = styled.div<{
+export const ButtonsImovelContainer = styled.div<{
   isMobile: boolean;
 }>`
   position: relative;
