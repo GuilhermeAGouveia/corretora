@@ -211,7 +211,7 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
           </ImovelDescriptionContainer>
 
           <ButtonsImovelContainer isMobile={isMobileView}>
-            <ButtonImovel>
+            <ButtonImovel onClick={toogleAlugar}>
               <Typography
                 fontFamily={"Lato, sans-serif"}
                 fontWeight={300}
