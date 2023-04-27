@@ -16,7 +16,7 @@ interface ComprarProps {
   locador: Locador;
 }
 
-export default function Comprar({ imovel, locador }: ComprarProps) {
+export default function Alugar({ imovel, locador }: ComprarProps) {
   const router = useRouter();
   const { isMobileView } = useDeviceDetect();
   const getTextMessage = () =>
@@ -39,7 +39,7 @@ export default function Comprar({ imovel, locador }: ComprarProps) {
   })
   return (
     <ActionImovelContainer isMobile={isMobileView}>
-      <ActionImovelTitle>Comprar</ActionImovelTitle>
+      <ActionImovelTitle>Alugar</ActionImovelTitle>
       <ButtonsImovelContainer isMobile={isMobileView}>
         <ButtonImovel onClick={() => (location.href = getUrlWhatsapp())}>
           <WhatsApp

@@ -10,6 +10,7 @@ import styled from "styled-components";
 import avatarPNG from "../../assets/images/avatar.png";
 import casaPNG from "../../assets/images/casa.png";
 import FavoriteButton from "../../components/FavoriteButton";
+import Alugar from "../../components/Page/imoveis/Alugar";
 import Comprar from "../../components/Page/imoveis/Comprar";
 import TopBar from "../../components/TopBar";
 import useDeviceDetect from "../../hooks/useDeviceDetect";
@@ -225,6 +226,9 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
               >
                 Aluguel
               </Typography>
+              <Drawer anchor={isMobileView ? "bottom" : "right"} open={anchorAlugar} onClose={toogleAlugar}>
+                <Alugar imovel={imovel as IImovel} locador={locador as Locador}/>
+              </Drawer>
             </ButtonImovel>
             <ButtonImovel
               onClick={toogleComprar}
