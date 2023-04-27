@@ -1,8 +1,10 @@
-import { PrismaClient } from "@prisma/client";
 import { Request, Response } from "express";
-import {Controller} from "../interfaces"
+import { Controller } from "../interfaces";
 
+import { Locador, Pessoa } from "@prisma/client";
+import LocadorDTO from "../dto/Locador";
 import locadorService from "../services/LocadorService";
+
 
 export default {
   count: async (req: Request, res: Response) => {
@@ -15,7 +17,7 @@ export default {
   getByCod: async (req: Request, res: Response) => {
     const cod: string = req.params.cod;
     const locador = await locadorService.getByCod(cod);
-    res.json(locador);
+    res.json(new LocadorDTO(locador as Locador & { pessoa: Pessoa}));
   },
   getAll: async (req: Request, res: Response) => {
     const locador = await locadorService.getAll();

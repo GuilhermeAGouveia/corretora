@@ -1,14 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
-import { IImovel, Page } from "../../../lib/interfaces";
-import { debounce, orderBy } from "lodash";
+import { CircularProgress, List } from "@mui/material";
+import { debounce } from "lodash";
+import { useEffect, useState } from "react";
+import useDeviceDetect from "../../../hooks/useDeviceDetect";
 import { getImoveisByFilterWithPage } from "../../../lib/imovel";
-import { CircularProgress, ImageList, List } from "@mui/material";
-import ListComponent from "./IListComponent";
+import { IImovel, Page } from "../../../lib/interfaces";
 import {
   ListContainer,
   LoadingBottomContainer,
 } from "../../../styles/pages/lista";
-import useDeviceDetect from "../../../hooks/useDeviceDetect";
+import ListComponent from "./IListComponent";
 
 let pageNumber = 1;
 

@@ -1,17 +1,13 @@
-import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import FavoriteIcon from '@mui/icons-material/Favorite';
 import styled from "styled-components";
 import { CardImovelProps, LevelFurnished } from "../lib/interfaces";
 import colors from "../styles/colors";
 import CardImage from "./CardImage";
-import { uniqueId } from "lodash";
+import FavoriteButton from "./FavoriteButton";
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
-  const [isHover, setIsHover] = useState(false);
   const router = useRouter();
 
   const handleFavorite = () => {
@@ -29,36 +25,15 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
   return (
     <CardImovelContainer>
       <CardImovelButtonFavorite
-        onHoverStart={() => setIsHover(true)}
-        onHoverEnd={() => setIsHover(false)}
-        onClick={handleFavorite}
         style={{
-          background:
-            isFavorite || isHover ? colors.white : "rgba(255, 255, 255, 0.5)",
+          background: isFavorite ? colors.white : "rgba(255, 255, 255, 0.5)",
         }}
       >
-        <AnimatePresence>
-          {(isFavorite || isHover) && (
-            <IconHeart
-              initial={{ width: 0, height: 0 }}
-              animate={{ width: 20, height: 20 }}
-              exit={{ width: 0, height: 0 }}
-            >
-              <FavoriteIcon key={uniqueId()} sx={{
-                color: colors.primary,
-                fontSize: 15,
-              }} />
-            </IconHeart>
-          )}
-          <FavoriteBorderIcon 
-            key={uniqueId()}
-            style={{ position: "absolute" }}
-            sx={{
-              color: colors.primary,
-              fontSize: 15,
-            }}
-          />
-        </AnimatePresence>
+        <FavoriteButton
+          isFavorite={isFavorite}
+          handleFavorite={handleFavorite}
+          size={15}
+        />
       </CardImovelButtonFavorite>
       <CardImage
         onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}
@@ -67,7 +42,7 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
             ? imovel.images[0].url
             : "https://picsum.photos/200/300"
         }
-        alt={(imovel.images?.[0]?.originalname as string) && "Imagem"}
+        alt={(imovel.images?.[0]?.originalname as string) || "Imagem"}
       />
 
       <LineDivider />
@@ -206,7 +181,7 @@ const CardLabelContainer = styled.div`
   align-items: center;
 `;
 
-const CardImovelButtonFavorite = styled(motion.button)`
+const CardImovelButtonFavorite = styled("div")`
   position: absolute;
   top: 10px;
   right: 10px;
@@ -216,17 +191,8 @@ const CardImovelButtonFavorite = styled(motion.button)`
 
   box-shadow: 1px 1px 5px 0 rgba(0, 0, 0, 0.1);
   border: none;
+  overflow: hidden;
   z-index: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-const IconHeart = styled(motion.div)`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
