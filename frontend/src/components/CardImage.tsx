@@ -39,7 +39,6 @@ const CardImage = ({imageUrl, alt, onClick}: CardImageProps) => {
             setIsLoadingImage(false);
           }}
           quality={100}
-          placeholder='blur'
         />
         {isLoadingImage && (
          <ImagePlaceholder>
