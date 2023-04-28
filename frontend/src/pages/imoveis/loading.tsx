@@ -36,13 +36,13 @@ export default function Loading() {
         <Skeleton
           variant="rectangular"
           width={250}
-          height={250}
+          height={isMobileView ? 210 : 250}
           sx={retangularStyle}
         />
         <Skeleton
           variant="rectangular"
           width={250}
-          height={250}
+          height={isMobileView ? 210 : 250}
           sx={retangularStyle}
         />
         {!isMobileView && (
