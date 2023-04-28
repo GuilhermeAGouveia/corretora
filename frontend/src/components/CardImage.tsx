@@ -1,8 +1,8 @@
+import { CircularProgress } from '@mui/material';
 import Image from 'next/image';
 import { useState } from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { CircularProgress, Skeleton } from '@mui/material';
 
 
 interface CardImageProps {
@@ -39,6 +39,7 @@ const CardImage = ({imageUrl, alt, onClick}: CardImageProps) => {
             setIsLoadingImage(false);
           }}
           quality={100}
+          placeholder='blur'
         />
         {isLoadingImage && (
          <ImagePlaceholder>

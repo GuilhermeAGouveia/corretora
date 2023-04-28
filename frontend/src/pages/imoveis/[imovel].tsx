@@ -128,6 +128,7 @@ export default function Imovel({ imovelId }: ImovelProps) {
                 style={{
                   objectFit: "cover",
                 }}
+                placeholder="blur"
               />
             </MainImageContainer>
             <ImageSelectorContainer>
@@ -375,7 +376,6 @@ const MainImageContainer = styled("div")`
   max-width: 100%;
   align-items: center;
   justify-content: center;
-  background: red;
   overflow: hidden;
 `;
 
