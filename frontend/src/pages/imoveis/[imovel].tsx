@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { capitalize } from "lodash";
 import { GetStaticPaths, GetStaticProps } from "next";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import avatarPNG from "../../assets/images/avatar.png";
 import casaPNG from "../../assets/images/casa.png";
@@ -18,6 +18,7 @@ import { getAllImovel, getImovelByCod } from "../../lib/imovel";
 import { IImovel, Locador } from "../../lib/interfaces";
 import { getLocadorByCod } from "../../lib/pessoa";
 import colors from "../../styles/colors";
+import Loading from "./loading";
 
 export const getStaticPaths: GetStaticPaths = async () => {
   const getImovelSlugs = (await getAllImovel())?.map((item) => ({
@@ -31,23 +32,23 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const imovel = await getImovelByCod(ctx.params?.imovel as string, ctx);
-  const locador = await getLocadorByCod(imovel?.cod_lcd as string, ctx);
+  const imovel = ctx.params?.imovel 
   return {
     props: {
-      imovel,
-      locador,
+      imovelId: imovel,
     },
     revalidate: 3600, // 1 hour
   };
 };
 
 interface ImovelProps {
-  imovel: IImovel | null | undefined;
-  locador: Locador | null | undefined;
+  imovelId: string;
 }
 
-export default function Imovel({ imovel, locador }: ImovelProps) {
+export default function Imovel({ imovelId }: ImovelProps) {
+  const [imovel, setImovel] = useState<IImovel>();
+  const [locador, setLocador] = useState<Locador>();
+  const [isLoaded, setIsLoaded] = useState(false);
   const [imageSelected, setImageSelected] = useState("");
   const [isFavorite, setIsFavorite] = useState(false);
   const [anchorAlugar, setAnchorAlugar] = useState(false);
@@ -55,9 +56,33 @@ export default function Imovel({ imovel, locador }: ImovelProps) {
 
   const toogleAlugar = () => setAnchorAlugar(!anchorAlugar);
   const toogleComprar = () => setAnchorComprar(!anchorComprar);
+
+  useEffect(() => {
+    async function fetchAll() {
+    async function fetchImovel(imovel: string) {
+      const imovelData = await getImovelByCod(imovel);
+      setImovel(imovelData);
+      return imovelData;
+    }
+
+    const locadorId = (await fetchImovel(imovelId)).cod_lcd;
+  
+    async function fetchLocador(locador: string) {
+      const locadorData = await getLocadorByCod(locador);
+      setLocador(locadorData as Locador);
+    }
+
+    await fetchLocador(locadorId);
+    setIsLoaded(true);
+  }
+
+  fetchAll();
+
+  
+}, [])
   
   const { isMobileView } = useDeviceDetect();
-  return (
+  return !isLoaded ? <Loading/> : (
     <ImovelDetailContainer>
       <TopBar pageName="Detalhes do Imóvel" />
       <FullScreenBox>
