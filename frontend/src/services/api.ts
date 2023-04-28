@@ -4,7 +4,7 @@ import { parseCookies } from "nookies";
 export const getAPIHTTPClient = (ctx?: any) => {
   const {'@corretora:token': token} = parseCookies(ctx);
   const api = axios.create({
-    baseURL: `${process.env.BACKEND_PUBLIC_URL || "http://localhost:3333"}`,
+    baseURL: `${process.env.BACKEND_PUBLIC_URL || "http://localhost:3001"}`,
   });
 
   if (token) {
