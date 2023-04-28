@@ -1,8 +1,8 @@
-import {AnimatePresence, motion, MotionAdvancedProps} from "framer-motion";
-import {useEffect, useState} from "react";
+import { AnimatePresence, motion, MotionAdvancedProps } from "framer-motion";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { AlertType } from "../lib/interfaces";
 import colors from "../styles/colors";
-import {AlertType} from "../lib/interfaces";
 
 //Icons
 
@@ -26,9 +26,10 @@ interface BannerInfoProps {
 
 const BannerInfo = ({control}: BannerInfoProps) => {
     useEffect(() => {
-        setTimeout(() => {
+        const time = setTimeout(() => {
             control.desactive();
         }, 3000);
+        return () => clearTimeout(time);
     }, [control]);
 
     const AlertIcons = {

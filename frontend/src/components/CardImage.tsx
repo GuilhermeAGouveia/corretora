@@ -1,8 +1,8 @@
+import { Skeleton } from '@mui/material';
 import Image from 'next/image';
 import { useState } from "react";
 import styled from "styled-components";
 import colors from "../styles/colors";
-import { CircularProgress, Skeleton } from '@mui/material';
 
 
 interface CardImageProps {
@@ -42,7 +42,7 @@ const CardImage = ({imageUrl, alt, onClick}: CardImageProps) => {
         />
         {isLoadingImage && (
          <ImagePlaceholder>
-            <CircularProgress/>
+            <Skeleton variant="rectangular" width={250} height={250} />
          </ImagePlaceholder>
         )}
       </CardImovelImage>
@@ -64,8 +64,6 @@ export const ImagePlaceholder = styled.div`
   width: 100%;
   height: 300px;
   background-color: ${colors.white};
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
 `;
 

@@ -15,7 +15,8 @@ const nextConfig = {
       'localhost',
       's3.amazonaws.com',
       'www.tpsimoveis.com.br',
-      's2.glbimg.com'
+      's2.glbimg.com',
+      'images.unsplash.com',
     ],
   },
 }
