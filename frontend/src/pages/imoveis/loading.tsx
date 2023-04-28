@@ -10,7 +10,7 @@ export default function Loading() {
   };
   return (
     <Main isMobile={isMobileView}>
-      <Body isMobile={false} style={{
+      <FlexBox isMobile={false} style={{
         flexDirection: "row",
         justifyContent: "flex-start",
       }}>
@@ -31,8 +31,8 @@ export default function Loading() {
             borderRadius: "5px",    
           }}
         />
-      </Body>
-      <Body isMobile={isMobileView}>
+      </FlexBox>
+      <FlexBox isMobile={isMobileView}>
         <Skeleton
           variant="rectangular"
           width={250}
@@ -53,12 +53,33 @@ export default function Loading() {
             sx={retangularStyle}
           />
         )}
-      </Body>
+      </FlexBox>
+      {isMobileView && (<FlexBox isMobile={false}>
+        <Skeleton
+          variant="rectangular"
+          width={150}
+          height={150}
+          sx={{
+            borderRadius: "5px",
+            margin: "10px",
+          }}
+        />
+        <Skeleton
+          variant="rectangular"
+          width={150}
+          height={150}
+          sx={{
+            borderRadius: "5px",
+            margin: "10px",
+          }}
+        />
+      </FlexBox>)}
+
     </Main>
   );
 }
 
-const Body = styled.div<{ isMobile: boolean }>`
+const FlexBox = styled.div<{ isMobile: boolean }>`
   position: relative;
   display: flex;
   flex-direction: ${({ isMobile }) => (isMobile ? "column" : "row")};
