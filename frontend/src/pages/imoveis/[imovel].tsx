@@ -27,12 +27,12 @@ export const getStaticPaths: GetStaticPaths = async () => {
 
   return {
     paths: getImovelSlugs,
-    fallback: 'blocking',
+    fallback: "blocking",
   };
 };
 
 export const getStaticProps: GetStaticProps = async (ctx) => {
-  const imovel = ctx.params?.imovel 
+  const imovel = ctx.params?.imovel;
   return {
     props: {
       imovelId: imovel,
@@ -58,31 +58,27 @@ export default function Imovel({ imovelId }: ImovelProps) {
   const toogleComprar = () => setAnchorComprar(!anchorComprar);
 
   useEffect(() => {
-    async function fetchAll() {
-    async function fetchImovel(imovel: string) {
-      const imovelData = await getImovelByCod(imovel);
-      setImovel(imovelData);
-      return imovelData;
-    }
+      async function fetchImovel(imovel: string) {
+        const imovelData = await getImovelByCod(imovel);
+        setImovel(imovelData);
+        return imovelData;
+      }
 
-    const locadorId = (await fetchImovel(imovelId)).cod_lcd;
-  
-    async function fetchLocador(locador: string) {
-      const locadorData = await getLocadorByCod(locador);
-      setLocador(locadorData as Locador);
-    }
+      async function fetchLocador(imovel: string) {
+        const locador = (await fetchImovel(imovel)).cod_lcd;
 
-    await fetchLocador(locadorId);
-    setIsLoaded(true);
-  }
+        const locadorData = await getLocadorByCod(locador);
+        setLocador(locadorData as Locador);
+      }
+    
+    Promise.all([fetchImovel(imovelId), fetchLocador(imovelId)]).then(() => setIsLoaded(true));
 
-  fetchAll();
+  }, [imovelId]);
 
-  
-}, [])
-  
   const { isMobileView } = useDeviceDetect();
-  return !isLoaded ? <Loading/> : (
+  return !isLoaded ? (
+    <Loading />
+  ) : (
     <ImovelDetailContainer>
       <TopBar pageName="Detalhes do Imóvel" />
       <FullScreenBox>
@@ -196,8 +192,13 @@ export default function Imovel({ imovelId }: ImovelProps) {
               >
                 {capitalize(imovel?.type as string)} em
               </Typography>
-              
-              <LocalContainer target="_brank" href={`https://www.google.com/maps/search/?api=1&query=${imovel?.address as string}, ${imovel?.city as string}, ${imovel?.state}&hl=pt-br`}>
+
+              <LocalContainer
+                target="_brank"
+                href={`https://www.google.com/maps/search/?api=1&query=${
+                  imovel?.address as string
+                }, ${imovel?.city as string}, ${imovel?.state}&hl=pt-br`}
+              >
                 <RoomIcon
                   sx={{
                     color: colors.primary,
@@ -251,8 +252,15 @@ export default function Imovel({ imovelId }: ImovelProps) {
               >
                 Aluguel
               </Typography>
-              <Drawer anchor={isMobileView ? "bottom" : "right"} open={anchorAlugar} onClose={toogleAlugar}>
-                <Alugar imovel={imovel as IImovel} locador={locador as Locador}/>
+              <Drawer
+                anchor={isMobileView ? "bottom" : "right"}
+                open={anchorAlugar}
+                onClose={toogleAlugar}
+              >
+                <Alugar
+                  imovel={imovel as IImovel}
+                  locador={locador as Locador}
+                />
               </Drawer>
             </ButtonImovel>
             <ButtonImovel
@@ -276,8 +284,15 @@ export default function Imovel({ imovelId }: ImovelProps) {
               >
                 Comprar
               </Typography>
-              <Drawer anchor={isMobileView ? "bottom" : "right"} open={anchorComprar} onClose={toogleComprar}>
-                <Comprar imovel={imovel as IImovel} locador={locador as Locador}/>
+              <Drawer
+                anchor={isMobileView ? "bottom" : "right"}
+                open={anchorComprar}
+                onClose={toogleComprar}
+              >
+                <Comprar
+                  imovel={imovel as IImovel}
+                  locador={locador as Locador}
+                />
               </Drawer>
             </ButtonImovel>{" "}
           </ButtonsImovelContainer>
