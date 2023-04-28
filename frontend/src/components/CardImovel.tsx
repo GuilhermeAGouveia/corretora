@@ -1,3 +1,5 @@
+import { CircularProgress } from "@mui/material";
+import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import styled from "styled-components";
@@ -8,6 +10,7 @@ import FavoriteButton from "./FavoriteButton";
 
 const CardImovel = ({ imovel }: CardImovelProps) => {
   const [isFavorite, setIsFavorite] = useState(false);
+  const [isLoadingImovelDetails, setIsLoadingImovelDetails] = useState(false);
   const router = useRouter();
 
   const handleFavorite = () => {
@@ -24,6 +27,24 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
   };
   return (
     <CardImovelContainer>
+      {isLoadingImovelDetails && (
+        <LoadingImovelDetails
+          animate={{
+            opacity: [0, 1],
+            top: [-300, 0],
+            transition: {
+              duration: 0.3,
+            },
+          }}
+        >
+          <CircularProgress
+            sx={{
+              color: colors.white,
+              fontSize: 20,
+            }}
+          />
+        </LoadingImovelDetails>
+      )}
       <CardImovelButtonFavorite
         style={{
           background: isFavorite ? colors.white : "rgba(255, 255, 255, 0.5)",
@@ -36,7 +57,10 @@ const CardImovel = ({ imovel }: CardImovelProps) => {
         />
       </CardImovelButtonFavorite>
       <CardImage
-        onClick={() => router.push(`imoveis/${imovel.cod_imv}`)}
+        onClick={() => {
+          setIsLoadingImovelDetails(true);
+          router.push(`imoveis/${imovel.cod_imv}`);
+        }}
         imageUrl={
           imovel.images[0]
             ? imovel.images[0].url
@@ -193,6 +217,18 @@ const CardImovelButtonFavorite = styled("div")`
   border: none;
   overflow: hidden;
   z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const LoadingImovelDetails = styled(motion.div)`
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: ${colors.primary};
+  z-index: 2;
   display: flex;
   align-items: center;
   justify-content: center;
